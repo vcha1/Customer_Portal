@@ -126,7 +126,7 @@ public class CaseController {
             Model model,
             @PathVariable("caseId") String caseId
     ) {
-        System.out.println(caseId);
+        //System.out.println(caseId);
         //ServiceCase serviceCaseOdoo = this.caseService.getByOdooId(caseId)
         //        .orElseThrow(() -> new ResourceNotFoundException("Case not found!"));
 
