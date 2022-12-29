@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/no-sidebar-and-navbar}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Customer Portal Registration">
+    <meta name="author" content="Bootlab">
+    <title th:text="#{label.form.title}">Title</title>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <style>
+        .password-verdict {
+            color: #000;
+        }
+
+        .error-list {
+            margin-top: 1em;
+        }
+    </style>
+</head>
+
+<body>
+<section layout:fragment="body_content">
+
+    <div id="globalErrorAlert" class="alert alert-danger" role="alert" style="display:none">
+
+        <div class="alert-icon">
+            <i class="fas fa-fw fa-exclamation-circle"></i>
+        </div>
+        <div class="alert-message">
+            <span id="globalErrorMessage"></span>
+        </div>
+
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="text-center mt-4">
+                <h1 class="h1">Own your Energy!</h1>
+                <h1 class="h3">Sign up now</h1>
+                <p class="lead small">
+                    Already signed up? <a th:href="@{/login}">Click here to login</a>
+                </p>
+            </div>
+            <div class="m-sm-4">
+                <form th:action="@{/}" method="post">
+
+                    <div class="form-group">
+                        <label th:text="#{label.user.firstName}"></label>
+                        <input class="form-control form-control-lg" type="text" name="firstName"
+                               placeholder="Enter your first name" value="" required="required"/>
+
+                    </div>
+                    <div class="form-group">
+                        <label th:text="#{label.user.lastName}"></label>
+                        <input class="form-control form-control-lg" type="text" name="lastName"
+                               placeholder="Enter your last name" value="" required="required"/>
+
+                    </div>
+                    <div class="form-group">
+                        <label th:text="#{label.user.email}"></label>
+                        <input id="email" class="form-control form-control-lg" type="email" name="email"
+                               placeholder="Enter your email" required="required"/>
+                        <small class="form-text text-muted">The email used at the time you purchased your solar system
+                        </small>
+                    </div>
+                    <div class="form-group ">
+                        <div class="g-recaptcha"
+                             th:attr="data-sitekey=${@captchaSettings.getSite()}"></div>
+                        <span id="captchaError" class="alert alert-danger col-sm-4"
+                              style="display:none"></span>
+                    </div>
+                    <div class="text-center mt-3">
+                        <button type="submit" class="btn btn-lg btn-primary" disabled="disabled">Sign up</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</section>
+<section layout:fragment="end_of_body">
+    <script th:src="@{/js/password/pwstrength.js}" th:inline="javascript"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.26/moment-timezone-with-data.min.js"
+            integrity="sha256-6EFCRhQs5e10gzbTAKzcFFWcpDGNAzJjkQR3i1lvqYE=" crossorigin="anonymous"></script>
+    <script th:inline="javascript">
+
+        window.onload = function() {
+            var $recaptcha = document.querySelector('#g-recaptcha-response');
+
+            if($recaptcha) {
+                $recaptcha.setAttribute("required", "required");
+            }
+        };
+
+        var serverContext = [[@{/}]];
+
+            $(document).ready(function () {
+                $('form').submit(function (event) {
+                    register(event);
+                });
+
+                $('button[type="submit"]').prop('disabled', false);
+
+                $(":password").keyup(function () {
+                    if ($("#password").val() !== $("#matchPassword").val()) {
+                        $("#globalErrorAlert").show();
+                        $("#globalErrorMessage").html(/*[[#{PasswordMatches.user}]]*/);
+                    } else {
+                        $("#globalErrorAlert").hide();
+                    }
+                });
+
+                options = {
+                    common: {minChar: 8},
+                    ui: {
+                        showProgressBar: false,
+                        showVerdicts: false,
+                        showErrors: true,
+                        errorMessages: {
+                            wordLength: /*[[#{error.wordLength}]]*/,
+                            wordNotEmail: /*[[#{error.wordNotEmail}]]*/,
+                            wordSequences: /*[[#{error.wordSequences}]]*/,
+                            wordLowercase: /*[[#{error.wordLowercase}]]*/,
+                            wordUppercase: /*[[#{error.wordUppercase}]]*/,
+                            wordOneNumber: /*[[#{error.wordOneNumber}]]*/,
+                            wordOneSpecialChar: /*[[#{error.wordOneSpecialChar}]]*/
+                        }
+                    }
+                };
+                $('#password').pwstrength(options);
+            });
+
+        function register(event) {
+            event.preventDefault();
+            $.blockUI();
+            $("#email").removeClass('is-invalid');
+            $(".error-list").html("");
+
+            if ($("#password").val() != $("#matchPassword").val()) {
+                $("#globalErrorAlert").show();
+                $("#globalErrorMessage").html(/*[[#{PasswordMatches.user}]]*/);
+                return;
+            }
+
+            if (typeof grecaptcha !== 'undefined') {
+                var resp = grecaptcha.getResponse();
+                if (resp.length == 0) {
+                    $("#globalErrorAlert").show();
+                    $("#globalErrorMessage").html("Please verify that you are not a robot.");
+                    return;
+                }
+            }
+
+            var formData = $('form').serialize() + '&timezone=' + moment.tz.guess();
+            console.log(formData);
+            $.post(serverContext + "user/registration", formData, function (data) {
+                if (data.message == "success") {
+                    window.location.href = serverContext + "login?message=A confirmation email has been sent. Please login after you have confirmed your registration";
+                }
+
+            }).fail(function (data) {
+
+                $.unblockUI();
+                grecaptcha.reset();
+
+                if (data.responseJSON.error.indexOf("MailError") > -1) {
+                    $("#globalErrorMessage").html(data.responseJSON.message);
+                } else if (data.responseJSON.error === "InvalidReCaptcha") {
+                    $("#globalErrorMessage").html(data.responseJSON.message);
+                } else if (data.responseJSON.error === "UserAlreadyExist") {
+                    $("#globalErrorMessage").html(data.responseJSON.message);
+                    $("#email").addClass('is-invalid');
+                } else if (data.responseJSON.error === "UserInstallationNotFound") {
+                    $("#globalErrorMessage").html(data.responseJSON.message);
+                    $("#email").addClass('is-invalid');
+                } else if (data.responseJSON.error.indexOf("InternalError") > -1) {
+                    window.location.href = serverContext + "login?message=" + data.responseJSON.message;
+                } else {
+                    var errors = $.parseJSON(data.responseJSON.message);
+                    $.each(errors, function (index, item) {
+                        if (item.field) {
+                            $("#" + item.field + "Error").show().append(item.defaultMessage + "<br/>");
+                        } else {
+                            $("#globalErrorAlert").show();
+                            $("#globalErrorMessage").append(item.defaultMessage + "<br/>");
+                        }
+
+                    });
+                }
+                $("#globalErrorAlert").show();
+            });
+
+        }
+    </script>
+</section>
+</body>
+</html>

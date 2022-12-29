@@ -1,0 +1,44 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base.html}">
+<head>
+    <title>Service Selection</title>
+    <link href = "/css/store/installation-selection.css" rel = "stylesheet" type="text/css"/>
+</head>
+<body>
+<section layout:fragment="body_content">
+
+    <div class="container-fluid p-0">
+
+        <h1 class = "pg-header mb-3" >Service & Add-Ons</h1>
+        <div class="row">
+
+            <div class="col-md-10 col-xl-8 mx-auto">
+                <h1 class="text-center">Please select an address</h1>
+
+                <div class="row py-4 ">
+                    <!-- <th:block th:each="installation : ${installations}"> -->
+                    <th:block th:each="installation: ${#numbers.sequence(0, installations.getId().size() - 1)}">
+                        <div class="col-sm-4 mb-3 mb-md-0">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <!-- <h4 class="address-card text-center card-title mb-0 py-2" th:text="${installation.getAddress()}"></h4> -->
+                                    <h4 class="address-card text-center card-title mb-0 py-2" th:text="${installations.getAddress().get(installation)}"></h4>
+                                    <!-- <a th:href="@{/schedule/product-selection(id=${installation.id})}" -->
+                                    <a th:href="@{/schedule/product-selection(id=${installations.getId().get(installation)})}"
+                                       class="card-text btn btn-block btn-outline-primary">Select</a>
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<section layout:fragment="end_of_body">
+</section>
+</body>
+</html>

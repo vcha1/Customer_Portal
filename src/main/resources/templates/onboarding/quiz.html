@@ -1,0 +1,153 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/limited-navbar}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Customer Onboarding">
+    <meta name="author" content="Bootlab">
+    <title>Thank You for Signing Up!</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/dist/css/jquery.quiz.css}"/>
+</head>
+<style>
+</style>
+<body>
+
+<section layout:fragment="body_content">
+
+    <div class="container">
+
+        <canvas id="confetti-canvas" style="display: none"></canvas>
+
+        <div class="text-center mt-4">
+            <h1 id="quiz-greeting">Almost there&nbsp;<span
+                    th:text="${#authentication.principal.firstName + '!'}"></span>
+            </h1>
+            <p class="lead">
+                <span>Need to watch the video again?</span>
+                <a th:href="@{/onboarding/video(watch_again='true')}">Click here to the watch video again</a>
+            </p>
+        </div>
+        <div class="mt-4">
+            <div class="row">
+                <div class="md-10 col-xl-8 mx-auto">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Please answer the following questions.</h5>
+                            <h6 class="card-subtitle text-muted">
+                                <p>Please click start to begin</p>
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div id="quiz">
+                                <div id="quiz-header">
+                                </div>
+                                <div id="quiz-start-screen">
+                                    <p><a href="#" id="quiz-start-btn" class="btn btn-primary">Start</a></p>
+                                </div>
+                            </div>
+                            <div id="post-onboarding-navigation" class="text-center" style="display: none">
+                                <h3>What would you like to do next?</h3>
+                                <!-- TODO href to my installations -->
+                                <a class="card-link" th:href="@{/home}">View My Installation</a>
+                                <a class="card-link" th:href="@{/settings}">Set Up My Profile</a>
+                            </div>
+
+                            <form style="display: none" id="completed-onboarding-quiz-form"
+                                  th:action="@{/onboarding/questions}" method="post" onsubmit="$.blockUI();">
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <div id="quiz-faqs" th:include="onboarding/faq :: faq(${{'2'}})"></div>
+
+    </div>
+
+</section>
+
+<section layout:fragment="end_of_body">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
+    <script th:src="@{/dist/js/jquery.quiz.js}"></script>
+    <script th:src="@{/dist/js/confetti/index.min.js}"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        var totalScore = 0;
+        var possibleScore =  /*[[${questions.size()}]]*/ 0;
+
+        var answerCallback = function (currentQuestion, selected, question) {
+            if (selected === question.correctIndex) {
+                totalScore++;
+            }
+
+        };
+
+        var finishCallback = function () {
+
+            if (totalScore < possibleScore) {
+                totalScore = 0;
+            } else {
+                $.blockUI();
+                var formData = $('#completed-onboarding-quiz-form').serialize();
+                $.post("/onboarding/questions", formData, function (data) {
+                    $.unblockUI();
+                    if (data.message === "success") {
+                        $('#quiz-restart-btn').hide();
+                        $('#quiz-finish-btn').hide();
+                        $('#quiz-results-screen').append('')
+                        $('#post-onboarding-navigation').show();
+                        $('.lead').hide();
+                        $('.card-header').hide();
+                        $('#quiz-faqs').hide();
+                        $('#quiz-greeting').html('🎉 Congratulations ' + [[${#authentication.principal?.firstName}]] + '! 🎉');
+                        popConfetti();
+                    }
+                }).fail(function (data) {
+                    $.unblockUI();
+                    toastr.options = {
+                        "positionClass": "toast-bottom-full-width",
+                        "preventDuplicates": true
+                    }
+                    console.error(data);
+                    toastr.error(data.responseJSON.error);
+                });
+
+            }
+        };
+
+        $('#quiz').quiz({
+            counter: false,
+            resultsFormat: 'You have completed our onboarding process!',
+            answerCallback: answerCallback,
+            finishCallback: finishCallback,
+            questions: /*[[${questions}]]*/ []
+        });
+
+        function popConfetti() {
+
+            var confettiSettings = {target: 'confetti-canvas'};
+            var confetti = new ConfettiGenerator(confettiSettings);
+            confetti.render();
+            $('#confetti-canvas')
+                .css('z-index', '-1')
+                .css('position', 'absolute')
+                .css('top', '0px')
+                .css('left', '0px')
+                .css('width', $( window ).width())
+                .css('height', $(window).height())
+                .show();
+
+        }
+
+        /*]]>*/
+    </script>
+</section>
+
+</body>
+</html>

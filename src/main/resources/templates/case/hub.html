@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base.html}">
+<head>
+    <link rel="stylesheet" href="/css/case/hub.css"/>
+</head>
+<body>
+
+<section layout:fragment="body_content">
+    <div class="container-fluid p-0">
+
+        <div th:if="${success != null}" class="col-12 alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            <div class="alert-icon">
+                <i class="fas fa-fw fas fa-info-circle"></i>
+            </div>
+            <div class="alert-message">
+                <strong></strong>&nbsp;<span th:text="${success}"></span>
+            </div>
+        </div>
+
+        <div th:if="${error != null}" class="col-12 alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            <div class="alert-icon">
+                <i class="fas fa-fw fas fa-info-circle"></i>
+            </div>
+            <div class="alert-message">
+                <strong></strong>&nbsp;<span th:text="${error}"></span>
+            </div>
+        </div>
+
+        <div class="col-md-12 title-spacing">
+            <p class="pg-header h1 mb-3">Tickets</p>
+            <a class="btn btn-sm btn-warning" th:href="@{/case/create}" style="color:white">Submit a Ticket</a>
+        </div>
+        <div class="cases row">
+            <!-- <div class="col-md-6"  style= "margin-bottom: 1.75rem;" th:each="case : ${cases}"> -->
+            <!-- <div class="col-md-6"  style= "margin-bottom: 1.75rem;" th:each="case : ${#numbers.sequence(cases.size() - 1, 0, -1)}"> -->
+            <!-- <div class="col-md-6"  style= "margin-bottom: 1.75rem;" th:each="odooData : ${#numbers.sequence(odooTicketData.getId().size() - 1, 0, -1)}"> -->
+            <!-- <div class="col-md-6"  style= "margin-bottom: 1.75rem;" th:each="odooData : ${#numbers.sequence(0, odooTicketData.getId().size() - 1)}"> -->
+            <!-- <div class="col-md-6"  style= "margin-bottom: 1.75rem;"  th:unless="${odooTicketData.getId().size() - 1 < 1}" -->
+            <div class="col-md-6"  style= "margin-bottom: 1.75rem;"  th:unless="${odooTicketData.getId().size() < 1}"
+                 th:each="odooData : ${#numbers.sequence(0, odooTicketData.getId().size() - 1)}">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <!-- <p class="h6 card-title mb-0" th:text="${cases[case].getInstallSite()}"></p> -->
+                        <p class="h6 card-title mb-0" th:text="${odooTicketData.getAddress().get(odooData)}"></p>
+                    </div>
+                    <div class="card-body" >
+                        <div class="row">
+                            <div class="col-lg-6 text-right">
+                                <strong>Ticket Number</strong>
+                            </div>
+                            <div class="col-lg-6">
+                                <!-- <a th:href="@{/case/{id}(id=${cases[case].id})}" th:text="${cases[case].getCaseNumber()}"></a> -->
+                                <a th:href="@{/case/{id}(id=${odooTicketData.getId().get(odooData)})}" th:text="${odooTicketData.getId().get(odooData)}"></a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 text-right">
+                                <strong>Status</strong>
+                            </div>
+                            <div class="col-lg-6">
+                                <!-- <span th:text="${cases[case].getStatus()}"></span> -->
+                                <span th:text="${odooTicketData.getStatus().get(odooData)}"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 text-right">
+                                <strong>Category</strong>
+                            </div>
+                            <div class="col-lg-6">
+                                <!-- <span th:text="${cases[case].getSubject1()}"></span> -->
+                                <span th:text="${odooTicketData.getIssueType().get(odooData)}"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 text-right">
+                                <strong>Subject</strong>
+                            </div>
+                            <div class="col-lg-6">
+                                <!-- <span th:text="${cases[case].getSubject2()}"></span> -->
+                                <span th:text="${odooTicketData.getSubIssueType().get(odooData)}"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 text-right">
+                                <strong>Scheduled Service Date</strong>
+                            </div>
+                            <div class="col-lg-6">
+                                <!-- <span th:text="${cases[case].getScheduledServiceDate() != null ? #temporals.format(cases[case].getScheduledServiceDate(), 'MM/dd/yyyy hh:mm a'):''}"></span> -->
+                                <span th:text="${odooTicketData.getScheduledDateTime().get(odooData) }"></span>
+                                <!-- <span th:text="${odooTicketData.getScheduledDateTime().get(odooData)  != null ? #temporals.format(odooTicketData.getScheduledDateTime().get(odooData), 'MM/dd/yyyy hh:mm a'):''}"></span> -->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 text-right">
+                                <strong>Description</strong>
+                            </div>
+                            <div class="col-lg-6">
+                                <!-- <span th:text="${cases[case].getCustomerDescription()}"></span> -->
+                                <span th:text="${odooTicketData.getDescription().get(odooData)}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

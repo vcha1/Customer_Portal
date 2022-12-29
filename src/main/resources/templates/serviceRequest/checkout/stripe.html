@@ -1,0 +1,123 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base.html}"
+      xmlns:chrono="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Service Checkout</title>
+  <link rel="stylesheet" href="/css/stripe/checkout.css"  type="text/css"/>
+  <!-- <link href = "/css/store/installation-selection.css" rel = "stylesheet" type="text/css"/> -->
+  <!-- <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script> -->
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="/js/stripe/checkout2.js" defer></script>
+</head>
+<body>
+<section layout:fragment="body_content">
+
+  <div class = "col-md-12 hidden">
+    <!-- <p class="pg-header h1 mb-3" th:text="${detail.street}"></p> -->
+    <p class="pg-header h1 mb-3 hidden" th:text="${stripeClass.getStripeInfo()}" id="stripeClient"></p>
+  </div>
+
+  <div class = "col-md-12 hidden">
+    <!-- <p class="pg-header h1 mb-3" th:text="${detail.street}"></p> -->
+    <p class="pg-header h1 mb-3 hidden" th:text="${paymentIntentId}" id="paymentIntentId"></p>
+  </div>
+
+  <h1>Service Checkout</h1>
+
+  <div class="row py-4  justify-content-center">
+    <div class="col-sm-5 mb-3 mb-md-0">
+      <div class="card text-center h-100">
+
+
+        <div class="card-body d-flex flex-column">
+
+          <h2>[[${serviceRequest.product.name}]]</h2>
+
+          <div class="mb-4">
+            <h5>Price</h5>
+            <span class="display-4" th:inline="text">$ [[${#numbers.formatDecimal(totalPrice, 0, 'COMMA', 2, 'POINT')}]]</span>
+          </div>
+
+          <ul class="list-unstyled">
+
+            <li class="mb-2">
+              <b>Quantity: </b>[[${serviceRequest.quantity}]]
+            </li>
+
+            <li class="mb-2">
+              <b>Description:</b> [[${serviceRequest.product.description}]]
+            </li>
+
+            <li class="mb-2">
+              <b>Estimated Duration: </b>[[${serviceRequest.product.duration}]] minutes
+            </li>
+
+            <hr/>
+
+            <li class="mb-2">
+              <b>Subtotal: </b>$ [[${#numbers.formatDecimal(subTotal, 0, 'COMMA', 2, 'POINT')}]]
+            </li>
+
+            <li class="mb-2" th:if="${totalDiscount > 0}">
+              <b>Discount : </b>- $ [[${#numbers.formatDecimal(totalDiscount, 0, 'COMMA', 2, 'POINT')}]]
+            </li>
+
+            <li class="mb-2" th:if="${requiredDepositAmount > 0}">
+              <b>Deposit Amount : </b>$ [[${#numbers.formatDecimal(requiredDepositAmount, 0, 'COMMA',
+              2, 'POINT')}]]
+            </li>
+
+            <li class="mb-2">
+              <b>Convenience Fee: </b>$ [[${#numbers.formatDecimal(convenience_fee, 0, 'COMMA', 2,
+              'POINT')}]]
+            </li>
+
+            <li class="mb-2" th:if="${requiredDepositAmount > 0}">
+              <b>Amount Due : </b>$ [[${#numbers.formatDecimal(amountDue , 0, 'COMMA',
+              2, 'POINT')}]]
+            </li>
+
+            <hr/>
+
+            <th:block th:if="${serviceRequest.startTime != null}">
+              <li class="mb-2">
+                <b>Date:</b> <span
+                      chrono:renderCurrentUserLocalDate="${serviceRequest.startTime}"></span>
+              </li>
+              <li class="mb-2">
+                <b>Time:</b> <span
+                      chrono:renderCurrentUserLocalTime="${serviceRequest.startTime}"></span>
+              </li>
+            </th:block>
+          </ul>
+          <!-- Display a payment form -->
+          <form id="payment-form">
+            <div id="payment-element">
+              <!--Stripe.js injects the Payment Element-->
+            </div>
+            <button id="submit">
+              <div class="spinner hidden" id="spinner"></div>
+              <span id="button-text">Pay now</span>
+            </button>
+            <div id="payment-message" class="hidden"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+
+</section>
+<section layout:fragment="end_of_body">
+
+  <script th:inline="javascript">
+
+  </script>
+
+</section>
+</body>
+</html>

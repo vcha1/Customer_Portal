@@ -1,0 +1,33 @@
+
+
+#my-install-title{
+    font-size: 3rem;
+    font-family: "Ruda", sans-serif;
+}
+
+#install-information{
+   margin: 0rem !important;
+}
+
+@media only screen and (max-width:995px){
+   .row > .col-lg-6{
+       text-align:left !important;
+   }
+    .card-body > .row{
+        padding-bottom: 1rem;
+    }
+}
+
+#my-install-stage{
+    padding-top:3rem;
+    padding-bottom: 0.5rem;
+    margin-left: 15px;
+    margin-right:15px;
+}
+
+
+
+.card-header{
+    background-color: #f0f7fe !important;
+}
+

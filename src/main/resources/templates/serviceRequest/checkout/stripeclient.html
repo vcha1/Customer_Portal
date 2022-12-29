@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Accept a payment</title>
+  <meta name="description" content="A demo of a payment on Stripe" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/css/stripe/checkout.css" />
+  <script src="https://js.stripe.com/v3/"></script>
+  <!-- <script src="https://checkout.stripe.com/checkout.js" defer></script> -->
+  <script src="/js/stripe/checkout.js" defer></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+</head>
+<body>
+
+<form th:action="@{/service-request/checkout/payment/stripe}" method="post"
+      onsubmit="$.blockUI();" id="getPost" class="hidden">
+</form>
+
+</body>
+</html>
+
+
+

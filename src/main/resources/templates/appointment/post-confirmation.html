@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/public-layout}">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Responsive Bootstrap 4 Admin &amp; Dashboard Template">
+    <meta name="author" content="Bootlab">
+    <title>Appointment Confirmed</title>
+</head>
+<body>
+<section layout:fragment="body_content">
+
+    <h1 class="h3 mb-3 text-center">Thank you for the confirmation!</h1>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body m-sm-3 m-md-5">
+
+                    <div class="mb-4">
+                        Hello <strong th:text="${appointment.customerInformation.customerFirstName}"></strong>,
+                        <br/><br/>Thank you for the confirmation of your appointment. The following is a brief summary of your appointment with 1st Light Energy.
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="text-muted">Appointment Date</div>
+                            <strong class="local-date" th:attr="data-datetime=${appointment_date}"></strong>
+                            <div class="text-muted">Reason</div>
+                            <strong th:text="${appointment.eventDetail.reason}"></strong>
+                        </div>
+                        <div class="col-md-6 text-md-right">
+                            <div class="text-muted">Estimated Time of Arrival</div>
+                            <strong>
+                                <span class="local-time"
+                                      th:attr="data-datetime=${time_frame_start}"></span> -
+                                <span class="local-time"
+                                      th:attr="data-datetime=${time_frame_end}"></span>
+                            </strong>
+                            <div class="text-muted">Estimated Duration</div>
+                            <strong><span class="duration" th:attr="data-duration=${appointment.eventDetail.duration}"
+                                          th:text="${appointment.eventDetail.duration} + ' minutes'"></span></strong>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="text-muted">Address</div>
+                            <p th:text="${appointment?.eventDetail?.address}">
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="text-center">
+                        <p class="text-sm">
+                            <strong> Note: If you would like to cancel or make a change to your appointment please give
+                                us a call at <a href="tel:1-866-837-6527">(866) 837-6527</a>
+                            </strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section layout:fragment="end_of_body">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.14/moment-timezone-with-data.min.js"></script>
+    <script src="/js/product/duration.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        var timezone = moment.tz.guess();
+        var localDateFormat = 'MM/DD/YYYY';
+        var localTimeFormat = 'hh:mm A'
+
+        $('.local-date').each(function (index, value) {
+            var datetime = $(this).data('datetime');
+            if (null != datetime) {
+                var datetimeMoment = moment.tz(datetime, timezone);
+                $(this).html(datetimeMoment.format(localDateFormat));
+            }
+        });
+
+        $('.local-time').each(function (index, value) {
+            var datetime = $(this).data('datetime');
+            if (null != datetime) {
+                var datetimeMoment = moment.tz(datetime, timezone);
+                $(this).html(datetimeMoment.format(localTimeFormat) + ' ' + datetimeMoment.zoneAbbr());
+            }
+        });
+
+        /*]]>*/
+    </script>
+</section>
+</body>
+</html>

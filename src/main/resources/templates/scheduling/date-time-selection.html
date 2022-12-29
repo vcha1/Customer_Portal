@@ -1,0 +1,248 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base.html}">
+<head>
+    <title>Date Time Selection</title>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"/>
+    <link href="/css/calendar.css" rel="stylesheet"/>
+</head>
+<body>
+<section layout:fragment="body_content">
+
+    <div class="container-fluid p-0">
+
+        <h1 class="pg-header h3 mb-3">Service & Add-Ons</h1>
+
+        <div class="row py-4">
+
+            <div class="col-sm-2 mb-1 mb-md-0">
+                <div class="card h-100">
+                    <img class="card-img-top" style="max-height: 200px;" th:src="${product.productImageUrl}">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0" th:text="${product.name}"></h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" th:text="${product.description}"></li>
+                    </ul>
+                    <div class="card-body d-flex flex-column">
+                        <p class="card-text">Duration : <strong class="card-text duration"
+                                                                th:attr="data-duration=${product.duration}"> </strong>
+                        </p>
+                        <p class="text-muted">Fee : <strong
+                                th:text="${'$' + #numbers.formatDecimal(product.pricePerUnit, 0, 'COMMA', 2, 'POINT') + (' ' + product.pricingType.label())}">
+                        </strong>
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="text-center">
+                            <a th:href="@{/schedule/product-selection(id=${param.id})}"
+                               class="btn btn-block btn-danger">Unselect</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-10 mb-1 mb-md-0">
+                <div id="calendar-card" th:fragment="calendar-card" class="card h-100">
+                    <div class="card-header">
+                        <div class="card-actions float-right">
+                            <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#need-help-modal">
+                                <i class="align-middle" data-feather="help-circle"></i> <span
+                                    class="align-middle">Need Help?</span>
+                            </button>
+                        </div>
+                        <h5 class="card-title">
+                            <span th:if="${#strings.isEmpty(availability_title)}">Availability</span>
+                            <span th:unless="${#strings.isEmpty(availability_title)}"
+                                  th:text="${availability_title}"></span>
+                        </h5>
+                        <h6 class="card-subtitle text-muted">
+                            <span th:if="${#strings.isEmpty(availability_subtitle)}">Please choose a date and time at your convenience</span>
+                            <span th:unless="${#strings.isEmpty(availability_subtitle)}"
+                                  th:text="${availability_subtitle}"></span>
+                        </h6>
+                    </div>
+                    <div id="calendar-container" class="card-body">
+                        <div class="container">
+                            <div id='calendar'
+                                 th:attr="data-resources=${resources}, data-appointment=${appointment}, data-render-events=${render_events}"></div>
+                        </div>
+                        <ul class="legend float-right mt-2">
+                            <li><span class="available"></span>Available</li>
+                            <li><span class="unavailable"></span>Unavailable</li>
+                        </ul>
+                    </div>
+
+                    <div id="need-help-modal" class="modal fade" role="dialog">
+                        <div class="modal-dialog modal-md">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Need Help?</h5>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div id="need-modal-body" class="modal-body">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="h6 card-title">How do I select my appointment time?</h5>
+                                            <p class="mb-0">Click any time slot which is marked as "Available"</p>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="h6 card-title">How do I change the date?</h5>
+                                            <p class="mb-0">Click on the
+                                                <button type="button" class="fc-prev-button btn btn-primary"
+                                                        aria-label="prev"><span class="fa fa-chevron-left"></span>
+                                                </button>
+                                                button to go a previous date
+                                            </p>
+                                            <br/>
+                                            <p class="mb-0">Click on the
+                                                <button type="button" class="fc-next-button btn btn-primary"
+                                                        aria-label="next"><span class="fa fa-chevron-right"></span>
+                                                </button>
+                                                button to go the next date
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="h6 card-title">What if appointment time I want is not
+                                                available?</h5>
+                                            <p class="mb-0">Please navigate through each date until you find a date and
+                                                time that is most convenient for you?</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Schedule Event Modal -->
+        <div id="schedule-modal" class="modal fade" role="dialog">
+
+            <div class="modal-dialog modal-lg">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Review</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div id="schedule-modal-body" class="modal-body">
+
+                        <form id="schedule-form" th:action="@{/date-time-selection}" th:object="${request}"
+                              method="post"
+                              onsubmit="$.blockUI(); $('#schedule-modal').modal('hide');">
+
+                            <input class="form-control" type="hidden" id="resource" name="calendarId"/>
+                            <input class="form-control" type="hidden" id="product" name="productId"
+                                   th:value="${product.id}"/>
+                            <input class="form-control" type="hidden" id="installationId" name="installationId"
+                                   th:value="${param.id}"/>
+                            <input class="form-control" type="hidden" th:field="*{request.opportunityId} "/>
+
+                            <label>Start Date &amp; Time </label>
+                            <div class="form-group">
+                                <div class='input-group date'>
+                                    <input th:field="*{startDateTime}" readonly="readonly" type='text'
+                                           class="form-control"/>
+                                    </span>
+
+                                </div>
+                                <small class="help-block"></small>
+                            </div>
+
+                            <label>Product</label>
+                            <div class="form-group">
+                                <div class='input-group'>
+                                    <input readonly="readonly" type='text' class="form-control"
+                                           th:value="${product.name}"/>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <label for="notes">Notes</label>
+                            <textarea class="form-control" rows="5" th:field="*{notes}" maxlength="255"></textarea>
+                            <small class="help-block">Would you like to add notes for our technicians? If so please add
+                                any
+                                notes above
+                            </small>
+
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button id="confirm-btn" type="submit" form="schedule-form" class="btn btn-primary">Next
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Go To Date Modal -->
+        <div th:fragment="go-to-date-modal" id="go-to-date-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Go To Date</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div id="information-modal-body" class="modal-body">
+                        <div class='col-sm-12'>
+                            <div class="form-group">
+                                <div class='input-group date' id='go-to-date-picker'>
+                                    <input type='text' readonly="readonly" class="form-control"/>
+                                    <span class="input-group-addon">
+										<span id="go-to-date-icon" class="glyphicon glyphicon-calendar"></span>
+									</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button id="confirm-go-to-date-btn" type="button" class="btn btn-primary" data-dismiss="modal">
+                            Go To Date
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+</section>
+<section layout:fragment="end_of_body">
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.14/moment-timezone-with-data.min.js"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/js/calendar/app.js"></script>
+    <script src="/js/calendar/event-service.js"></script>
+    <script src="/js/calendar/calendar-service.js"></script>
+    <script src="/js/product/duration.js"></script>
+</section>
+</body>
+</html>

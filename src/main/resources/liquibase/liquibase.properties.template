@@ -1,0 +1,22 @@
+#DEVELOPMENT
+
+#Database to diff against. Should be updated before running diff. usually the production database.
+changeLogFile=src/main/resources/liquibase/liquibase-outputChangeLog.xml
+url=
+username=
+password=
+driver=com.mysql.jdbc.Driver
+
+
+#Location for diff file - should be copied and renamed to db/migraitons and added to db/db.changelog-master.yaml
+diffChangeLogFile=src/main/resources/liquibase/liquibase-diff-changeLog.xml
+
+#REFERENCE DATABASE - database to be used as base for diff, usually the development database.
+referenceUrl=
+referenceUsername=
+referencePassword=
+referenceDriver=
+
+
+#CHANGELOGFILE - Location of main log file - Used with run from command line: mvn:liquibase
+changeLogFile=src/main/resources/db/changelog/db.changelog-master.yaml

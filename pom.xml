@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.my1stle</groupId>
+    <artifactId>customer-portal-web</artifactId>
+    <version>2</version>
+    <packaging>jar</packaging>
+
+    <name>customer-portal-web</name>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.7.RELEASE</version>
+    </parent>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <!-- Added from stripe test project -->
+        <!--
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.21</version>
+        </dependency> -->
+        <dependency>
+            <groupId>com.sparkjava</groupId>
+            <artifactId>spark-core</artifactId>
+            <version>2.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.9.0</version>
+        </dependency>
+
+        <!-- Added from stripe test project -->
+
+        <!-- 2fa -->
+        <dependency>
+            <groupId>org.jboss.aerogear</groupId>
+            <artifactId>aerogear-otp-java</artifactId>
+            <version>${aerogear.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Spring Security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+        </dependency>
+
+        <!-- Servlet -->
+        <!--
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        -->
+        <!--
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>el-api</artifactId>
+			<version>${javax.el.version}</version>
+		</dependency>
+		-->
+        <!-- Password Validation -->
+        <dependency>
+            <groupId>org.passay</groupId>
+            <artifactId>passay</artifactId>
+            <version>${passay.version}</version>
+        </dependency>
+
+        <!-- Spring Data JPA dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!-- DB dependencies -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.30</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.stripe</groupId>
+            <artifactId>stripe-java</artifactId>
+            <version>22.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.0-jre</version>
+        </dependency>
+
+        <!-- User Agent parser -->
+        <dependency>
+            <groupId>com.github.ua-parser</groupId>
+            <artifactId>uap-java</artifactId>
+            <version>${uap-java.version}</version>
+        </dependency>
+
+        <!-- maxmind dependency -->
+
+        <dependency>
+            <groupId>com.maxmind.geoip2</groupId>
+            <artifactId>geoip2</artifactId>
+            <version>${geoip2.version}</version>
+        </dependency>
+
+        <!-- Adobe Sign SDK -->
+        <dependency>
+            <groupId>com.adobe.sign</groupId>
+            <artifactId>adobe-sign-java-sdk</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-java8time</artifactId>
+            <version>3.0.4.RELEASE</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.paypal.sdk/checkout-sdk -->
+        <dependency>
+            <groupId>com.paypal.sdk</groupId>
+            <artifactId>checkout-sdk</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>${logstash-logback-encoder.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>nz.net.ultraq.thymeleaf</groupId>
+            <artifactId>thymeleaf-layout-dialect</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.dev1stle.repository</groupId>
+            <artifactId>salesforce-repository</artifactId>
+            <version>0.1.4-5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.dev1stle.scheduling.system.v1</groupId>
+            <artifactId>scheduling-system-sdk</artifactId>
+            <version>0.1.36-39</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+        <!-- NEED TO USE THIS VERSION DUE TO CALENDAR SDK -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.4.4.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-c3p0</artifactId>
+            <version>5.4.0.Final</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.dropbox.core/dropbox-core-sdk -->
+        <dependency>
+            <groupId>com.dropbox.core</groupId>
+            <artifactId>dropbox-core-sdk</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.tika/tika-core -->
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+            <version>1.20</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-dynamodb -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-dynamodb</artifactId>
+            <version>1.11.575</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>3.7.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.8.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.maps</groupId>
+            <artifactId>google-maps-services</artifactId>
+            <version>0.10.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konghq</groupId>
+            <artifactId>unirest-java</artifactId>
+            <version>3.4.00</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.8</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.glassfish/javax.el -->
+        <!--
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>3.0.1-b11</version>
+        </dependency>
+        -->
+
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-xray-recorder-sdk-spring</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+
+
+
+
+
+        <!-- #################### TEST ######################### -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>4.0.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>json-path</artifactId>
+            <version>4.0.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>xml-path</artifactId>
+            <version>4.0.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+            <version>1.4.199</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>3.141.59</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>3.6.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.xmlrpc</groupId>
+            <artifactId>xmlrpc-common</artifactId>
+            <version>3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.xmlrpc</groupId>
+            <artifactId>xmlrpc-client</artifactId>
+            <version>3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.4</version>
+        </dependency>
+
+        <!-- ############################ END OF TEST #####################################-->
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>**/*IntegrationTest.java</exclude>
+                        <exclude>**/*LiveTest.java</exclude>
+                    </excludes>
+                    <systemPropertyVariables>
+                        <provPersistenceTarget>h2</provPersistenceTarget>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <propertyFile>src/main/resources/liquibase/liquibase.properties</propertyFile>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>prepare</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <tasks>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <unzip
+                                        src="${project.build.directory}/${project.build.finalName}.jar"
+                                        dest="${project.build.directory}/${project.build.finalName}"/>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <copy todir="${project.build.directory}/${project.build.finalName}/"
+                                      overwrite="false">
+                                    <fileset dir="./" includes=".ebextensions/**"/>
+                                </copy>
+                                <!-- <jar jarfile="${project.build.directory}/${project.build.finalName}.jar"
+                                    basedir="${project.build.directory}/${project.build.finalName}"/> -->
+                                <!--suppress UnresolvedMavenProperty -->
+                                <zip compress="false"
+                                     destfile="${project.build.directory}/${project.build.finalName}.jar"
+                                     basedir="${project.build.directory}/${project.build.finalName}"/>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>integration</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                                <configuration>
+                                    <excludes>
+                                        <exclude>**/*LiveTest.java</exclude>
+                                    </excludes>
+                                    <includes>
+                                        <include>**/*IntegrationTest.java</include>
+                                    </includes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <systemPropertyVariables>
+                                <test.mime>json</test.mime>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <properties>
+        <!-- <java-version>1.8</java-version> -->
+        <aws.java.sdk.version>2.16.1</aws.java.sdk.version>
+
+        <javax.servlet.jsp-api.version>2.3.2-b01</javax.servlet.jsp-api.version>
+        <javax.el.version>2.2</javax.el.version>
+        <jstl.version>1.2</jstl.version>
+        <passay.version>1.0</passay.version>
+        <logstash-logback-encoder.version>4.8</logstash-logback-encoder.version>
+        <aerogear.version>1.0.0</aerogear.version>
+        <uap-java.version>1.4.0</uap-java.version>
+        <geoip2.version>2.12.0</geoip2.version>
+
+        <!-- <start-class>package org.baeldung.Application</start-class> -->
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>my-internal-repository</id>
+            <url>https://nexus.1stlightenergy.com/repository/maven-releases/</url>
+        </repository>
+        <repository>
+            <id>my-internal-repository-snapshots</id>
+            <url>https://nexus.1stlightenergy.com/repository/maven-snapshots/</url>
+        </repository>
+    </repositories>
+
+</project>

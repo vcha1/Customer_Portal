@@ -1,0 +1,97 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base.html}" xmlns:chrono="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Service Checkout - Confirm</title>
+
+    <!-- <script th:src="@{https://www.paypal.com/sdk/js(client-id=${payPalClientId})}"></script> -->
+</head>
+<body>
+<section layout:fragment="body_content">
+
+    <h1>Service Checkout</h1>
+
+    <div class="row py-4  justify-content-center">
+        <div class="col-sm-4 mb-3 mb-md-0">
+            <div class="card text-center h-100">
+
+                <div class="card-body d-flex flex-column">
+
+                    <h2>[[${serviceRequest.product.name}]]</h2>
+
+                    <div class="mb-4">
+                        <h5>Price</h5>
+                        <span class="display-4" th:inline="text">$ [[${#numbers.formatDecimal(totalPrice, 0, 'COMMA', 2, 'POINT')}]]</span>
+                    </div>
+
+                    <ul class="list-unstyled">
+
+                        <li class="mb-2">
+                            <b>Quantity: </b>[[${serviceRequest.quantity}]]
+                        </li>
+
+                        <li class="mb-2">
+                            <b>Description:</b> [[${serviceRequest.product.description}]]
+                        </li>
+
+                        <li class="mb-2">
+                            <b>Estimated Duration: </b>[[${serviceRequest.product.duration}]] minutes
+                        </li>
+
+                        <hr/>
+
+                        <li class="mb-2">
+                            <b>Subtotal: </b>$ [[${#numbers.formatDecimal(subTotal, 0, 'COMMA', 2, 'POINT')}]]
+                        </li>
+
+                        <li class="mb-2" th:if="${totalDiscount > 0}">
+                            <b>Discount : </b>- $ [[${#numbers.formatDecimal(totalDiscount, 0, 'COMMA', 2, 'POINT')}]]
+                        </li>
+
+                        <li class="mb-2" th:if="${requiredDepositAmount > 0}">
+                            <b>Deposit Amount : </b>$ [[${#numbers.formatDecimal(requiredDepositAmount, 0, 'COMMA',
+                            2, 'POINT')}]]
+                        </li>
+
+                        <li class="mb-2">
+                            <b>Convenience Fee: </b>$ [[${#numbers.formatDecimal(convenience_fee, 0, 'COMMA', 2,
+                            'POINT')}]]
+                        </li>
+
+                        <li class="mb-2" th:if="${requiredDepositAmount > 0}">
+                            <b>Amount Due : </b>$ [[${#numbers.formatDecimal(amountDue , 0, 'COMMA',
+                            2, 'POINT')}]]
+                        </li>
+
+                        <hr/>
+
+                        <th:block th:if="${serviceRequest.startTime != null}">
+                            <li class="mb-2">
+                                <b>Date:</b> <span
+                                    chrono:renderCurrentUserLocalDate="${serviceRequest.startTime}"></span>
+                            </li>
+                            <li class="mb-2">
+                                <b>Time:</b> <span
+                                    chrono:renderCurrentUserLocalTime="${serviceRequest.startTime}"></span>
+                            </li>
+                        </th:block>
+                    </ul>
+
+                    <div class="mt-auto">
+                        <h2>Thank you</h2>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+<section layout:fragment="end_of_body">
+
+
+</section>
+</body>
+</html>

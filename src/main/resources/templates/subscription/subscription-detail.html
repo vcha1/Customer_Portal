@@ -1,0 +1,143 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base.html}" xmlns:chrono="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Subscription Detail</title>
+</head>
+<body>
+<section layout:fragment="body_content">
+    <div class="container-fluid p-0">
+        <h1 class="h3 mb-3">Subscription Details</h1>
+        <div th:if="${param.error != null}" class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            <div class="alert-icon">
+                <i class="fas fa-fw fa-exclamation-circle"></i>
+            </div>
+            <div class="alert-message">
+                <span th:text="${param.error[0]}"></span>
+            </div>
+        </div>
+        <div th:if="${param.success != null}" class="alert alert-success alert-dismissible"
+             role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            <div class="alert-icon">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="alert-message">
+                <strong></strong>&nbsp;<span th:text="${param.success[0]}"></span>
+            </div>
+        </div>
+        <div class="row py-4">
+            <div class="col-sm-2 mb-1 mb-md-0">
+                <div class="card h-100">
+                    <img class="card-img-top" style="max-height: 200px;"
+                         th:src="${subscription.product.productImageUrl}">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0" th:text="${subscription.product.name}"></h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" th:text="${subscription.product.description}"></li>
+                    </ul>
+                    <div class="card-body d-flex flex-column">
+                        <p class="text-muted">
+                            Status : <strong
+                                th:text="${subscription.isActivated()} ? 'Active' : 'Inactive'">
+                        </strong>
+                        </p>
+                        <p class="text-muted"> Subscription Fee : <strong
+                                th:text="${'$' + #numbers.formatDecimal(subscription.price, 0, 'COMMA', 2, 'POINT')}">
+                        </strong>
+                        </p>
+                        <p class="text-muted">
+                            Subscription : <strong
+                                th:text="${subscription.paymentFrequency.getLabel()}">
+                        </strong>
+                        </p>
+                        <p class="text-muted">
+                            Start Date : <strong
+                                chrono:renderCurrentUserLocalDate="${subscription.startingDate}">
+                        </strong>
+                        </p>
+                        <p class="text-muted">
+                            End Date : <strong
+                                chrono:renderCurrentUserLocalDate="${subscription.expirationDate}">
+                        </strong>
+                        </p>
+                        <p class="text-muted">
+                            Terms of Service Agreement :
+                            <a th:href="${subscription.subscriptionTermsOfService.completedDocumentURL}">Download</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-10 mb-1 mb-md-0">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5 class="card-title">Payment History</h5>
+                        <h6 class="card-subtitle text-muted">Below is history of your payments</h6>
+                    </div>
+                    <div class="card-body">
+                        <div id="datatables-basic_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table id="datatables-basic"
+                                           class="table table-striped dataTable no-footer dtr-inline"
+                                           style="width: 100%;" role="grid" aria-describedby="datatables-basic_info">
+                                        <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc" aria-controls="datatables-basic"
+                                                rowspan="1" colspan="1" style="width: 161px;" aria-sort="ascending"
+                                                aria-label="Order #">Order #
+                                            </th>
+                                            <th class="sorting_asc" aria-controls="datatables-basic"
+                                                rowspan="1" colspan="1" style="width: 161px;" aria-sort="ascending"
+                                                aria-label="Amount Paid:">Amount Due
+                                            </th>
+                                            <th class="sorting_asc" aria-controls="datatables-basic"
+                                                rowspan="1" colspan="1" style="width: 161px;" aria-sort="ascending"
+                                                aria-label="Amount Paid:">Amount Paid
+                                            </th>
+                                            <th class="sorting_asc" aria-controls="datatables-basic"
+                                                rowspan="1" colspan="1" style="width: 161px;" aria-sort="ascending"
+                                                aria-label="Order Date">Order Date
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <th:block th:each="order : ${subscription.orders}">
+                                            <tr role="row">
+                                                <td th:text="${order.id}"></td>
+                                                <td th:text="${'$' + #numbers.formatDecimal(order.amountDue, 0, 'COMMA', 2, 'POINT')}"></td>
+                                                <td th:text="${'$' + #numbers.formatDecimal(order.amountPaid, 0, 'COMMA', 2, 'POINT')}"></td>
+                                                <td chrono:renderCurrentUserLocalDate="${order.orderDate}"></td>
+                                            </tr>
+                                        </th:block>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section layout:fragment="end_of_body">
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
+    <script th:inline="javascript">
+        $(function () {
+            $('#datatables-basic').DataTable({
+                responsive: true
+            });
+        });
+    </script>
+</section>
+</body>
+</html>

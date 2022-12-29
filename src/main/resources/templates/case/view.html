@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:chrono="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{base.html}">
+<head>
+</head>
+<body>
+
+<section layout:fragment="body_content">
+    <div class="container-fluid p-0">
+        <div th:if="${error != null}" class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            <div class="alert-icon">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="alert-message">
+                <strong></strong>&nbsp;<span th:text="${error}"></span>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <!-- <p class="pg-header h1 mb-3" th:text="${'Ticket Number : ' + case.caseNumber}"></p> -->
+            <p class="pg-header h1 mb-3" th:text="${'Ticket Number : ' + odooTicketData.getId().get(0)}"></p>
+        </div>
+        <div class="card-body">
+            <div class="card">
+                <div class="card-header bg-1le-green"><h4 class="h6 card-title mb-0">Overview</h4></div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6 left-column">
+                            <div class="row">
+                                <div class="col-6 text-right">
+                                    <strong>Status</strong>
+                                </div>
+                                <div class="col-6">
+                                    <!-- <span th:text="${case.status}"></span> -->
+                                    <span th:text="${odooTicketData.getStatus().get(0)}"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 text-right">
+                                    <strong>Category</strong>
+                                </div>
+                                <div class="col-6">
+                                    <!-- <span th:text="${case.subject1}"></span> -->
+                                    <span th:text="${odooTicketData.getIssueType().get(0)}"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 text-right">
+                                    <strong>Subject</strong>
+                                </div>
+                                <div class="col-6">
+                                    <!-- <span th:text="${case.subject2}"></span> -->
+                                    <span th:text="${odooTicketData.getSubIssueType().get(0)}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 right-column">
+                            <div class="row">
+                                <div class="col-6 text-right">
+                                    <strong>Address</strong>
+                                </div>
+                                <div class="col-6">
+                                    <!-- <span th:text="${case.installSite}"></span> -->
+                                    <span th:text="${odooTicketData.getAddress().get(0)}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 right-column">
+                            <div class="row">
+                                <div class="col-6 text-right">
+                                    <strong>Scheduled Service Date</strong>
+                                </div>
+                                <div class="col-6">
+                                    <!-- <span th:text="${case.getScheduledServiceDate() != null ? #temporals.format(case.getScheduledServiceDate(), 'MM/dd/yyyy hh:mm a'):''}"></span> -->
+                                    <span th:text="${odooTicketData.getScheduledDateTime().get(0)}"></span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6 text-right">
+                                    <strong>Description</strong>
+                                </div>
+                                <div class="col-6">
+                                    <!-- <span th:text="${case.customerDescription}"></span> -->
+                                    <span th:text="${odooTicketData.getDescription().get(0)}"></span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="card" th:unless="${isLegacyCase}" > -->
+            <div class="card" >
+                <div class="card-header bg-1le-green"><h4 class="h6 card-title mb-0">Attachments</h4></div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <th:block th:each="attachment : ${case.serviceCaseAttachments}">
+                            <tr>
+                                <td>
+                                    <a target="_blank"
+                                       th:href="@{/case/{caseId}/attachment/{attachmentId}(caseId=${case.id}, attachmentId=${attachment.id})}"
+                                       th:text="${attachment.name}"></a></td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+
+                    </table>
+                    <b style="margin-bottom: 5em;">Make sure your file is below 5 MB!</b>
+                    <br/>
+                    <br/>
+                    <button type="button" class="btn btn-primary"
+                            onclick="$('#add-attachment-form').find('input[type=file]').click();">
+                        Add Attachment
+                    </button>
+                </div>
+            </div>
+            <!-- <div class="card" th:unless="${isLegacyCase}" > -->
+            <div class="card" >
+                <div class="card-header bg-1le-green"><h4 class="h6 card-title mb-0">Comments</h4></div>
+                <div class="card-body h-100">
+
+                    <form id="add-comment-form" class="form-inline" th:action="@{/case/{id}/comment(id=${case.id})}"
+                          method="post" onsubmit="$.blockUI();">
+                        <textarea id="body" name="body" required="required" class="form-control" rows="5"
+                                  placeholder="Write a comment..."
+                                  style="min-width: 100%; margin-bottom: 1em"></textarea>
+                        <div class="btn-group pull-right">
+                            <button id="add-comment-btn" type="submit" class="btn btn-primary">Post</button>
+                        </div>
+                    </form>
+                    <hr/>
+                    <th:block th:each="comment : ${case.serviceCaseComments}">
+                        <div class="media">
+                            <div class="media-body">
+                                <strong th:text="${comment.posterName}"></strong> commented <br>
+                                <small class="text-muted">
+                                    <span chrono:renderCurrentUserLocalDate="${comment.createdDateTime}"></span>
+                                    <span chrono:renderCurrentUserLocalTime="${comment.createdDateTime}"></span>
+                                </small>
+                                <div class="border text-sm text-muted p-2 mt-1" th:text="${comment.body}"></div>
+                            </div>
+                        </div>
+                        <hr>
+                    </th:block>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form id="add-attachment-form" class="form-inline" th:action="@{/case/{id}/attachment(id=${case.id})}"
+          method="post"
+          onsubmit="$.blockUI();"
+          enctype="multipart/form-data">
+        <input name="file" onchange="$('#add-attachment-form').submit();" style="display: none;" type="file"/>
+
+    </form>
+</section>
+<section layout:fragment="end_of_body">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        /*]]>*/
+    </script>
+</section>
+</body>
+</html>

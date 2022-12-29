@@ -1,0 +1,80 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base.html}">
+<head>
+    <title>Monitoring Unavailable</title>
+</head>
+<body>
+<section layout:fragment="body_content">
+
+    <div class="container-fluid p-0">
+
+        <h1 class="pg-header h3 mb-3">Solar Production Monitor</h1>
+
+        <div class="row">
+            <div class="col-md-10 col-xl-8 mx-auto">
+
+                <h2 class="h2 text-center mb-4">Sorry, we were unable to gather information about your solar system's
+                    energy production</h2>
+
+                <div class="row justify-content-center mt-3 mb-2">
+                    <div class="col-auto">
+                        <nav class="nav btn-group">
+                            <a th:href="@{/contact-us(first_name=${#authentication.principal.firstName}, last_name=${#authentication.principal.lastName}, email=${#authentication.principal.email}, phone=${installation.customerPhoneNumber}, installation_id=${installation.id}, reason='PRODUCT_ENQUIRY')}"
+                               class="btn btn-outline-primary active">Contact Us About Solar Production
+                                Monitoring</a>
+                        </nav>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="text-center my-4">
+                    <h2>Frequently Asked Questions</h2>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 ml-auto">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="h6 card-title">Why is my solar monitoring unavailable?</h5>
+                                <p class="mb-0">It may be that your solar system does not have a monitoring system
+                                    installed or the monitor system is currently unavailable.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 ml-auto">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="h6 card-title">What can I do?</h5>
+                                <p class="mb-0">If you have a monitoring system installed on your system and are still
+                                    unable to monitor your energy production, let us know by <a
+                                            th:href="@{/contact-us(first_name=${#authentication.principal.firstName}, last_name=${#authentication.principal.lastName}, email=${#authentication.principal.email}, phone=${installation.customerPhoneNumber}, installation_id=${installation.id}, reason='PRODUCT_ENQUIRY')}">contacting
+                                        us! </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 ml-auto">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="h6 card-title">How can I get a solar monitoring system installed on my solar
+                                    system?</h5>
+                                <p class="mb-0">Let us know that you are interested in installing a solar monitoring
+                                    system by <a
+                                            th:href="@{/contact-us(first_name=${#authentication.principal.firstName}, last_name=${#authentication.principal.lastName}, email=${#authentication.principal.email}, phone=${installation.customerPhoneNumber}, installation_id=${installation.id}, reason='PRODUCT_ENQUIRY')}">contacting
+                                        us </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section layout:fragment="end_of_body">
+</section>
+</body>
+</html>

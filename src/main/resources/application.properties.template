@@ -1,0 +1,108 @@
+#############################
+#                           #
+#       TEMPLATE          #
+#                           #
+#                           #
+#############################
+
+#################### GENERAL SETTINGS #############################
+
+#Thmeleaf Settings
+spring.thymeleaf.cache=false
+
+#Cron Jobs
+#    5am every day
+purge.cron.expression=0 0 5 * * ?
+server.port=8081
+server.error.whitelabel.enabled=false
+
+spring.jackson.serialization.write-dates-as-timestamps=false
+spring.jackson.deserialization.fail-on-unknown-properties=false
+
+self.schedule.secret.key=
+
+################### JavaMail Configuration ##########################
+support.email=development@1stle.com
+spring.mail.host=
+spring.mail.port=465
+spring.mail.protocol=smtps
+spring.mail.username=
+spring.mail.password=
+spring.mail.properties.mail.transport.protocol=smtps
+spring.mail.properties.mail.smtps.auth=true
+spring.mail.properties.mail.smtps.starttls.enable=true
+spring.mail.properties.mail.smtps.timeout=8000
+customer.portal.bcc.email=
+customer.portal.no.reply.email=
+# comma separated list of email addresses
+product.sold.notification.recipients=
+#################### END OF GENERAL SETTINGS ######################
+
+
+
+########################    PERSISTENCE CONFIGURATION   ###################
+############SALESFORCE
+1le.salesforce.username=
+1le.salesforce.password=
+1le.salesforce.auth.endpoint=https://test.salesforce.com/services/Soap/u/39.0
+############CUSTOMER PORTAL MAIN DATABASE
+customer_portal.jdbc.url=jdbc:h2:mem:main_db;DB_CLOSE_DELAY=-1
+customer_portal.jdbc.username=sa
+customer_portal.jdbc.password=sa
+customer_portal.jdbc.driver=org.h2.Driver
+customer_portal.jpa.dialect=org.hibernate.dialect.H2Dialect
+customer_portal.jpa.hbm2ddl.auto=update
+############CALENDAR SYSTEM DATABASE
+calendar_system.jdbc.url=jdbc:h2:mem:cal_db;DB_CLOSE_DELAY=-1
+calendar_system.jdbc.username=sa
+calendar_system.jdbc.password=sa
+calendar_system.jdbc.driver=org.h2.Driver
+calendar_system.jpa.dialect=org.hibernate.dialect.H2Dialect
+calendar_system.jpa.hbm2ddl.auto=none
+############TRUCK ROLL SYSTEM DATABASE
+truckroll_system.jdbc.url=jdbc:h2:mem:cal_db;DB_CLOSE_DELAY=-1
+truckroll_system.jdbc.username=sa
+truckroll_system.jdbc.password=sa
+truckroll_system.jdbc.driver=org.h2.Driver
+truckroll_system.jpa.dialect=org.hibernate.dialect.H2Dialect
+truckroll_system.jpa.hbm2ddl.auto=none
+######################## END OF PERSISTENCE CONFIGURATION   ###################
+
+
+
+####################### EXTERNAL APIS #########################################
+# Map Quest
+mapquest.api.key=
+hibernate.jdbc.time_zone=UTC
+# Echo Sign
+adobe.sign.api.token=
+adobe.sign.api.client.user=email:itinfo@1stlightenergy.com
+# Drop Box
+1le.dropbox.token=
+1le.dropbox.client.identifier=CustomerPortal/0.0.1
+# GOOGLE RECAPTCHA
+google.recaptcha.key.site=
+google.recaptcha.key.secret=
+# GOOGLE MAPS
+google.maps.api.key=
+
+# Truck Roll
+skill.ids.required.for.installation=
+skill.ids.required.for.battery.installation=
+duration.required.for.installation=
+truckroll_system.number.of.minutes.in.work.day=
+
+
+# Service Api
+service.api.host=
+service.api.environment=
+service.api.key=
+
+# AWS Configuration
+aws.s3.access.key=
+aws.s3.secret.key=
+
+####################### END OF EXTERNAL APIS ###################################
+
+logging.level.root=DEBUG
+spring.liquibase.enabled=true

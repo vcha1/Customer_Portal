@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Error Notification</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<p><strong>Description:</strong><p>
+<pre><span th:remove="tag" th:text="${errorDescription}"></span></pre>
+<br/>
+<p><strong>Exception Message:</strong></p>
+<pre th:text="${exception?.toString()} ?: 'N/A'"></pre>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base.html}">
+<head>
+    <title>Sign Agreement</title>
+</head>
+<body>
+<section layout:fragment="body_content">
+    <div class="container-fluid p-0">
+        <h1 class="h3 mb-3">Subscription Agreement</h1>
+        <div th:if="${param.error != null}" class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            <div class="alert-icon">
+                <i class="fas fa-fw fa-exclamation-circle"></i>
+            </div>
+            <div class="alert-message">
+                <span th:text="${param.error[0]}"></span>
+            </div>
+        </div>
+        <div class="row py-4">
+            <div class="col-sm-2 mb-1 mb-md-0">
+                <div class="card h-100" th:with="product=${subscription.product}">
+                    <img class="card-img-top" style="max-height: 200px;" th:src="${product.productImageUrl}">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0" th:text="${product.name}"></h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" th:text="${product.description}"></li>
+                    </ul>
+                    <div class="card-body d-flex flex-column">
+                        <p class="text-muted">Price : <strong
+                                th:text="${'$' + #numbers.formatDecimal(subscription.price, 0, 'COMMA', 2, 'POINT')}">
+                        </strong>
+                        </p>
+                        <p class="text-muted">
+                            Subscription : <strong
+                                th:text="${product.paymentSchedule.getLabel()}">
+                        </strong>
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="text-center" th:with="installation=${subscription.installation}">
+                            <a th:href="@{/schedule/product-selection(id=${installation.id})}"
+                               class="btn btn-block btn-danger">Unselect</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-10 mb-1 mb-md-0">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5 class="card-title">Terms of Service</h5>
+                        <h6 class="card-subtitle text-muted">
+                            <p>Please review our Terms of Service and sign to agree</p>
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div id="terms-of-service-container" class="embed-responsive embed-responsive-4by3">
+                            <iframe th:src="${subscription.subscriptionTermsOfService.signingURL}"
+                                    class="embed-responsive-item"
+                                    id="terms-of-service-iframe"
+                                    sandbox="allow-top-navigation allow-scripts allow-forms allow-same-origin"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section layout:fragment="end_of_body">
+    <script src="/js/product/duration.js"></script>
+
+</section>
+</body>
+</html>

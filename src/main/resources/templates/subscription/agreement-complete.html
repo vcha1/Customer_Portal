@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Thank You</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Thank You Page">
+    <link th:href="@{/dist/css/modern.css}" rel="stylesheet">
+</head>
+<body>
+
+<main class="solar-bg h-100 w-100">
+    <div class="container h-100">
+
+        <div class="row h-100">
+            <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
+                <div class="d-table-cell align-middle">
+                    <div class="text-center">
+                        <div class="text=center mt-4">
+                            <img class="img-fluid" src="https://s3.us-west-1.amazonaws.com/rhino-public-resources/logo-line.png"/>
+                        </div>
+                        <p class="h2 font-weight-normal mt-3 mb-4">Thank you for agreeing to our Terms of Service. Please wait while we redirect you for
+                            payment information page...</p>
+                        <a target="_top" th:href="@{/subscription/{subscription_id}/payment_information(subscription_id=${subscription.id})}">Click here
+                            if you are not redirected</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script th:src="@{/dist/js/app.js}" th:inline="javascript"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var subscriptionId = /*[[${subscription.id}]]*/ null;
+    $(function () {
+        window.setTimeout(function () {
+            window.top.location.href = '/subscription/' + subscriptionId + '/payment_information'
+        }, 5000);
+    });
+    /*]]>*/
+</script>
+</body>
+
+</html>

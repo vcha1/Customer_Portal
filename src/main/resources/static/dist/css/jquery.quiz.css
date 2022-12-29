@@ -1,0 +1,89 @@
+.quiz-container {
+    padding: 1em;
+    max-width: 100%;
+    margin: 1em auto;
+}
+
+.quiz-container a {
+    text-decoration: none;
+}
+
+#quiz-header,
+#quiz-start-screen,
+#quiz-results-screen,
+#quiz-counter {
+    text-align: center;
+}
+
+.question {
+    font-size: 1.25em;
+    font-weight: bold;
+}
+
+.answers {
+    list-style: none;
+    padding: 0;
+}
+
+.answers a {
+    display: block;
+    padding: .5em 1em;
+    margin-bottom: .5em;
+    background: lightgrey;
+    border-radius: 10px;
+    color: black;
+}
+
+.answers a.correct {
+    background: #4caf50;
+}
+
+.answers a.incorrect {
+    background: #e51c23;
+}
+
+.answers a.correct,
+.answers a.incorrect {
+    color: #fff;
+}
+
+#quiz-controls {
+    padding: 0.5em 1em;
+    text-align: center;
+    border-radius: 10px;
+}
+
+#quiz-response {
+}
+
+#quiz-results {
+    font-size: 1.25em;
+}
+
+#quiz-buttons a,
+.quiz-container .quiz-button {
+    display: inline-block;
+    padding: 0.5em 1em;
+    border-radius: 10px;
+}
+
+#quiz-buttons a {
+    /*background: #fff;*/
+    /*color: #333; */
+}
+
+.alert-outline-coloured .alert-message:not(:nth-child(2)), .alert-outline .alert-message:not(:nth-child(2)) {
+
+}
+
+/* Quiz State Overrides */
+
+.quiz-results-state #quiz-controls {
+    background: none;
+    padding: 0;
+}
+
+.quiz-results-state #quiz-buttons a {
+    /*background: #333;*/
+    /*color: #fff;*/
+}

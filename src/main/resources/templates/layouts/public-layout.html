@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Responsive Bootstrap 4 Admin &amp; Dashboard Template">
+    <meta name="author" content="">
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <link href="/dist/css/modern.css" rel="stylesheet">
+    <link href="/css/1le.css" rel="stylesheet">
+    <style>
+        #page-container {
+            position: relative;
+            min-height: 100vh;
+        }
+
+        #content-wrap {
+            padding-bottom: 2.5rem; /* Footer height */
+        }
+
+        #footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-120783296-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-120783296-3');
+    </script>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="solar-bg main" id="page-container">
+        <nav id="base-top-nav" class="navbar navbar-expand navbar-light">
+            <a class="navbar-brand" th:href="@{/login}">
+                <img style="width: 240px"
+                     src="https://rhino-public-resources.s3-us-west-1.amazonaws.com/logo-white-text.png"/>
+            </a>
+        </nav>
+        <main id="content-wrap" class="content">
+            <div class="container-fluid p-0">
+                <div layout:fragment="body_content"></div>
+            </div>
+        </main>
+    </div>
+</div>
+<script src="/dist/js/app.js"></script>
+<div id="end_of_body" layout:fragment="end_of_body"></div>
+</body>
+</html>

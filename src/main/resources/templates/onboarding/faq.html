@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<div th:fragment="faq(display_faq)">
+    <div class="row">
+        <div class="md-10 col-xl-8 mx-auto">
+            <div class="text-center my-4">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="row">
+                <div th:if="${#lists.contains(display_faq, '1')}" class="col-md-12 col-sm-12 ml-auto">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="h6 card-title" th:text="#{message.onboarding.customer.faq.question1}"></h5>
+                            <p class="mb-0" th:text="#{message.onboarding.customer.faq.answer1}"></p>
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${#lists.contains(display_faq, '2')}" class="col-md-12 col-sm-12 ml-auto">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="h6 card-title" th:text="#{message.onboarding.customer.faq.question2}"></h5>
+                            <p class="mb-0" th:text="#{message.onboarding.customer.faq.answer2}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

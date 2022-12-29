@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Responsive Bootstrap 4 Admin &amp; Dashboard Template">
+    <meta name="author" content="">
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <title th:text="#{label.pages.home.title}">Title</title>
+
+    <link href="/dist/css/modern.css" rel="stylesheet"/>
+    <link href="/css/1le.css" rel="stylesheet"/>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-120783296-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-120783296-3');
+    </script>
+
+</head>
+<body>
+
+<div class="wrapper">
+    <nav class="sidebar sidebar-sticky">
+        <div class="sidebar-content  js-simplebar">
+            <a class="sidebar-brand" th:href="@{/home}">
+                <img class="img-fluid"
+                     src="https://s3.us-west-1.amazonaws.com/rhino-public-resources/logo-line.png"/>
+            </a>
+
+            <ul class="sidebar-nav">
+
+                <!-- <th:block th:each="installation: ${@installationServiceOdoo.getInstallationsOdoo()}"> -->
+                <th:block th:each="installation: ${#numbers.sequence(0, @installationServiceOdoo.getInstallationByEmail().getId().size() - 1)}">
+                    <li class="sidebar-item active">
+                        <!-- <a th:href="${'#install_'+installation.getId()}" data-toggle="collapse" class="sidebar-link"
+                           aria-expanded="true"> -->
+                        <a th:href="${'#install_'+@installationServiceOdoo.getInstallationByEmail().getId().get(installation)}" data-toggle="collapse" class="sidebar-link"
+                           aria-expanded="true">
+
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="24" height="24"
+                                 viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2"
+                                 stroke-linecap="round" stroke-linejoin="round"
+                                 class="feather feather-home">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                            <span class="align-middle" th:text="${@installationServiceOdoo.getInstallationByEmail().getAddress().get(installation)}">Installation address</span>
+                        </a>
+                        <ul th:id="${'install_'+@installationServiceOdoo.getInstallationByEmail().getId().get(installation)}"
+                            class="sidebar-dropdown list-unstyled collapse show" style="">
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" th:href="${'/installation/'+@installationServiceOdoo.getInstallationByEmail().getId().get(installation)+'/details'}">My
+                                    Install</a>
+                            </li>
+                            <!--
+                            <li class="sidebar-item">
+                                <a class="sidebar-link"
+                                   th:href="${'/installation/'+installation.getId()+'/monitoring/dashboard'}">Monitoring</a>
+                            </li>
+                            -->
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" th:href="@{/contact-us}">
+                                    <i class="align-middle"></i> <span
+                                        class="align-middle">Contact Us</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+
+                </th:block>
+
+                <li class="sidebar-item active">
+                    <a class="sidebar-link" th:href="@{/schedule/installation-selection}">
+                        <i class="align-middle" data-feather="shopping-bag"></i> <span
+                            class="align-middle">Services</span>
+                    </a>
+                </li>
+                <!--/*
+                <li class="sidebar-item">
+                    <a class="sidebar-link" th:href="@{/contact-us}">
+                        <i class="align-middle" data-feather="file-text"></i> <span
+                            class="align-middle">Contact Us</span>
+                    </a>
+                </li>
+                */-->
+
+
+                <li class="sidebar-item active">
+                    <a href = "#support" data-toggle="collapse" class="sidebar-link" aria-expanded="true">
+                        <i class="align-middle" data-feather="alert-circle"></i> <span
+                            class="align-middle">System Support</span>
+                    </a>
+                    <ul id="support" class="sidebar-dropdown list-unstyled collapse show" style="">
+                        <li class="sidebar-item ">
+                            <a class="sidebar-link" th:href="@{/case}">View Tickets</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" th:href="@{/case/create}">Submit a Ticket</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="sidebar-item active">
+                    <a href="#resources" data-toggle="collapse" class="sidebar-link" aria-expanded="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-sliders align-middle">
+                            <line x1="4" y1="21" x2="4" y2="14"></line>
+                            <line x1="4" y1="10" x2="4" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12" y2="3"></line>
+                            <line x1="20" y1="21" x2="20" y2="16"></line>
+                            <line x1="20" y1="12" x2="20" y2="3"></line>
+                            <line x1="1" y1="14" x2="7" y2="14"></line>
+                            <line x1="9" y1="8" x2="15" y2="8"></line>
+                            <line x1="17" y1="16" x2="23" y2="16"></line>
+                        </svg>
+                        <span class="align-middle">Resources</span>
+                    </a>
+                    <ul id="resources" class="sidebar-dropdown list-unstyled collapse show" style="">
+                        <li class="sidebar-item ">
+                            <a class="sidebar-link" th:href="@{/welcomeVideo.html}">About Solar - 1LE</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" target="_blank"
+                               href="https://www.irs.gov/forms-pubs/about-form-5695">Federal Tax Credit</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#forms" data-toggle="collapse" class="sidebar-link" aria-expanded="true">
+                                <span class="align-middle">Forms</span>
+                            </a>
+                            <ul id="forms" class="sidebar-dropdown list-unstyled collapse show" style="">
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" target="_blank"
+                                       href="/docs/Master_Transfer_of_Ownership.pdf">Transfer of Ownership Form</a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" target="_blank"
+                                       href="/docs/Credit_Card_Authorization_Form.pdf" >Credit Card Authorization Form</a>
+                                </li>
+                            </ul>
+
+
+
+
+                            <!--ul  class="sidebar-dropdown list-unstyled collapse show" style="">
+
+                            </ul-->
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+
+        </div>
+    </nav>
+
+    <div class="solar-bg main">
+        <!--/* Navigation bar */-->
+        <nav id = "base-top-nav" class="navbar navbar-expand navbar-light">
+            <a class="sidebar-toggle d-flex mr-2">
+                <i class="hamburger align-self-center"></i>
+            </a>
+
+            <!--/* Navigation Bar Right Menu */-->
+            <div class="navbar-collapse collapse">
+                <ul class="navbar-nav ml-auto">
+                    <li  class="nav-item dropdown">
+                        <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-toggle="dropdown">
+                            <i class="align-middle user-settings" data-feather="settings"> </i>
+                        </a>
+
+                        <a class="user-settings nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-toggle="dropdown">
+                            <img th:src="@{/image/avatar}" class="avatar img-fluid rounded-circle mr-1"
+                                 th:alt="${#authentication.principal.firstName + ' ' + #authentication.principal.lastName}">
+                            <span class="text-light" th:text="${#authentication?.principal?.email}"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" th:href="@{/settings}">Settings</a>
+                            <form th:action="@{/logout}" method="post">
+                                <button type="submit" class="dropdown-item">Sign out</button>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main class="content">
+            <div class="body-wrapper container-fluid p-0">
+                <div layout:fragment="body_content"></div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="/dist/js/app.js"></script>
+<div id="end_of_body" layout:fragment="end_of_body"></div>
+</body>
+</html>

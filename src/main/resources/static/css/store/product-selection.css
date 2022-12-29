@@ -1,0 +1,27 @@
+#service-items{
+    display:flex;
+    min-width: 100% !important;
+}
+
+@media (hover: hover) {
+    .thumbnail:hover {
+
+        /*Add hover effect on
+        hover enabled devices*/
+        background-color: blue;
+        opacity: .9;
+        color: #1ab7ea !important;
+        box-shadow: 1px 1px 1px gray;
+        transform:scale(1.02);
+        transition-duration: 0.5s;
+        cursor: pointer;
+        /*margin: 15px 0;*/
+    }
+}
+
+
+.card-img-top {
+    width: 100%;
+    height: 40vh;
+    object-fit: cover;
+}

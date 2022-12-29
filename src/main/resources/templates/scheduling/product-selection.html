@@ -1,0 +1,147 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base.html}">
+<head>
+    <title>Service Selection</title>
+    <link href= "/css/store/product-selection.css" type="text/css" rel = "stylesheet"/>
+</head>
+<body>
+<section layout:fragment="body_content">
+
+    <div class="container-fluid p-0">
+
+        <h1 class="pg-header mb-3">Service &amp; Add-Ons</h1>
+        <div class="lead text-left mb-4" th:if="${installations.getId().size() > 1}">
+            <!-- <p th:text="${selected_installation.address}"></p> -->
+            <p th:text="${address}"></p>
+            <a class="btn btn-outline-secondary" th:href="@{/schedule/installation-selection}">Select A Different
+                Address</a>
+        </div>
+        <div class="row">
+
+            <div id = "service-items" class="col-md-10 col-xl-8 mx-auto">
+
+                <div th:if="${param.success != null}" class="alert alert-success alert-dismissible"
+                     role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <div class="alert-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div class="alert-message">
+                        <strong></strong>&nbsp;<span th:text="${param.success[0]}"></span>
+                    </div>
+                </div>
+
+
+
+                <div class="row py-4 ">
+                    <th:block th:each="product : ${products}">
+                        <div class="col-sm-10 col-md-8 col-lg-6 col-xl-6 mb-3 mb-md-0 py-4" >
+                            <div class="card" id="mainCard">
+                                <img class="card-img-top thumbnail" style="max-height: 200px; " id ="serviceVisitImage"
+                                     th:src="${product.productImageUrl}" data-toggle="collapse" th:attr="data-target=|#collapseDiv-${product.id}|">
+
+
+                                <div class="card-header" id = "serviceVisitHeader">
+                                    <h5 class="card-title mb-0 text-center" th:text="${product.name}"></h5>
+                                </div>
+                                <div class="collapse " th:id="|collapseDiv-${product.id}|" >
+                                    <div class="card-body d-flex flex-column " id = "serviceCostAndFee">
+                                        <p th:if="${product.paymentSchedule == T(com.my1stle.customer.portal.service.pricing.PaymentSchedule).SINGLE_PAYMENT}"
+                                           class="card-text" id="duration">Duration : <strong class="card-text duration"
+                                                                                              th:attr="data-duration=${product.duration}"> </strong>
+                                        </p>
+                                        <p th:if="${product.paymentSchedule != T(com.my1stle.customer.portal.service.pricing.PaymentSchedule).SINGLE_PAYMENT}"
+                                           class="text-muted" id="paymentSchedule">
+                                            Subscription : <strong
+                                                th:text="${product.paymentSchedule.getLabel()}">
+                                        </strong>
+                                        </p>
+                                        <p th:if="${product.pricePerUnit > 0}" class="text-muted" id="productPricing">Fee : <strong
+                                                th:text="${'$' + #numbers.formatDecimal(product.pricePerUnit, 0, 'COMMA', 2, 'POINT') + (' ' + product.pricingType.label())}">
+                                        </strong>
+                                        </p>
+                                        <p class="text-muted" id = "askAQuestion">Got a question about this product <br>or service?
+                                            <a th:href="@{/product/{product_id}/enquire(product_id=${product.id}, installation_id=${param.id[0]})}">Ask
+                                                Us</a>
+                                        </p>
+                                        <p th:if="${subscription.keySet().contains(product)}" class="text-muted">
+                                            <a th:href="@{/subscription/{subscription_id}(subscription_id=${subscription.get(product).id})}">You're
+                                                already subscribed! Click here to view your subscription</a>
+                                        </p>
+                                    </div>
+                                    <ul class="list-group list-group-flush" th:if="${!product.discounts.isEmpty()}">
+                                        <th:block th:each="discount : ${product.discounts}">
+                                            <li class="list-group-item" th:text="${discount.description}"></li>
+                                        </th:block>
+                                    </ul>
+                                    <div class="card-footer" id = "selectButton" >
+                                        <form th:if="${product.pricingType.calculation().apply(product, selected_installation) > 0}"
+                                              th:action="@{/schedule/date-time-selection}"
+                                              method="get" onsubmit="$.blockUI();">
+                                            <input type="hidden" class="form-control" name="id" th:value="${param.id}">
+                                            <input type="hidden" class="form-control" name="product"
+                                                   th:value="${product.id}">
+                                            <!-- TODO: add the ability to specify that an item is 1 only instead of using the product's id -->
+                                            <th:block th:if="${!product.isSchedulable && !product.isSubscriptionBased && !(product.id == 14)}">
+                                                <label>Quantity :
+                                                    <input class="quantity form-control-lg" min="1" name="quantity"
+                                                           value="1"
+                                                           type="number" pattern=" 0+\.[0-9]*[1-9][0-9]*$">
+                                                </label>
+                                            </th:block>
+                                            <button type="submit" class="btn btn-block btn-primary mt-3">Select</button>
+                                        </form>
+                                        <a th:unless="${product.pricingType.calculation().apply(product, selected_installation) > 0}"
+                                           th:href="@{/product/{product_id}/quote(product_id=${product.id}, installation_id=${param.id[0]})}"
+                                           class="btn btn-block btn-primary">Ask for Quote</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section layout:fragment="end_of_body">
+    <script src="https://shaack.com/projekte/bootstrap-input-spinner/src/bootstrap-input-spinner.js"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
+    <script>
+        var durationLabels = {
+            '15': '15 Mins.',
+            '30': '30 Mins.',
+            '60': '1 Hr.',
+            '120': '2 Hr.',
+            '180': '3 Hr.',
+            '240': '4 Hr.',
+            '300': '5 Hr.',
+            '360': '6 Hr.',
+            '420': '7 Hr.',
+            '480': '8 Hr.'
+        };
+
+        $('.duration').each(function () {
+            var duration = $(this).data('duration');
+            var label = durationLabels[duration];
+            if (label) {
+                $(this).html(label);
+            }
+        });
+
+        $('.quantity').inputSpinner({
+            buttonsClass: "btn-outline-primary",
+        });
+
+    </script>
+
+
+</section>
+</body>
+</html>

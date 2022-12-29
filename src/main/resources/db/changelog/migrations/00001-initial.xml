@@ -1,0 +1,627 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.7.xsd">
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-1">
+        <createTable tableName="device_metadata">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="deviceDetails" type="VARCHAR(255)"/>
+            <column name="ip_address" type="VARCHAR(255)"/>
+            <column name="lastLoggedIn" type="datetime"/>
+            <column name="location" type="VARCHAR(255)"/>
+            <column name="userId" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-2">
+        <createTable tableName="hibernate_sequence">
+            <column name="next_val" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-3">
+        <createTable tableName="onboarding">
+            <column autoIncrement="true" name="onboarding_id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="completed_onboarding_form_date_time" type="datetime"/>
+            <column name="completed_onboarding_video_date_time" type="datetime"/>
+            <column name="created_date_time" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date_time" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="provided_identification_date_time" type="datetime"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-4">
+        <createTable tableName="order">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="amount_due" type="DECIMAL(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount_paid" type="DECIMAL(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="order_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payer_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-5">
+        <createTable tableName="order_item">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price_per_unit" type="DECIMAL(19, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_price" type="DECIMAL(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="order_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="service_request_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-6">
+        <createTable tableName="order_item_discount">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="amount" type="DECIMAL(19, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="order_item_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_discount_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-7">
+        <createTable tableName="order_payment_detail">
+            <column name="order_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payment_detail_id" type="BIGINT">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-8">
+        <createTable tableName="password_reset_token">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="expiryDate" type="datetime"/>
+            <column name="token" type="VARCHAR(255)"/>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-9">
+        <createTable tableName="payment_detail">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="amount" type="DECIMAL(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="convenience_fee" type="DECIMAL(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="external_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total" type="DECIMAL(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="owner_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payment_method_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-10">
+        <createTable tableName="payment_method">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="convenience_cost_fixed" type="DECIMAL(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="convenience_cost_percentage" type="DECIMAL(5, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-11">
+        <createTable tableName="privilege">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-12">
+        <createTable tableName="product">
+            <column autoIncrement="true" name="product_id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column defaultValueBoolean="true" name="active" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="duration" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image_url" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="payment_schedule" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="DECIMAL(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pricing_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="skills" type="VARCHAR(255)"/>
+            <column defaultValueBoolean="true" name="is_schedulable" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0.0000" name="required_deposit_percentage" type="DECIMAL(5, 4)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-13">
+        <createTable tableName="product_agreement_document">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="document_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="library_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-14">
+        <createTable tableName="product_discount">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column defaultValueBoolean="false" name="disabled" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-15">
+        <createTable tableName="product_discount_per_additional_quantity_flat_amount">
+            <column name="max_applicable_quantity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="min_applicable_quantity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="per_unit_discount_amount" type="DECIMAL(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-16">
+        <createTable tableName="role">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-17">
+        <createTable tableName="roles_privileges">
+            <column name="role_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="privilege_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-18">
+        <createTable tableName="service_request">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="calendar_resource_id" type="BIGINT"/>
+            <column name="customer_notes" type="VARCHAR(255)"/>
+            <column name="event_id" type="BIGINT"/>
+            <column name="installation_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_time" type="datetime"/>
+            <column name="payment_detail_id" type="BIGINT">
+                <constraints unique="true"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="1" name="quantity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-19">
+        <createTable tableName="subscription">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column defaultValueBoolean="false" name="active" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expiration_date" type="datetime"/>
+            <column name="installation_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="DECIMAL(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="starting_date" type="datetime"/>
+            <column name="owner_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subscription_agreement_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-20">
+        <createTable tableName="subscription_agreement">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="agreement_id" type="VARCHAR(255)"/>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-21">
+        <createTable tableName="subscription_order">
+            <column name="subscription_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="order_id" type="BIGINT">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-22">
+        <createTable tableName="user_account">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="avatar_url_path" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="enabled" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="firstName" type="VARCHAR(255)"/>
+            <column name="isUsing2FA" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastName" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(60)"/>
+            <column name="secret" type="VARCHAR(255)"/>
+            <column name="timezone" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="onboarding_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="service_api_user_id" type="BIGINT">
+                <constraints unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-23">
+        <createTable tableName="users_roles">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-24">
+        <createTable tableName="verification_token">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="expiryDate" type="datetime"/>
+            <column name="token" type="VARCHAR(255)"/>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-25">
+        <addUniqueConstraint columnNames="product_id, installation_id" constraintName="UK9whc869jhhqjsdwps6gc0yoba" tableName="subscription"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-26">
+        <createIndex indexName="FK551losx9j75ss5d6bfsqvijna" tableName="order_item">
+            <column name="product_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-27">
+        <createIndex indexName="FK5yjwxw2gvfyu76j3rgqwo685u" tableName="roles_privileges">
+            <column name="privilege_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-28">
+        <createIndex indexName="FK63w4gwxr5vi0qj4ku19o7gne6" tableName="payment_detail">
+            <column name="payment_method_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-29">
+        <createIndex indexName="FK6ase47uhw44mtvqjtll1ibv5x" tableName="service_request">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-30">
+        <createIndex indexName="FK6fb45dgojmjoq5rtu2m07xcdh" tableName="subscription">
+            <column name="subscription_agreement_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-31">
+        <createIndex indexName="FK7bpcv0gltk8jx245p0ulhrhwj" tableName="user_account">
+            <column name="onboarding_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-32">
+        <createIndex indexName="FK7cc14uqjq2dre48qndigja70c" tableName="order_item_discount">
+            <column name="product_discount_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-33">
+        <createIndex indexName="FK8ohy5i80q3oswnn2lreswlxgp" tableName="service_request">
+            <column name="product_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-34">
+        <createIndex indexName="FK91ar0bab6c4ilvrxvdaho43fc" tableName="product_agreement_document">
+            <column name="product_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-35">
+        <createIndex indexName="FK9ae7f6rwch66m1fkgbwhle3lm" tableName="subscription">
+            <column name="owner_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-36">
+        <createIndex indexName="FK9h2vewsqh8luhfq71xokh4who" tableName="roles_privileges">
+            <column name="role_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-37">
+        <createIndex indexName="FK9ts9o90jm30pu7cqn8uackskb" tableName="order_item">
+            <column name="service_request_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-38">
+        <createIndex indexName="FK_VERIFY_USER" tableName="verification_token">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-39">
+        <createIndex indexName="FKci4mdvg1fmo9eqmwno1y9o0fa" tableName="users_roles">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-40">
+        <createIndex indexName="FKkijtwfnqa638w9f2mii4pcifu" tableName="order_item_discount">
+            <column name="order_item_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-41">
+        <createIndex indexName="FKns9q9f0f318uaoxiqn6lka9ux" tableName="password_reset_token">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-42">
+        <createIndex indexName="FKpqawmhoyahs53j2t16249daff" tableName="order_payment_detail">
+            <column name="order_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-43">
+        <createIndex indexName="FKqbu1yhg8hgblk3olal42pindi" tableName="order">
+            <column name="payer_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-44">
+        <createIndex indexName="FKr5ttw8wovl5nkcc9ysfc16fkk" tableName="product_discount">
+            <column name="product_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-45">
+        <createIndex indexName="FKrhnnbao9hv3t5bx5jdgqpugwx" tableName="payment_detail">
+            <column name="owner_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-46">
+        <createIndex indexName="FKs234mi6jususbx4b37k44cipy" tableName="order_item">
+            <column name="order_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-47">
+        <createIndex indexName="FKt4v0rrweyk393bdgt107vdx0x" tableName="users_roles">
+            <column name="role_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-48">
+        <createIndex indexName="FKtd3g9b16a303s9a2oeu91m5q3" tableName="subscription_order">
+            <column name="subscription_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-49">
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="order_item" constraintName="FK551losx9j75ss5d6bfsqvijna" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="product_id" referencedTableName="product" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-50">
+        <addForeignKeyConstraint baseColumnNames="privilege_id" baseTableName="roles_privileges" constraintName="FK5yjwxw2gvfyu76j3rgqwo685u" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="privilege" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-51">
+        <addForeignKeyConstraint baseColumnNames="payment_method_id" baseTableName="payment_detail" constraintName="FK63w4gwxr5vi0qj4ku19o7gne6" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="payment_method" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-52">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="service_request" constraintName="FK6ase47uhw44mtvqjtll1ibv5x" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="user_account" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-53">
+        <addForeignKeyConstraint baseColumnNames="subscription_agreement_id" baseTableName="subscription" constraintName="FK6fb45dgojmjoq5rtu2m07xcdh" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="subscription_agreement" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-54">
+        <addForeignKeyConstraint baseColumnNames="onboarding_id" baseTableName="user_account" constraintName="FK7bpcv0gltk8jx245p0ulhrhwj" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="onboarding_id" referencedTableName="onboarding" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-55">
+        <addForeignKeyConstraint baseColumnNames="product_discount_id" baseTableName="order_item_discount" constraintName="FK7cc14uqjq2dre48qndigja70c" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="product_discount" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-56">
+        <addForeignKeyConstraint baseColumnNames="payment_detail_id" baseTableName="service_request" constraintName="FK8090v5672n39djqikuefugu2a" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="payment_detail" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-57">
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="service_request" constraintName="FK8ohy5i80q3oswnn2lreswlxgp" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="product_id" referencedTableName="product" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-58">
+        <addForeignKeyConstraint baseColumnNames="payment_detail_id" baseTableName="order_payment_detail" constraintName="FK8p8f7ve2lku8grl7misgpwxa5" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="payment_detail" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-59">
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="product_agreement_document" constraintName="FK91ar0bab6c4ilvrxvdaho43fc" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="product_id" referencedTableName="product" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-60">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="subscription" constraintName="FK9ae7f6rwch66m1fkgbwhle3lm" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="user_account" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-61">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="roles_privileges" constraintName="FK9h2vewsqh8luhfq71xokh4who" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="role" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-62">
+        <addForeignKeyConstraint baseColumnNames="service_request_id" baseTableName="order_item" constraintName="FK9ts9o90jm30pu7cqn8uackskb" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="service_request" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-63">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="verification_token" constraintName="FK_VERIFY_USER" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="user_account" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-64">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="users_roles" constraintName="FKci4mdvg1fmo9eqmwno1y9o0fa" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="user_account" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-65">
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="subscription" constraintName="FKg40gg635cui0m07vh433dri4x" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="product_id" referencedTableName="product" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-66">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="product_discount_per_additional_quantity_flat_amount" constraintName="FKh8gwnekom193ankgolimtee7x" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="product_discount" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-67">
+        <addForeignKeyConstraint baseColumnNames="order_item_id" baseTableName="order_item_discount" constraintName="FKkijtwfnqa638w9f2mii4pcifu" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="order_item" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-68">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="password_reset_token" constraintName="FKns9q9f0f318uaoxiqn6lka9ux" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="user_account" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-69">
+        <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="order_payment_detail" constraintName="FKpqawmhoyahs53j2t16249daff" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="order" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-70">
+        <addForeignKeyConstraint baseColumnNames="payer_id" baseTableName="order" constraintName="FKqbu1yhg8hgblk3olal42pindi" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="user_account" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-71">
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="product_discount" constraintName="FKr5ttw8wovl5nkcc9ysfc16fkk" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="product_id" referencedTableName="product" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-72">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="payment_detail" constraintName="FKrhnnbao9hv3t5bx5jdgqpugwx" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="user_account" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-73">
+        <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="subscription_order" constraintName="FKrxo2m4vp6ep3es36yx2l1x38l" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="order" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-74">
+        <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="order_item" constraintName="FKs234mi6jususbx4b37k44cipy" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="order" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-75">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="users_roles" constraintName="FKt4v0rrweyk393bdgt107vdx0x" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="role" validate="true"/>
+    </changeSet>
+    <changeSet author="HumbertoRamos (generated)" id="1597442593600-76">
+        <addForeignKeyConstraint baseColumnNames="subscription_id" baseTableName="subscription_order" constraintName="FKtd3g9b16a303s9a2oeu91m5q3" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="subscription" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,69 @@
+{
+  "steps": [
+    {
+      "label": "Contract Signed",
+      "statuses": [
+        "Project Processing",
+        "Scheduling PSA",
+        "Submit to Financial Partner"
+      ]
+    },
+    {
+      "label": "Presite Assessment Scheduled",
+      "statuses": [
+        "PSA Scheduled",
+        "Awaiting PSA",
+        "PSA Recon"
+      ]
+    },
+    {
+      "label": "Presite Assessment Complete",
+      "statuses": [
+        "AM Review",
+        "Sales Rep Review",
+        "Design",
+        "Customer Review",
+        "Customer Review/Permit Prep",
+        "Awaiting Asbestos Inspection",
+        "Received Asbestos/Submit Permit",
+        "Permit Submitted",
+        "Permit Revisions Needed",
+        "Permit Ready to be Picked Up",
+        "Permit Picked Up/Schedule Install",
+        "Permit Prep"
+      ]
+    },
+    {
+      "label": "Installation Scheduled",
+      "statuses": [
+        "Install Scheduled with Customer",
+        "Awaiting Service Upgrade",
+        "Installation in Process",
+        "Awaiting Layout",
+        "Awaiting Racking",
+        "Awaiting Stringer",
+        "Awaiting Modules",
+        "Awaiting Electrical",
+        "Awaiting Commission"
+      ]
+    },
+    {
+      "label": "Installed Awaiting Permission to Operate",
+      "statuses": [
+        "Install Complete - Pending Local Inspections",
+        "Install Complete - Pending PTO",
+        "Install Complete - Pending State Inspection",
+        "Awaiting on Final Completion",
+        "Install Complete - Passed All Inspections",
+        "Install Complete - Pending Final Approvals",
+        "Awaiting HOA Approval"
+      ]
+    },
+    {
+      "label": "Installation Complete",
+      "statuses": [
+        "Project Complete"
+      ]
+    }
+  ]
+}

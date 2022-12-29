@@ -1,0 +1,256 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base.html}">
+<head>
+    <title>Monitoring Dashboard</title>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+</head>
+<body>
+<section layout:fragment="body_content">
+    <h1>Monitoring</h1>
+
+    <div class="">
+        <div class="row">
+            <div class="col-12 col-sm-6 col-xl d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body py-4">
+                        <div class="media">
+                            <div class="d-inline-block mt-2 mr-3">
+                                <img alt="sync icon" src="/img/icon/sync.png" height="45" width="45"/>
+                            </div>
+                            <div class="media-body">
+                                <h3 class="mb-2">[[${#temporals.format(monitoringData.getLastUpdated(), 'MM/dd/yy')
+                                    }]]</h3>
+                                <div class="mb-0">Last Updated</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-xl d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body py-4">
+                        <div class="media">
+                            <div class="d-inline-block mt-2 mr-3">
+                                <img alt="power icon" src="/img/icon/power.png" height="45" width="45"/>
+                            </div>
+                            <div class="media-body">
+                                <h3 class="mb-2">
+                                    [[${#numbers.formatDecimal(monitoringData.getPower()/1000,0,'COMMA',0,'POINT')}]]
+                                    kW</h3>
+                                <div class="mb-0">Power</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-xl d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body py-4">
+                        <div class="media">
+                            <div class="d-inline-block mt-2 mr-3">
+                                <img alt="sync icon" src="/img/icon/day.png" height="45" width="45"/>
+                            </div>
+                            <div class="media-body">
+                                <h3 class="mb-2">
+                                    [[${#numbers.formatDecimal(monitoringData.getDayEnergy()/1000,0,'COMMA',0,'POINT')}]]
+                                    kWh</h3>
+                                <div class="mb-0">Energy this Day</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-xl d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body py-4">
+                        <div class="media">
+                            <div class="d-inline-block mt-2 mr-3">
+                                <img alt="sync icon" src="/img/icon/month.png" height="45" width="45"/>
+                            </div>
+                            <div class="media-body">
+                                <h3 class="mb-2">
+                                    [[${#numbers.formatDecimal(monitoringData.getMonthEnergy()/1000,0,'COMMA',0,'POINT')}]]
+                                    kWh</h3>
+                                <div class="mb-0">Energy this Month</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-xl d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body py-4">
+                        <div class="media">
+                            <div class="d-inline-block mt-2 mr-3">
+                                <img alt="sync icon" src="/img/icon/yearly.png" height="45" width="45"/>
+                            </div>
+                            <div class="media-body">
+                                <h3 class="mb-2">
+                                    [[${#numbers.formatDecimal(monitoringData.getYearEnergy()/1000,0,'COMMA',0,'POINT')}]]
+                                    kWh</h3>
+                                <div class="mb-0">Energy this Year</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-xl d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body py-4">
+                        <div class="media">
+                            <div class="d-inline-block mt-2 mr-3">
+                                <img alt="sync icon" src="/img/icon/lifetime.png" height="45" width="45"/>
+                            </div>
+                            <div class="media-body">
+                                <h3 class="mb-2">
+                                    [[${#numbers.formatDecimal(monitoringData.getLifeEnergy()/1000,0,'COMMA',0,'POINT')}]]</h3>
+                                <div class="mb-0">Lifetime Energy kWh</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card flex-fill w-100">
+                    <div class="card-header">
+
+                        <div class="card-actions float-right">
+                            <a th:href="'?week='+${#temporals.format(monitoringData.getWeekEnergyByDayViewData().getPreviousTemporal(), 'MMddyyyy')}+'&month='+${#temporals.format(monitoringData.getMonthEnergyByDayViewData().getCurrentTemporal(), 'MMyyyy')}+'&year='+${#temporals.format(monitoringData.getYearEnergyByMonthViewData().getCurrentTemporal(), 'yyyy')}">
+                                <i class="align-middle mr-2 fas fa-fw fa-chevron-left"></i>
+                            </a>
+                            <span>Week of [[${#temporals.format(monitoringData.getWeekEnergyByDayViewData().getCurrentTemporal(), 'MM/dd/yy') }]]</span>
+                            <a th:href="'?week='+${#temporals.format(monitoringData.getWeekEnergyByDayViewData().getNextTemporal(), 'MMddyyyy')}+'&month='+${#temporals.format(monitoringData.getMonthEnergyByDayViewData().getCurrentTemporal(), 'MMyyyy')}+'&year='+${#temporals.format(monitoringData.getYearEnergyByMonthViewData().getCurrentTemporal(), 'yyyy')}">
+                                <i class="align-middle mr-2 fas fa-fw fa-chevron-right"></i>
+                            </a>
+                        </div>
+
+                        <h5 class="card-title mb-0">Energy By Day In Week</h5>
+
+                    </div>
+                    <div class="card-body p-2">
+                        <div style="">
+                            <div id="week_graph">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card flex-fill w-100">
+                    <div class="card-header">
+
+                        <div class="card-actions float-right">
+                            <a th:href="'?week='+${#temporals.format(monitoringData.getWeekEnergyByDayViewData().getCurrentTemporal(), 'MMddyyyy')}+'&month='+${#temporals.format(monitoringData.getMonthEnergyByDayViewData().getPreviousTemporal(), 'MMyyyy')}+'&year='+${#temporals.format(monitoringData.getYearEnergyByMonthViewData().getCurrentTemporal(), 'yyyy')}">
+                                <i class="align-middle mr-2 fas fa-fw fa-chevron-left"></i>
+                            </a>
+                            <span>[[${#temporals.format(monitoringData.getMonthEnergyByDayViewData().getCurrentTemporal(), 'MMM yyyy') }]]</span>
+                            <a th:href="'?week='+${#temporals.format(monitoringData.getWeekEnergyByDayViewData().getCurrentTemporal(), 'MMddyyyy')}+'&month='+${#temporals.format(monitoringData.getMonthEnergyByDayViewData().getNextTemporal(), 'MMyyyy')}+'&year='+${#temporals.format(monitoringData.getYearEnergyByMonthViewData().getCurrentTemporal(), 'yyyy')}">
+                                <i class="align-middle mr-2 fas fa-fw fa-chevron-right"></i>
+                            </a>
+                        </div>
+
+                        <h5 class="card-title mb-0">Energy By Day In Month</h5>
+                    </div>
+                    <div class="card-body p-2">
+                        <div style="">
+                            <div id="month_graph">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card flex-fill w-100">
+                    <div class="card-header">
+
+                        <div class="card-actions float-right">
+                            <a th:href="'?week='+${#temporals.format(monitoringData.getWeekEnergyByDayViewData().getCurrentTemporal(), 'MMddyyyy')}+'&month='+${#temporals.format(monitoringData.getMonthEnergyByDayViewData().getCurrentTemporal(), 'MMyyyy')}+'&year='+${#temporals.format(monitoringData.getYearEnergyByMonthViewData().getPreviousTemporal(), 'yyyy')}">
+                                <i class="align-middle mr-2 fas fa-fw fa-chevron-left"></i>
+                            </a>
+                            <span>[[${#temporals.format(monitoringData.getYearEnergyByMonthViewData().getCurrentTemporal(), 'yyyy') }]]</span>
+                            <a th:href="'?week='+${#temporals.format(monitoringData.getWeekEnergyByDayViewData().getCurrentTemporal(), 'MMddyyyy')}+'&month='+${#temporals.format(monitoringData.getMonthEnergyByDayViewData().getCurrentTemporal(), 'MMyyyy')}+'&year='+${#temporals.format(monitoringData.getYearEnergyByMonthViewData().getNextTemporal(), 'yyyy')}">
+                                <i class="align-middle mr-2 fas fa-fw fa-chevron-right"></i>
+                            </a>
+                        </div>
+
+                        <h5 class="card-title mb-0">Energy by Month in Year</h5>
+                    </div>
+                    <div class="card-body p-2">
+                        <div style="">
+                            <div id="year_graph">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <img alt="solar_edge_logo"
+                     src="https://www.solaredge.com/sites/default/files/SolarEdge_logo_header_new.png"/>
+
+
+            </div>
+        </div>
+    </div>
+
+
+</section>
+<section layout:fragment="end_of_body">
+
+
+    <script th:inline="javascript">
+
+        google.charts.load('current', {packages: ['corechart', 'bar']});
+        google.charts.setOnLoadCallback(drawAll);
+
+
+        function drawAll() {
+
+            const byDayInWeekData = JSON.parse([[${monitoringData.getWeekEnergyByDayViewData().getDataTableJson()}]]);
+            const byDayInWeekOptions = JSON.parse([[${monitoringData.getWeekEnergyByDayViewData().getOptionsJson()}]]);
+            const byDayInMonthData = JSON.parse([[${monitoringData.getMonthEnergyByDayViewData().getDataTableJson()}]]);
+            const byDayInMonthOptions = JSON.parse([[${monitoringData.getMonthEnergyByDayViewData().getOptionsJson()}]]);
+            const byMonthInYearData = JSON.parse([[${monitoringData.getYearEnergyByMonthViewData().getDataTableJson()}]]);
+            const byMonthInYearOptions = JSON.parse([[${monitoringData.getYearEnergyByMonthViewData().getOptionsJson()}]]);
+
+            draw((byDayInWeekData), (byDayInWeekOptions), "week_graph");
+            draw((byDayInMonthData), (byDayInMonthOptions), "month_graph");
+            draw((byMonthInYearData), (byMonthInYearOptions), "year_graph");
+
+        }
+
+        function draw(dataTable, options, divId) {
+
+            options['title'] = null;
+            options['isStacked'] = true;
+
+            options['vAxis'] = {
+                viewWindowMode: 'explicit',
+                viewWindow: {
+                    min: 0,
+                    // max: 100
+                }
+            };
+
+            const graphData = google.visualization.arrayToDataTable(dataTable);
+            const materialChart = new google.charts.Bar(document.getElementById(divId));
+            const graphOptions = google.charts.Bar.convertOptions(options);
+
+            materialChart.draw(graphData, graphOptions);
+        }
+
+    </script>
+</section>
+</body>
+</html>

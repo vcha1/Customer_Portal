@@ -1,0 +1,72 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base.html}">
+<head>
+    <title>Monitoring Unavailable</title>
+</head>
+<body>
+<section layout:fragment="body_content">
+
+    <div class="container-fluid p-0">
+
+        <h1 class="pg-header h3 mb-3">Service & Add-Ons</h1>
+
+        <div class="row">
+            <div class="col-md-10 col-xl-8 mx-auto">
+
+                <h2 class="h2 text-center mb-4">We're sorry but the product or service is currently unavailable</h2>
+
+                <div class="row justify-content-center mt-3 mb-2">
+                    <div class="col-auto">
+                        <nav class="nav btn-group">
+                            <a th:href="@{/contact-us(first_name=${#authentication.principal.firstName}, last_name=${#authentication.principal.lastName}, email=${#authentication.principal.email}, phone=${installation.customerPhoneNumber}, installation_id=${installation.id}, reason='PRODUCT_ENQUIRY', product=${product.id})}"
+                               class="btn btn-outline-primary active">Contact Us About a Product or Service</a>
+                        </nav>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="text-center my-4">
+                    <h2>Products and Services Frequently Asked Questions</h2>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 ml-auto">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="h6 card-title">Why is the product or service unavailable?</h5>
+                                <p class="mb-0">The product or service is unavailable due to multiple factors. One
+                                    factor might be that we currently
+                                    do not provide the service or product in your current area. If you would like to
+                                    know more about why the product
+                                    or
+                                    service is unavailable to you, please
+                                    <a th:href="@{/contact-us(first_name=${#authentication.principal.firstName}, last_name=${#authentication.principal.lastName}, email=${#authentication.principal.email}, phone=${installation.customerPhoneNumber}, installation_id=${installation.id}, reason='PRODUCT_ENQUIRY', product=${product.id})}">contact
+                                        us</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 ml-auto">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="h6 card-title">What can I do?</h5>
+                                <p class="mb-0">If the product or service is unavailable to you and you would like to
+                                    still make a purchase, let us know by
+                                    <a
+                                            th:href="@{/contact-us(first_name=${#authentication.principal.firstName}, last_name=${#authentication.principal.lastName}, email=${#authentication.principal.email}, phone=${installation.customerPhoneNumber}, installation_id=${installation.id}, reason='PRODUCT_ENQUIRY', product=${product.id})}">contacting
+                                        us </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section layout:fragment="end_of_body">
+</section>
+</body>
+</html>

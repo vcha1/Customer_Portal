@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/public-layout}">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Responsive Bootstrap 4 Admin &amp; Dashboard Template">
+    <meta name="author" content="Bootlab">
+    <title>Date Time Selection</title>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"/>
+    <link href="/css/calendar.css" rel="stylesheet"/>
+
+</head>
+<body>
+<section layout:fragment="body_content">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 mb-1 mb-md-0">
+            <div id="calendar-card" th:fragment="calendar-card" class="card h-100">
+
+                <div class="card-header">
+                    <div class="card-actions float-right">
+                    </div>
+                    <h5 class="card-title">Hi&nbsp;<span th:text="${installation.customerName}"></span>&comma;&nbsp;Please
+                        Schedule Your Installation</h5>
+                    <h6 class="card-subtitle text-muted"></h6>
+                </div>
+                <div class="card-body text-center">
+
+                    <p class="card-text"><label class="label"><strong>Next Available Appointment</strong></label></p>
+
+                    <div class="mb-3">
+                        <div><label class="label"><strong>Date : </strong></label>&nbsp;<span
+                                th:text="${#temporals.format(request.startDateTime, 'MM/dd/yyy')}"></span></div>
+                        <div><label class="label"><strong>Time : </strong></label>&nbsp;<span
+                                th:text="${#temporals.format(request.startDateTime, 'h:mm a z')}"></span></div>
+                    </div>
+
+                    <h4 class="card-text mb-3"><strong>Would you like to schedule for this date and time?</strong></h4>
+
+                    <div class="btn-group mb-3">
+                        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal"
+                                data-target="#schedule-modal">
+                            YES, schedule me for this time
+                        </button>
+                        <button type="submit" class="btn btn-secondary btn-lg" form="next-available-date-form">NO, give
+                            me next available time
+                        </button>
+                    </div>
+                    <br/>
+                    <div class="btn-group mb-3">
+                        <button th:if="${param.date != null}" type="submit" class="btn btn-info" form="start-over-form">
+                            Start Over
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="schedule-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Review</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div id="schedule-modal-body" class="modal-body">
+                        <form id="schedule-form" th:action="@{/public/schedule}" th:object="${request}"
+                              method="post"
+                              onsubmit="$.blockUI(); $('#schedule-modal').modal('hide');">
+
+                            <input class="form-control" type="hidden" th:field="*{token}"/>
+                            <input class="form-control" type="hidden" th:field="*{calendarId}"/>
+                            <input class="form-control" type="hidden" th:field="*{name}"/>
+                            <input class="form-control" type="hidden" th:field="*{installationId}"/>
+                            <input class="form-control" type="hidden" th:field="*{duration}"/>
+                            <input class="form-control" type="hidden" th:field="*{skillIds}"/>
+
+                            <label for="startDateTime">Start Date &amp; Time </label>
+                            <div class="form-group">
+                                <div class='input-group date'>
+                                    <input th:field="*{startDateTime}" readonly="readonly" type='text'
+                                           class="form-control"/> </span>
+                                </div>
+                                <small class="help-block">Please note the date and time has been adjusted to your
+                                    timezone
+                                </small>
+                            </div>
+                            <div class="form-group">
+                                <div class="text-muted">Estimated Duration</div>
+                                <strong class="duration" th:attr="data-duration=${request.duration}"
+                                        th:text="${request.duration} + ' minutes'"></strong>
+                                <small class="help-block"></small>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" name="questions1"
+                                               required="required">I will be home for install appointment or if I will
+                                        not be home, I give permission for the installation to take place.
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" name="questions2"
+                                               required="required">If I will be home and want conduit ran in attic,
+                                        attic will be clear.
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" name="questions3"
+                                               required="required">If I will not be home, I understand the crew will
+                                        determine best placement of solar equipment (according to code). 1st Light will
+                                        not move install equipment for aesthetics post-installation.
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" name="questions4"
+                                               required="required">My main electrical panel will be accessible.
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" name="questions4"
+                                               required="required">Wall and pathway around/to main electrical panel will
+                                        be clear.
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="notes" class="form-label">Notes</label>
+                                <textarea class="form-control" rows="5" th:field="*{notes}" maxlength="255"></textarea>
+                                <small class="help-block">Would you like to add notes for our technicians? If so please
+                                    add any notes above
+                                </small>
+                            </div>
+
+                            <div class="text-sm">
+                                <strong> Disclaimers : </strong>
+                                <ul>
+                                    <li>Install will take 4-12 hours, power will remain on during install unless
+                                        otherwise noted.
+                                    </li>
+                                    <li>
+                                        Install date is subject to change should weather conditions arise.
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button id="confirm-btn" type="submit" form="schedule-form" class="btn btn-primary">Submit
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form id="next-available-date-form" th:action="@{/public/schedule(token=${token})}" method="get"
+              onsubmit="$.blockUI(); $('#schedule-modal').modal('hide');">
+            <input class="form-control" type="hidden" name="token" th:value="${token}"/>
+            <input class="form-control" type="hidden" name="date" th:value="${next_date}"/>
+        </form>
+
+        <form th:if="${param.date != null}" id="start-over-form" th:action="@{/public/schedule(token=${token})}"
+              method="get"
+              onsubmit="$.blockUI(); $('#schedule-modal').modal('hide');">
+            <input class="form-control" type="hidden" name="token" th:value="${token}"/>
+        </form>
+
+    </div>
+</section>
+<section layout:fragment="end_of_body">
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.14/moment-timezone-with-data.min.js"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/js/calendar/public-duration.js"></script>
+</section>
+</body>
+</html>

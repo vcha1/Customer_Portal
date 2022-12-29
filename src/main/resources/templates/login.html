@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/no-sidebar-and-navbar}">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Responsive Bootstrap 4 Admin &amp; Dashboard Template">
+    <meta name="author" content="Bootlab">
+
+    <title th:text="#{label.form.loginTitle}"></title>
+
+    <link rel="stylesheet" th:href="@{/dist/css/modern.css}"/>
+
+</head>
+
+<body>
+
+<section layout:fragment="body_content">
+
+
+    <div th:if="${param.message != null}" class="alert alert-info alert-dismissible" role="alert">
+
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+        <div class="alert-icon">
+            <i class="fas fa-info-circle"></i>
+        </div>
+        <div class="alert-message">
+            <strong></strong>&nbsp;<span th:text="${param.message[0]}"></span>
+        </div>
+
+    </div>
+
+    <div th:if="${param.error != null}" class="alert alert-danger alert-dismissible" role="alert">
+
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+        <div class="alert-icon">
+            <i class="fas fa-fw fa-exclamation-circle"></i>
+        </div>
+        <div class="alert-message">
+            <strong>Login Attempt Failed!</strong>&nbsp;<span
+                th:utext="${session[SPRING_SECURITY_LAST_EXCEPTION]}"></span>
+        </div>
+
+    </div>
+
+    <div id = "login-card" class="card">
+        <div class="card-body">
+            <div class="text-center mt-4">
+                <h1 class="h2">Welcome back!</h1>
+                <p class="lead">
+                    Sign in to your account to continue
+                </p>
+            </div>
+            <div class="m-sm-4">
+                <form th:action="@{/login}" method="post">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input class="form-control form-control-lg" type='text' name='username'
+                               value='' placeholder="Enter your email" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input class="form-control form-control-lg" type='password'
+                               name='password' placeholder="Enter your password" required="required"/>
+                        <small>
+                            <a th:href="@{/forgetPassword.html}">Forgot password?</a>
+                        </small>
+                        <div style="text-align: right">
+                            <a class="btn btn-outline-primary " th:href="@{/registration.html}">First
+                                Time User?</a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="custom-control custom-checkbox">
+                            <input name="remember-me" type="checkbox" class="custom-control-input">
+                            <span class="custom-control-label">Remember Me Next Time</span>
+                        </label>
+                    </div>
+                    <div class="text-center mt-3">
+                        <button class="btn btn-primary" name="submit" type="submit">Sign In
+                        </button>
+                        <br/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<section layout:fragment="end_of_body">
+</section>
+</body>
+</html>

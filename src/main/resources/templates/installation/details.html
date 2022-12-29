@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base.html}">
+<head>
+    <title>Installation Details</title>
+    <link rel="stylesheet" href="/css/timeline.css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/installation/installation-details.css" />
+</head>
+<body>
+<section layout:fragment="body_content">
+    <div class="container-fluid p-0">
+        <div class = "col-md-12">
+            <!-- <p class="pg-header h1 mb-3" th:text="${detail.street}"></p> -->
+            <p class="pg-header h1 mb-3" th:text="${odooData.getAddress()}"></p>
+        </div>
+
+        <div id="my-install-stage" class="card mt-3 mb-5">
+            <!-- <div class="horizontal-timeline-container" th:with="activeStep=${timeline.getStepForStatus(detail.installStatus)}"> -->
+            <div class="horizontal-timeline-container" th:with="activeStep=${timeline.getStepForStatus(odooData.getInstallStatus())}">
+                <div class="timeline-block"
+                     th:each="step,iterInfo:${timeline.steps}"
+                     th:with="complete=${activeStep ge iterInfo.index},active=${activeStep eq iterInfo.index}"
+                     th:classappend="${complete ? 'complete' : ''} + ' ' + ${active ? 'active' : ''}">
+                    <div class="timeline-step-counter" th:text="${iterInfo.count}"></div>
+                    <div class="timeline-content px-1">
+                        <h5 class="my-0" th:text="${step.label}" th:classappend="${not complete} ? text-muted"></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id = "install-information" class="row mx-xl-7">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-1le-green">
+                        <h4 class="h6 card-title mb-0">Customer Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <!-- <h5 class="h6 card-title mb-0" th:text="${detail.customerName}"></h5> -->
+                                <h5 class="h6 card-title mb-0" th:text="${odooData.getCustomerName()}"></h5>
+                                <p>
+                                    <!-- <strong>Installation:</strong> <span th:text="${detail.name}"></span> -->
+                                    <strong>Installation:</strong> <span th:text="${odooData.getName()}"></span>
+                                    <br/>
+                                    <!-- <strong>Email:</strong> <span th:text="${detail.customerEmail}"></span> -->
+                                    <strong>Email:</strong> <span th:text="${odooData.getCustomerEmail()}"></span>
+                                    <br/>
+                                    <!-- <strong>Phone:</strong> <span th:text="${detail.customerPhoneNumber}"></span> -->
+                                    <strong>Phone:</strong> <span th:text="${odooData.getCustomerPhoneNumber()}"></span>
+                                </p>
+                            </div>
+                            <div class="col-lg-6">
+                                <h5 class="h6 card-title mb-0">Address</h5>
+                                <p>
+                                    <!-- <span th:text="${detail.street}"></span> -->
+                                    <span th:text="${odooData.getAddress()}"></span>
+                                    <br/>
+                                    <!-- <span th:text="${detail.city}"></span>, <span th:text="${detail.state}"></span> <span th:text="${detail.zipCode}"></span> -->
+                                    <span th:text="${odooData.getCity()}"></span>, <span th:text="${odooData.getState()}"></span> <span th:text="${odooData.getZipCode()}"></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header bg-1le-green">
+                        <h4 class="h6 card-title mb-0">Financing Details</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!--
+                            <div class="col-lg-6">
+                                <h5 class="h6 card-title mb-0">Financing Options</h5>
+                                <ul class="list-unstyled mb-0">
+                                    <li>
+                                        <strong>Payment:</strong> <span th:text="${detail.paymentTypeName != null ? detail.paymentTypeName : 'N/A'}"></span>
+                                    </li>
+                                    <li th:unless="${#strings.isEmpty(detail.paymentProviderName)}">
+                                        <strong>Provider:</strong>
+                                        <th:block th:switch="${detail.paymentProviderName}">
+                                            <a th:case="Greensky" href="https://www.greenksy.com">GreenSky</a>
+                                            <a th:case="Mosaic" href="https://www.joinmosaic.com">Mosaic</a>
+                                            <a th:case="Sunrun" href="https://www.sunrun.com">Sunrun</a>
+                                            <a th:case="Spruce" href="https://www.sprucefinance.com">Spruce</a>
+                                            <a th:case="Sunpower" href="https://us.sunpower.com">Sunpower</a>
+                                            <a th:case="YGRENE" href="https://ygrene.com">YGRENE</a>
+                                            <a th:case="Sunlight" href="https://sunlightfinancial.com">Sunlight</a>
+                                            <a th:case="Enerbank" href="https://enerbank.com">EnerBank</a>
+                                            <a th:case="Dividend" href="https://dividendfinance.com">Dividend</a>
+                                            <a th:case="LoanPal" href="https://www.loanpal.com">LoanPal</a>
+                                            <span th:case="*" th:text="${detail.paymentProviderName}"></span>
+                                        </th:block>
+                                    </li>
+                                    <li th:unless="${#strings.isEmpty(detail.paymentProviderName)}">
+                                        <strong>Product:</strong> <span th:text="${detail.paymentProductName}"></span>
+                                    </li>
+                                </ul>
+                            </div>
+                            -->
+                            <div class="col-lg-6">
+                                <h5 class="h6 card-title mb-0">System Pricing</h5>
+                                <ul class="list-unstyled mb-0">
+                                    <!-- <li th:with="hasPrice=${detail.totalContractPrice != null}"> -->
+                                    <li th:with="hasPrice=${odooData.getTotalContractPrice() != null}">
+                                        <!-- <strong>System price:</strong> <span th:text="${hasPrice ? '$' + #numbers.formatDecimal(detail.totalContractPrice, 1, 'COMMA', 2, 'POINT') : 'unknown'}"></span> -->
+                                        <strong>System price:</strong> <span th:text="${hasPrice ? '$' + #numbers.formatDecimal(odooData.getTotalContractPrice(), 1, 'COMMA', 2, 'POINT') : 'unknown'}"></span>
+                                    </li>
+                                    <!--
+                                    <li th:if="${(detail.soldProposalFederalTaxCredit ?: 0.0) != 0.0}">
+                                        <strong>Federal Tax Credit:</strong> <span th:text="${'$' + #numbers.formatDecimal(detail.soldProposalFederalTaxCredit, 1, 'COMMA', 2, 'POINT')}"></span>
+                                    </li>
+                                    <li th:if="${(detail.soldProposalStateTaxCredit ?: 0.0) != 0.0}">
+                                        <strong>State Tax Credit:</strong> <span th:text="${'$' + #numbers.formatDecimal(detail.soldProposalStateTaxCredit, 1, 'COMMA', 2, 'POINT')}"></span>
+                                    </li>
+                                    <th:block th:if="${not #strings.isEmpty(detail.soldProposalSrecTypeName) and not ('None'.equals(detail.soldProposalSrecTypeName))}">
+                                        <li>
+                                            <strong>SREC:</strong> <span th:text="${detail.soldProposalSrecTypeName}"></span>
+                                        </li>
+                                        <li th:if="${(detail.soldProposalSrecUpfrontRebate ?: 0.0) != 0.0}">
+                                            <strong>SREC Upfront Rebate:</strong> <span th:text="${'$' + #numbers.formatDecimal(detail.soldProposalSrecUpfrontRebate, 1, 'COMMA', 2, 'POINT')}"></span>
+                                        </li>
+                                        <th:block th:if="${((detail.soldProposalSrecSellPrice ?: 0.0) != 0.0) or ((detail.soldProposalSrecSellDeEscalator ?: 0.0) != 0.0)}">
+                                            <li>
+                                                <strong>SREC Sell Price:</strong>
+                                                <span th:text="${(detail.soldProposalSrecSellPrice ?: 0.0) != 0.0 ? #numbers.formatDecimal(detail.soldProposalSrecSellPrice, 1, 'COMMA', 2, 'POINT') : ''}"></span>
+                                            </li>
+                                            <li>
+                                                <strong>SREC Sell De-escalator:</strong>
+                                                <span th:text="${(detail.soldProposalSrecSellDeEscalator ?: 0.0) != 0.0 ? #numbers.formatDecimal(detail.soldProposalSrecSellDeEscalator, 1, 'COMMA', 2, 'POINT') : ''}"></span>
+                                            </li>
+                                        </th:block>
+                                    </th:block>
+                                    -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--
+                <div class="card">
+                    <div class="card-header bg-1le-green">
+                        <h4 class="h6 card-title mb-0">1st Light Energy Contact Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h5 class="h6 card-title mb-0">Sales Representative</h5>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <span th:text="${detail.directSalesCloserName}"></span>
+                                    </li>
+                                    <li>
+                                        <span th:text="${detail.directSalesCloserPhone}"></span>
+                                        <br/>
+                                        <span th:text="${detail.directSalesCloserEmail}"></span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-6">
+                                <h5 class="h6 card-title mb-0">Account Manager</h5>
+                                <ul class="list-unstyled mb-0">
+                                    <li>
+                                        <span th:text="${detail.accountManagerName}"></span>
+                                    </li>
+                                    <li>
+                                        <span th:utext="${detail.accountManagerPreformattedContactInfo}"></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                -->
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-1le-green">
+                        <h4 class="h6 card-title mb-0">System Design</h4>
+                    </div>
+                    <!-- <img style="max-height:300px;" class="img-fluid img-thumbnail mx-auto" th:src="@{/installation/{id}/files/design-image(id=${detail.id})}" /> -->
+                    <img style="max-height:300px;" class="img-fluid img-thumbnail mx-auto" src="https://dl.dropbox.com/s/7r8hk9hax7wrnii/web_first_images_release.png" />
+
+                    <!--The code below works for all image type-->
+                    <!-- <img style="max-height:300px;" class="img-fluid img-thumbnail mx-auto" th:src="${detail.dropboxImageService}" /> -->
+
+                    <!--The code below display the whole pdf file-->
+                    <!-- <iframe style="max-height:300px;" class="img-fluid img-thumbnail mx-auto" th:src="${detail.dropboxImageService}"></iframe> -->
+                    <!-- <A href=https://www.dropbox.com/s/jelmprtitl4o7mr/2017%20Summer%20PD%20Proposal.pdf#page=3 >page</A> -->
+                    <!-- <iframe style="max-height:300px; overflow:hidden; pointer-events:none;" class="img-fluid img-thumbnail mx-auto" src="http://www.pdf995.com/samples/pdf.pdf#page=3" scrolling="no"></iframe> -->
+
+
+                </div>
+                <div class="card">
+                    <div class="card-header bg-1le-green">
+                        <h4 class="h6 card-title mb-0">Timeline</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6 text-right"><strong>Contract Signed</strong></div>
+                            <!-- <div class="col-lg-6" th:with="contractDate=${detail.contractSignedDate}"> -->
+                            <div class="col-lg-6" th:with="contractDate=${odooData.getContractSignedDate()}">
+                                <span th:text="${contractDate != null ? #temporals.format(contractDate, 'MMM d'','' yyyy') : 'TBD'}"></span>
+                            </div>
+                        </div>
+                        <!--
+                        <div class="row">
+                            <div class="col-lg-6 text-right"><strong>Presite Assessment Scheduled</strong></div> -->
+                            <!-- <div class="col-lg-6" th:with="psaDate=${detail.localScheduledPsaDateTime}"> -->
+                        <!--     <div class="col-lg-6" th:with="psaDate=${odooData.getPsaScheduledDate()}">
+                                <span th:text="${psaDate != null ? #temporals.format(psaDate, 'MMM d'','' yyyy ''at'' h:mm a') : 'TBD'}"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 text-right"><strong>Presite Assessment Completed</strong></div> -->
+                            <!-- <div class="col-lg-6" th:with="psaCompleteDate=${detail.localCompletedPsaDateTime}"> -->
+                        <!--     <div class="col-lg-6" th:with="psaCompleteDate=${odooData.getPsaCompleteDate()}">
+                                <span th:text="${psaDate != null ? #temporals.format(psaCompleteDate, 'MMM d'','' yyyy ''at'' h:mm a') : 'TBD'}"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 text-right"><strong>Scheduled Install</strong></div> -->
+                            <!-- <div class="col-lg-6" th:with="installDate=${detail.scheduledStartDate}"> -->
+                        <!--     <div class="col-lg-6" th:with="installDate=${odooData.getScheduledStartDate()}">
+                                <span th:text="${installDate != null ? #temporals.format(installDate, 'MMM d'','' yyyy') : 'TBD'}"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 text-right"><strong>Waiting For Permission To Operate</strong></div> -->
+                            <!-- <div class="col-lg-6" th:with="pendingDate=${detail.installCompletePendingPto}"> -->
+                        <!--     <div class="col-lg-6" th:with="pendingDate=${odooData.getInstallCompletePendingPto()}">
+                                <span th:text="${pendingDate != null ? #temporals.format(pendingDate, 'MMM d'','' yyyy') : 'TBD'}"></span>
+                            </div>
+                        </div>
+                        -->
+                        <div class="row">
+                            <div class="col-lg-6 text-right"><strong>Install Date</strong></div>
+                            <!-- <div class="col-lg-6" th:with="installDate=${detail.installationDate}"> -->
+                            <div class="col-lg-6" th:with="installDate=${odooData.getInstallationDate()}">
+                                <span th:text="${installDate != null ? #temporals.format(installDate, 'MMM d'','' yyyy') : 'TBD'}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header bg-1le-green">
+                        <h4 class="h6 card-title mb-0">System Overview</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6 text-right"><strong>System Size</strong></div>
+                            <div class="col-lg-6">
+                                <!-- <span th:text="${detail.systemSize != null ? detail.systemSize + ' kW' : 'N/A'}"></span> -->
+                                <span th:text="${odooData.getSystemSize() != null ? odooData.getSystemSize() + ' kW' : 'N/A'}"></span>
+                            </div>
+                        </div>
+                        <!--
+                        <div class="row">
+                            <div class="col-lg-6 text-right"><strong>Status</strong></div>
+                            <div class="col-lg-6"> -->
+                                <!-- <span th:text="${detail.installStatus != null ? detail.installStatus : 'N/A'}"></span> -->
+                        <!--        <span th:text="${odooData.getInstallStatus() != null ? odooData.getInstallStatus() : 'N/A'}"></span>
+                            </div>
+                        </div>
+                        -->
+                      <!--  <div class="row">
+                            <div class="col-lg-6 text-right"><strong>Panel</strong></div>
+                            <div class="col-lg-6">
+                                <span th:text="${detail.panelName != null ? detail.panelName : 'N/A'}"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 text-right"><strong>Panel Count</strong></div>
+                            <div class="col-lg-6">
+                                <span th:text="${#strings.isEmpty(detail.panelName) ? 'N/A' : detail.panelCountFromItems}"></span>
+                            </div>
+                        </div>
+                       <div class="row">
+                            <div class="col-lg-6 text-right">
+                                <strong th:text="${detail.inverterNames.size() > 1 ? 'Inverters' : 'Inverter'}"></strong>
+                            </div>
+                            <div class="col-lg-6">
+                                <span th:text="${detail.formattedInverters != null || detail.formattedInverters.isEmpty() ? detail.formattedInverters : 'N/A'}"></span>
+                            </div>
+                        </div>-->
+                        <!--<div class="row">
+                            <div class="col-lg-6 text-right"><strong>Monitor</strong></div>
+                            <div class="col-lg-6">
+                                <span th:text="${detail.monitorName != null ? detail.monitorName : 'N/A'}"></span>
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header bg-1le-green">
+                        <h4 class="h6 card-title mb-0">Documents</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6 text-right"><strong>Design</strong></div>
+                            <div class="col-lg-6">
+                                <!-- <a th:unless="${#strings.isEmpty(detail.designLink)}" th:href="${detail.designLink}">View</a> -->
+                                <a th:unless="${#strings.isEmpty(odooData.getDesignLink())}" th:href="${odooData.getDesignLink()}">View</a>
+                            </div>
+                        </div>
+                        <!--
+                        <div class="row">
+                            <div class="col-lg-6 text-right"><strong>System Turn On Package</strong></div>
+                            <div class="col-lg-6">
+                                <a th:if="${detail.systemTurnOnPackagePresent}" th:href="@{/installation/{id}/files/STOP Package.pdf(id=${detail.id})}">View</a>
+                            </div>
+                        </div>
+                        -->
+                        <!-- <div class="row" th:with="contracts=${detail.contractDetails ?: {}}"> -->
+                        <!-- <div class="row" th:with="contracts=${detail.contractDetails}"> -->
+
+                        <!--
+                        <div class="row" th:with="contracts=${detail.contractDetails}">
+                            <div class="col-lg-6 text-right"><strong th:text="${contracts.size() == 1 ? 'Contract' : 'Contracts'}"></strong></div>
+                            <div class="col-lg-6" th:with="amount=${contracts.size()},isCombined=${amount == 1 and 'contract'.equals(contracts[0].label)}">
+                                <span th:if="${amount == 0}">None</span>
+                                <a th:if="${isCombined}" th:href="${contracts[0].link}" th:text="'download'"></a>
+                                <span th:unless="${isCombined || amount == 0}">download</span>
+                                <th:block th:unless="${isCombined}" th:each="contract,iterInfo:${contracts}">
+                                    <span th:unless="${iterInfo.first}" th:text="', '" th:remove="tag"></span>
+                                    <a th:href="${contract.link}" th:text="${contract.label}"></a>
+                                </th:block>
+                            </div>
+                        </div>
+                        -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section layout:fragment="end_of_body">
+</section>
+
+<script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="9dsrhl7pwonw8ip"></script>
+
+</body>
+</html>

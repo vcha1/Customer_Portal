@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Appointment has been scheduled</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<p style="text-align: center"><img th:src="|cid:${logo}|"/></p>
+
+<p>Hello <span th:text="${customerName}"></span>,</p>
+
+<br/><br/>
+<p>The following is a brief summary of your appointment with 1st Light Energy.</p>
+
+<p><strong>Address : </strong> <span th:text="${appointment_address}"></span></p>
+
+<p><strong>Appointment Date : </strong><span th:text="${appointment_local_date}"></span></p>
+
+<p><strong>Appointment Time : </strong> <span th:text="${appointment_local_time}"></span></p>
+
+<p><strong>Estimated Duration: </strong> <span
+        th:text="${appointment_duration != NULL ? appointment_duration : appointment_duration_in_mins + ' Mins.'}"></span>
+</p>
+
+<p><strong>Reason : </strong> <span th:text="${reason}"></span></p>
+
+<p th:if="${!#strings.isEmpty(notes)}"><strong>Notes : </strong> <span th:text="${notes}"></span></p>
+
+<p>Thank you for choosing 1st Light Energy!</p>
+
+<p>
+    <small> Note: If you would like to cancel or make a change to your appointment please give
+        us a call at <a href="tel:1-866-837-6527">(866) 837-6527</a>
+    </small>
+</p>
+
+<p>ref: <span th:text="${salesforceId}"></span></p>
+</body>
+</html>

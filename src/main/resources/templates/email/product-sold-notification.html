@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Product Sold</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+    <p>The following is a summary of the product that was purchased on the Customer Portal</p>
+
+    <p><strong>Installation Name:</strong> <span th:remove="tag" th:text="${installationName}"></span></p>
+    <p><strong>Product name:</strong> <span th:remove="tag" th:text="${productName}"></span></p>
+    <p><strong>Product Qty:</strong> <span th:remove="tag" th:text="${productQuantity}"></span></p>
+    <p><strong>Total Paid:</strong> <span th:remove="tag" th:text="${'$' + #numbers.formatDecimal(totalPaid, 1, 'COMMA', 2, 'POINT')}"></span></p>
+</body>
+</html>

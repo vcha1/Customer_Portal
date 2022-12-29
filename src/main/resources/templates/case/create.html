@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base.html}">
+<head>
+    <link rel="stylesheet" href="/css/case/create.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+
+            $(document).on('click', '.sys-operational', function(){
+                this.form.reset();
+                $(".warranty-issue-yes").hide();
+                $(".warranty-issue-no").hide();
+                $(".inverter-display-screen-question").hide();
+                $(".interior-damage-question").hide();
+                $("#attachments-pre-install").prop('required', false);
+                $("#attachments-installation-issue").prop('required', false);
+                $(".help-block").html('');
+                if(this.value > 0){
+                    $(".pto-question").show();
+                    $(".question-2-yes").show();
+                    $(".question-2-no").hide();
+                    $("#installation-choice").prop('required',true);
+                    $("#caseDescription").prop('required', true);
+                    $("#address-choice").prop('required',false);
+                    $("#preInstallDescription").prop('required', false);
+                    $('#system-operational-yes').prop('checked', true)
+                } else{
+                    $(".pto-question").hide();
+                    $(".question-2-no").show();
+                    $(".question-2-yes").hide();
+                    $("#installation-choice").prop('required',false);
+                    $("#caseDescription").prop('required', false);
+                    $("#address-choice").prop('required',true);
+                    $("#preInstallDescription").prop('required', true);
+                    $('#system-operational-no').prop('checked', true)
+                }
+            });
+
+            $(document).on('click', '.pto', function() {
+                console.log(this.value);
+                if(this.value > 0){
+                    $(".question-2-yes").show();
+                    $(".question-2-no").hide();
+                }else{
+                    $(".question-2-no").show();
+                    $(".question-2-yes").hide();
+                }
+
+            });
+            $(document).on('click', '.warranty-issue', function(){
+                if(this.value > 0){
+                    $(".warranty-issue-yes").show();
+                    $(".warranty-issue-no").hide();
+                } else{
+                    $(".warranty-issue-yes").hide();
+                    $(".warranty-issue-no").show();
+                }
+            });
+
+            $("#issue-choice").on('change', function(){
+                $(".description").show();
+                let selected_option = $('#issue-choice option:selected');
+                let value = parseInt(selected_option[0].value, 10);
+                let inverterQuestion = $(".inverter-display-screen-question").hide();
+                let interiorDamageQuestion = $(".interior-damage-question").hide();
+
+                $('#attachment-required-help-block').html('');
+
+                $('#interior-damage-yes').prop('checked', false);
+                $('#interior-damage-no').prop('checked', false);
+                $('#display-screen-yes').prop('checked', false);
+                $('#display-screen-no').prop('checked', false);
+
+                if(value === 3) {
+                    inverterQuestion.show();
+                    $('#attachments-installation-issue').prop('required',false);
+                } else if(value === 4) {
+                    $('#attachment-required-help-block').html('At least one picture of your meter is required');
+                    $('#attachments-installation-issue').prop('required',true);
+                } else if(value === 16) {
+                    interiorDamageQuestion.show();
+                } else if(value === 17) {
+                    $('#attachment-required-help-block').html('At least one picture of your utility bill is required');
+                    $('#attachments-installation-issue').prop('required',true);
+                } else {
+                    $('#attachment-required-help-block').html('');
+                    $('#attachments-installation-issue').prop('required',false);
+                }
+            });
+
+            $('#interior-damage-yes').on('click', function () {
+                $('#attachment-required-help-block').html('At least one picture of the interior damage is required');
+                $('#attachments-installation-issue').prop('required',true);
+            });
+
+            $('#interior-damage-no').on('click', function () {
+                $('#attachment-required-help-block').html('');
+                $('#attachments-installation-issue').prop('required',false);
+            });
+
+            $("#installation-choice").on('change',function(){
+                    $(".issue-selection").show();
+                }
+            );
+
+            $("#pre-install-issue-choice").on('change',function(){
+                    $(".pre-install-issue-description").show();
+                }
+            );
+
+        });
+    </script>
+</head>
+<body>
+
+<section layout:fragment="body_content">
+    <div class="container-fluid p-0">
+
+        <div class = "col-md-12">
+            <p class="pg-header h1 mb-3">Submit a Ticket</p>
+        </div>
+        <div class = "col-md-12">
+            <form th:action = "@{/case/create}" th:object="${request}" method = "post" onsubmit="$.blockUI();" enctype="multipart/form-data">
+                <div class = "question-1">
+                    <div class = "form-body">
+                        <label class = "section-header">
+                            Has your system been installed?
+                        </label>
+                        <div class="form-check">
+                            <input class="form-check-input sys-operational" type="radio" name="isInstallOperational" id="system-operational-yes" value="1">
+                            <label class="form-check-label" for="system-operational-yes">
+                                Yes
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input sys-operational" type="radio" name="isInstallOperational" id="system-operational-no" value="0">
+                            <label class="form-check-label" for="system-operational-no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class = "pto-question hide">
+                    <div class = "form-body">
+                        <label class = "section-header">
+                            Have you received Permission To Operate (PTO) from your utility?
+                        </label>
+                        <div class="form-check">
+                            <input class="form-check-input pto" type="radio" name="ptoReceived" id="pto-yes" value="1">
+                            <label class="form-check-label" for="pto-yes">
+                                Yes
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input pto" type="radio" name="ptoReceived" id="pto-no" value="0">
+                            <label class="form-check-label" for="pto-no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class = "question-2-yes hide">
+                    <div class = "warranty-issue-question form-body ">
+                        <label class = "section-header">
+                            How can we help you?
+                        </label>
+                        <div class="form-check">
+                            <input class="form-check-input warranty-issue" type="radio" name="warranty-issue" id="warranty-issue-yes" value="1">
+                            <label class="form-check-label" for="warranty-issue-yes">
+                                There is an issue with my system
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input warranty-issue" type="radio" name="warranty-issue" id="warranty-issue-no" value="0">
+                            <label class="form-check-label" for="warranty-issue-no">
+                                I'm looking to schedule additional service for my solar system
+                            </label>
+                        </div>
+                    </div>
+                    <div class ="warranty-issue-yes form-body hide">
+                        <div class = "form-body">
+                            <label class = "section-header">
+                                Which installation has an issue?
+                            </label>
+                            <select id ="installation-choice" class = "form-control" name = "installationId">
+                                <option disabled selected value> -- Select an Installation -- </option>
+                                <option
+                                        th:each = "installation : ${installations}"
+                                        th:value = "${installation.getId()}"
+                                        th:text = "${installation.getAddress()}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class = "issue-selection form-body hide">
+                            <label class = "section-header">
+                                What kind of issue are you having?
+                            </label>
+                            <select id = "issue-choice" class = "form-control" name = "category">
+                                <option disabled selected value> -- Select an Option -- </option>
+                                <option class = "issue-option"
+                                        th:each = "category : ${caseIssueCategories}"
+                                        th:value = "${category.id}"
+                                        th:text = "${category.label}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class = "inverter-display-screen-question form-body hide" >
+                            <label class = "section-header" >Does your inverter have a display screen?</label>
+                            <div class = "form-check">
+                                <input id = "display-screen-yes" class="form-check-input" type="radio" name="inverterDisplayScreen"  value="true">
+                                <label for = "display-screen-yes" class = "form-check-local">Yes</label>
+                            </div>
+
+                            <div class = "form-check">
+                                <input id = "display-screen-no" class="form-check-input" type="radio" name="inverterDisplayScreen"  value="false">
+                                <label for = "display-screen-no" class = "form-check-label">No</label>
+                            </div>
+                        </div>
+                        <div class = "interior-damage-question form-body hide">
+                            <label class = "section-header">Is there interior damage?</label>
+                            <label>If not, please let us know how you found the damage</label>
+                            <div class = "form-check">
+                                <input id = "interior-damage-yes" class="form-check-input" type="radio" name="interiorDamage"  value="true">
+                                <label for = "interior-damage-yes" class = "form-check-local">Yes</label>
+                            </div>
+
+                            <div class = "form-check">
+                                <input id = "interior-damage-no" class="form-check-input" type="radio" name="interiorDamage"  value="false">
+                                <label for = "interior-damage-no" class = "form-check-label">No</label>
+                            </div>
+                        </div>
+                        <div class = "description hide">
+                            <div class = "form-body">
+                                <label for ="caseDescription">Describe the issue you're having</label>
+                                <input name = "description" class = "form-control" id = "caseDescription" maxlength="255" pattern=".*\S+.*" placeholder="eg. My panels don't seem to.....">
+                                <br/>
+                                <label for="attachments-installation-issue">Please add any attachments relating to your issue.
+                                    <br/>
+                                    <b>Make sure your file is below 5 MB!</b>
+                                    <br/>
+                                    <input id="attachments-installation-issue" name="attachments" class="" type="file"
+                                           accept="image/jpeg,image/gif,image/png,application/pdf" multiple="multiple"/>
+                                    <br/>
+                                    <small id="attachment-required-help-block" class="help-block text-danger"></small>
+                                </label>
+
+                            </div>
+                            <br/>
+                            <button type = "submit" class = "btn btn-success">Submit Ticket</button>
+                        </div>
+
+                    </div>
+                    <div class ="warranty-issue-no form-body hide">
+                        <a class = "btn btn-success" th:href="@{/schedule/installation-selection}">Check out our Services</a>
+                    </div>
+                </div>
+                <div class = "question-2-no hide">
+                    <div class = "form-body">
+                        <label class = "section-header">
+                            At which address is your system is going to be installed?
+                        </label>
+                        <select id ="address-choice" class = "form-control" name = "addressChoiceId">
+                            <option disabled selected value> -- Select an Installation -- </option>
+                            <option
+                                    th:each = "installation: ${#numbers.sequence(0, installations.getIdList().size() - 1)}"
+                                    th:value = "${installations.getIdList().get(installation)}"
+                                    th:text = "${installations.getAddressList().get(installation)}">
+                                    <!-- th:each = "installation : ${installations}"
+                                    th:value = "${installation.getId()}"
+                                    th:text = "${installation.getAddress()}"> -->
+                            </option>
+                        </select>
+                    </div>
+                    <div class = "form-body">
+                        <label class = "section-header">What is your issue or concern about?</label>
+                        <select id = "pre-install-issue-choice" class = "form-control" name = "preInstallIssue">
+                            <option disabled selected value> -- Select an Option -- </option>
+                            <option
+                                    th:each = "issue : ${casePreInstallIssueCategories}"
+                                    th:value = "${issue.id}"
+                                    th:text = "${issue.label}">
+                            </option>
+
+                        </select>
+                    </div>
+                    <div class = "pre-install-issue-description form-body hide">
+                        <div class = "form-body">
+                            <label for ="preInstallDescription">Describe the issue or concern you are having</label>
+                            <input name = "preInstallDescription" class = "form-control" id = "preInstallDescription"  maxlength="255"  pattern=".*\S+.*" placeholder="eg. I haven't received my reimbursement">
+                        </div>
+
+                        <label for="attachments-pre-install">Please add any attachments relating to your issue.
+                            <br/>
+                            <b>Make sure your file is below 5 MB!</b>
+                            <br/>
+                            <input id="attachments-pre-install" name="attachments" class="" type="file"
+                                   accept="image/jpeg,image/gif,image/png,application/pdf" multiple="multiple"/>
+                        </label>
+                        <br/>
+                        <button type = "submit" class = "btn btn-success">Submit Ticket</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<section layout:fragment="end_of_body">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
+</section>
+</body>
+</html>

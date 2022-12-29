@@ -1,0 +1,152 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base.html}">
+<head>
+    <title th:text="#{label.pages.home.title}">Home</title>
+</head>
+<body>
+<section layout:fragment="body_content">
+    <div class="container-fluid p-0">
+
+        <h1 class="pg-header">Contact Us</h1>
+        <div class="row">
+            <div class="col-md-10 col-xl-8 mx-auto">
+
+                <h2 class="text-center mb-4">Got a question? Send us a message and we'll respond as soon as
+                    possible</h2>
+
+                <div class="col-md-12">
+
+                    <div th:if="${param.success != null}" class="alert alert-success alert-dismissible col-md-12"
+                         role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <div class="alert-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div class="alert-message">
+                            <strong></strong>&nbsp;<span th:text="${param.success[0]}"></span>
+                        </div>
+                    </div>
+
+                    <div th:if="${param.error != null}" class="alert alert-danger alert-dismissible col-md-12"
+                         role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <div class="alert-icon">
+                            <i class="fas fa-fw fa-exclamation-circle"></i>
+                        </div>
+                        <div class="alert-message">
+                            <strong></strong>&nbsp;<span th:text="${param.error[0]}"></span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form th:action="@{/contact-us}" th:object="${request}" method="post"
+                                  onsubmit="$.blockUI();">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label>First Name</label>
+                                        <input type="text" class="form-control" id="firstName" name="firstName"
+                                               th:value="${param.first_name == null ? NULL : param.first_name[0]}"
+                                               placeholder="First name"
+                                               required="required">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Last Name</label>
+                                        <input type="text" class="form-control" id="lastName" name="lastName"
+                                               th:value="${param.last_name == null ? NULL : param.last_name[0]}"
+                                               placeholder="Last name"
+                                               required="required">
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label>Email</label>
+                                        <input type="email" class="form-control" id="email" name="email"
+                                               th:value="${param.email == null ? NULL : param.email[0]}"
+                                               placeholder="Email"
+                                               required="required">
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label>Phone Number</label>
+                                        <input placeholder="(###) ###-####" class="form-control" type="text" data-inputmask-clearincomplete="true"
+                                               required="required" id="phone" name="phone"
+                                               th:value="${param.phone == null ? NULL : param.phone[0]}">
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label>Solar Panel System</label>
+                                        <select class="form-control" required="required" id="installation"
+                                                name="installationId">
+                                            <option value="">Choose your solar panel system</option>
+                                            <th:block th:each="installation : ${installations}">
+                                                <option th:selected="${param.installation_id == null? false : param.installation_id[0] == installation.id}"
+                                                        th:value="${installation.id}"
+                                                        th:text="${installation.address + ' ' + installation.city + ', ' + installation.state + ' ' + installation.zipCode}"></option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label>Reason</label>
+                                        <select class="form-control" required="required" id="reason" name="reason">
+                                            <option value="">Choose reason...</option>
+                                            <th:block th:each="reason : ${reasons}">
+                                                <option th:selected="${param.reason == NULL ? false : param.reason[0] == reason.name()}"
+                                                        th:value="${reason}"
+                                                        th:text="${reason.label}"></option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label>Product or service</label>
+                                        <select class="form-control" required="required" id="product" name="productId">
+                                            <option value="">Choose product or service</option>
+                                            <th:block th:each="product : ${products}">
+                                                <option th:selected="${param.product == null? false : param.product[0] == product.id.toString()}"
+                                                        th:value="${product.id}" th:text="${product.name}"></option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label>Message</label>
+                                        <textarea id="message" name="message"
+                                                  th:text="${param.contact_message == null ? NULL : param.contact_message[0]}"
+                                                  type="text" class="form-control"
+                                                  placeholder="Your message or question"
+                                                  required="required" rows="4" maxlength="255"></textarea>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+<section layout:fragment="end_of_body">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.62/jquery.inputmask.bundle.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var formats = [{"mask": "(###) ###-####"}];
+        $('#phone').inputmask({
+            mask: formats,
+            greedy: false,
+            definitions: {'#': {validator: "[0-9]", cardinality: 1}}
+        });
+        /*]]>*/
+    </script>
+</section>
+</body>
+</html>

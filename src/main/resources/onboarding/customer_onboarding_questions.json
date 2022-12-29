@@ -1,0 +1,92 @@
+[
+  {
+    "q": "Question 1/9 I am of sound mind and understand that I am entering into an agreement to install PV solar on my home",
+    "options": [
+      "Yes, I am of sound mind",
+      "No, I am not of sound mind"
+    ],
+    "correctIndex": 0,
+    "correctResponse": "",
+    "incorrectResponse": "Please try again"
+  },
+  {
+    "q": "Question 2/9 The estimate I received for a solar loan was based on utilization of tax incentives and understand that 1st Light Sales Representatives are not tax professionals",
+    "options": [
+      "Yes, I understand",
+      "No, I do not understand"
+    ],
+    "correctIndex": 0,
+    "correctResponse": "",
+    "incorrectResponse": "Please try again"
+  },
+  {
+    "q": "Question 3/9 I am able to read and understand clearly the language in which this agreement is written",
+    "options": [
+      "Yes, I understand",
+      "No, I do not understand"
+    ],
+    "correctIndex": 0,
+    "correctResponse": "",
+    "incorrectResponse": "Please try again"
+  },
+  {
+    "q": "Question 4/9 If the sales rep has made a promise to me outside of the standard 1st Light Agreement it does not need to be in writing",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 1,
+    "correctResponse": "",
+    "incorrectResponse": "Anything expressed or implied by the sales representative outside of a standard agreement needs to be included within the agreement via the addendum in order to be included in this agreement. Please try again."
+  },
+  {
+    "q": "Question 5/9 I understand that I may need to allow people in or on my home prior to and after installation. Additionally, I will need to approve the design of the system prior to us submitting for permit",
+    "options": [
+      "Yes, I understand",
+      "No, I do not understand"
+    ],
+    "correctIndex": 0,
+    "correctResponse": "",
+    "incorrectResponse": "Please try again"
+  },
+  {
+    "q": "Question 6/9 I recognize that my monthly payment is based on paying back my federal tax credit to the bank within the initial 18 months in order to maintain my proposed payment amount",
+    "options": [
+      "Yes, I understand",
+      "No, I do not understand"
+    ],
+    "correctIndex": 0,
+    "correctResponse": "",
+    "incorrectResponse": "Please try again"
+  },
+  {
+    "q": "Question 7/9 I was guaranteed that my system would be installed within a certain time period.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 1,
+    "correctResponse": "",
+    "incorrectResponse": "Although we have certain metrics we use to estimate install times, there is no 100% guaranteed expectation in regard to installation time. Please try again"
+  },
+  {
+    "q": "Question 8/9 Solar System offsets from the utility company are estimates based on current consumption. We cannot guarantee what your power bill will be after solar is installed because we cannot guarantee how much power you will use in any given year",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "correctResponse": "",
+    "incorrectResponse": "Please try again"
+  },
+  {
+    "q": "Last Question! I understand that my solar loan begins when my system is installed. Utility and city approval timelines, which are out of 1st Light Energy’s control, may lead to a small time window where you have both a bill for solar in addition to your regular utility bill.",
+    "options": [
+      "Yes, I understand",
+      "No, I do not understand"
+    ],
+    "correctIndex": 0,
+    "correctResponse": "",
+    "incorrectResponse": "Please try again"
+  }
+]
