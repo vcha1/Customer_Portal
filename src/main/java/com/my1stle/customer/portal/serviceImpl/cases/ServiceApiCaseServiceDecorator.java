@@ -91,7 +91,7 @@ public class ServiceApiCaseServiceDecorator implements CaseService {
                 .filter(ServiceApiCaseServiceDecorator::isNotInternalTicket)
                 .collect(Collectors.toList());
 
-        System.out.println(proxies);
+        //System.out.println(proxies);
 
         /*
         List<ServiceCaseProxy> proxies = this.installationService.getInstallations()
@@ -125,18 +125,23 @@ public class ServiceApiCaseServiceDecorator implements CaseService {
     @Override
     public Optional<ServiceCase> get(String id) {
         if (StringUtils.isNumeric(id)) {
+            //System.out.println("getServiceCase(id)" + id);
+            //System.out.println(getServiceCase(id));
             return getServiceCase(id);
         }
+        //System.out.println("this.decoratedCaseService.get(id)");
+        //System.out.println(this.decoratedCaseService.get(id));
         return this.decoratedCaseService.get(id);
     }
 
-    //@Override
-    //public Optional<ServiceCase> getByOdooId(String id) {
-    //    if (StringUtils.isNumeric(id)) {
-    //        return getServiceCase(id);
-    //    }
-    //    return this.decoratedCaseService.get(id);
-    //}
+
+    @Override
+    public List<ExistingServiceCaseDto> getByOdooIdTest(String id) {
+        if (StringUtils.isNumeric(id)) {
+            return getServiceCaseProxyOdooTest(id);
+        }
+        return this.decoratedCaseService.getByOdooIdTest(id);
+    }
 
     @Override
     public CaseSubmitResult submit(CaseDto dto) {
@@ -196,18 +201,25 @@ public class ServiceApiCaseServiceDecorator implements CaseService {
 
 
     private Optional<ServiceCase> getServiceCase(String id) {
+
+        /*
         Set<String> installationIds = this.installationService.getInstallations()
                 .stream()
                 .map(Installation::getId)
                 .collect(Collectors.toSet());
+        */
+
         Optional<ServiceCaseProxy> serviceCase = getServiceCaseProxy(id);
 
+        //Optional<ServiceCaseProxy> serviceCase = getServiceCaseProxyOdoo(id);
+        //System.out.println("getServiceCase " + id);
         //Try to add Odoo ID to list
         List<String> installationOdooNames = this.installationServiceOdoo.getInstallationByEmail().getName();
 
         if (serviceCase.isPresent()) {
-            ServiceCaseProxy proxy = serviceCase.get();
 
+            ServiceCaseProxy proxy = serviceCase.get();
+            //System.out.println("proxy " + proxy);
             DefaultHelpdeskService helpdeskTicketInstallation = this.helpdeskServiceOdoo.getHelpdeskByTicketId(proxy.getOdooId());
             //Installation need to be switched to odoo ID, make sure Odoo contains the Odoo External ID
             //For this to work
@@ -226,10 +238,21 @@ public class ServiceApiCaseServiceDecorator implements CaseService {
         return Optional.empty();
     }
 
+
+
     private Optional<ServiceCaseProxy> getServiceCaseProxy(String id) {
         try {
             return serviceCasesApi.get(Long.parseLong(id))
                     .map(ServiceCaseProxy::from);
+        } catch (ServiceApiException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    // Using Odoo ID
+    private List<ExistingServiceCaseDto> getServiceCaseProxyOdooTest(String id) {
+        try {
+            return serviceCasesApi.getByOdooIdTest(id);
         } catch (ServiceApiException e) {
             throw new RuntimeException(e.getMessage(), e);
         }

@@ -9,7 +9,7 @@ public interface ServiceCasesApi {
 
     Optional<ExistingServiceCaseDto> get(long caseId) throws ServiceApiException;
 
-    Optional<ExistingServiceCaseDto> getByOdooId(long caseId) throws ServiceApiException;
+    List<ExistingServiceCaseDto> getByOdooIdTest(String id) throws ServiceApiException;
 
     List<ExistingServiceCaseDto> getByExternalId(String externalId) throws ServiceApiException;
 

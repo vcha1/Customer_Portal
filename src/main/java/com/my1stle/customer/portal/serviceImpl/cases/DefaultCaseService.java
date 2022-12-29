@@ -11,6 +11,7 @@ import com.my1stle.customer.portal.service.cases.CaseSubject;
 import com.my1stle.customer.portal.service.cases.CaseSubmitResult;
 import com.my1stle.customer.portal.service.model.Installation;
 import com.my1stle.customer.portal.service.model.ServiceCase;
+import com.my1stle.customer.portal.service.serviceapi.ExistingServiceCaseDto;
 import com.my1stle.customer.portal.serviceImpl.servicerequest.SalesforceServiceCase;
 import com.my1stle.customer.portal.serviceImpl.servicerequest.SalesforceServiceCaseRecordType;
 import com.my1stle.customer.portal.serviceImpl.servicerequest.SalesforceServiceCaseRepository;
@@ -66,10 +67,19 @@ public class DefaultCaseService implements CaseService {
                 );
         if(cases.isEmpty())
             return Optional.empty();
-
+        //System.out.println("DefaultCaseService Get");
+        //System.out.println(cases);
         return Optional.of(cases.get(0));
 
     }
+
+    @Override
+    public List<ExistingServiceCaseDto> getByOdooIdTest(String id){
+
+        return null;
+
+    }
+
 
     @Override
     public CaseSubmitResult submit(CaseDto dto){

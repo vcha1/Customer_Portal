@@ -13,7 +13,10 @@ import com.my1stle.customer.portal.service.model.ServiceCase;
 import com.my1stle.customer.portal.service.model.ServiceCaseAttachment;
 import com.my1stle.customer.portal.service.odoo.OdooHelpdeskData;
 import com.my1stle.customer.portal.service.odoo.OdooInstallationData;
+import com.my1stle.customer.portal.service.serviceapi.ExistingServiceCaseDto;
 import com.my1stle.customer.portal.service.serviceapi.ServiceApiCategory;
+import com.my1stle.customer.portal.service.serviceapi.ServiceApiException;
+import com.my1stle.customer.portal.serviceImpl.serviceapi.DefaultServiceCasesApi;
 import com.my1stle.customer.portal.serviceImpl.servicerequest.SalesforceServiceCase;
 import com.my1stle.customer.portal.util.MimeTypeUtility;
 import com.my1stle.customer.portal.web.dto.cases.CaseDto;
@@ -45,6 +48,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/case")
@@ -58,6 +62,8 @@ public class CaseController {
     private final CaseAttachmentService caseAttachmentService;
 
     private final Logger LOGGER = LoggerFactory.getLogger(CaseController.class);
+
+    private String currentCaseId;
 
     @Autowired
     public CaseController(
@@ -77,20 +83,17 @@ public class CaseController {
         OdooHelpdeskData odooTicketData = new OdooHelpdeskData(odooData.getNameList());
         //OdooHelpdeskData odooTicketData = new OdooHelpdeskData("ESS #8055 Manteca - S Main St");
         //OdooHelpdeskData odooTicketData = new OdooHelpdeskData("ESS #1538 Lawrence Station Rd - 002807");
-        //System.out.println(odooData.getNameList());
-        //System.out.println(odooTicketData);
+
         model.addAttribute("odooTicketData", odooTicketData);
         model.addAttribute("installations", this.installationService.getInstallations());
-        model.addAttribute("cases", this.caseService.getCases());
+        //model.addAttribute("cases", this.caseService.getCases());
         return "case/hub";
     }
 
     @GetMapping(value = CREATE_CASE)
     public String createCase(@AuthenticationPrincipal User user, Model model) {
         OdooInstallationData odooData = new OdooInstallationData(user.getEmail());
-        //System.out.println(odooData.getIdList());
-        //System.out.println(odooData.getIdList().get(0));
-        //System.out.println(odooData.getAddressList().get(0));
+
         //model.addAttribute("installations", this.installationService.getInstallations());
         model.addAttribute("installations", odooData);
         model.addAttribute("request", new CaseDto());
@@ -125,19 +128,18 @@ public class CaseController {
             @AuthenticationPrincipal User user,
             Model model,
             @PathVariable("caseId") String caseId
-    ) {
+    ) throws ServiceApiException {
         //System.out.println(caseId);
-        //ServiceCase serviceCaseOdoo = this.caseService.getByOdooId(caseId)
-        //        .orElseThrow(() -> new ResourceNotFoundException("Case not found!"));
+        currentCaseId = caseId;
+        List<ExistingServiceCaseDto> serviceCaseOdoo = this.caseService.getByOdooIdTest(caseId);
 
-        //Need to get the correct ID for this code to work. So we will need to create something where an Old ID is attached to the Newer ID somehow
-        ServiceCase serviceCase = this.caseService.get("15238")
+        String caseIdPhpMyAdmin = String.valueOf(serviceCaseOdoo.get(0).getId());
+
+        ServiceCase serviceCase = this.caseService.get(caseIdPhpMyAdmin)
                 .orElseThrow(() -> new ResourceNotFoundException("Case not found!"));
-        //OdooInstallationData odooData = new OdooInstallationData(user.getEmail(), caseId, "caseView");
-        //OdooInstallationData odooData = new OdooInstallationData(user.getEmail());
+
         OdooHelpdeskData odooTicketData = new OdooHelpdeskData("Installation", caseId);
-        //OdooHelpdeskData odooTicketData = new OdooHelpdeskData("ESS #8055 Manteca - S Main St");
-        //OdooHelpdeskData odooTicketData = new OdooHelpdeskData("ESS #1538 Lawrence Station Rd - 002807", caseId);
+
         model.addAttribute("odooTicketData", odooTicketData);
         model.addAttribute("case", serviceCase);
         //model.addAttribute("isLegacyCase", serviceCase instanceof SalesforceServiceCase);
@@ -147,24 +149,30 @@ public class CaseController {
     @PostMapping(value = "/{id}/comment")
     public String addComment(@PathVariable(name = "id") String caseId, @ModelAttribute NewServiceCaseComment comment, RedirectAttributes redirectAttributes) {
         try {
-            ServiceCase serviceCase = this.caseCommentService.addComment(caseId, comment);
-            return String.format("redirect:/case/%s", serviceCase.getId());
+            //ServiceCase serviceCase = this.caseCommentService.addComment(caseId, comment);
+            this.caseCommentService.addComment(caseId, comment);
+            //return String.format("redirect:/case/%s", serviceCase.getId());
+            return String.format("redirect:/case/%s", currentCaseId);
         } catch (CaseServiceException e) {
             LOGGER.error(e.getMessage(), e);
             redirectAttributes.addFlashAttribute("error", "Sorry, something went wrong. Please try again");
-            return String.format("redirect:/case/%s", caseId);
+            //return String.format("redirect:/case/%s", caseId);
+            return String.format("redirect:/case/%s", currentCaseId);
         }
     }
 
     @PostMapping(value = "/{id}/attachment")
     public String addAttachment(@PathVariable(name = "id") String caseId, @ModelAttribute NewServiceCaseAttachment attachment, RedirectAttributes redirectAttributes) {
         try {
-            ServiceCase serviceCase = this.caseAttachmentService.addAttachment(caseId, attachment);
-            return String.format("redirect:/case/%s", serviceCase.getId());
+            //ServiceCase serviceCase = this.caseAttachmentService.addAttachment(caseId, attachment);
+            this.caseAttachmentService.addAttachment(caseId, attachment);
+            //return String.format("redirect:/case/%s", serviceCase.getId());
+            return String.format("redirect:/case/%s", currentCaseId);
         } catch (CaseServiceException e) {
             LOGGER.error(e.getMessage(), e);
             redirectAttributes.addFlashAttribute("error", "Sorry, something went wrong. Please try again");
-            return String.format("redirect:/case/%s", caseId);
+            //return String.format("redirect:/case/%s", caseId);
+            return String.format("redirect:/case/%s", currentCaseId);
         }
     }
 

@@ -44,7 +44,7 @@ public class DefaultServiceCasesApi implements ServiceCasesApi {
 
     @Override
     public Optional<ExistingServiceCaseDto> get(long id) throws ServiceApiException {
-        System.out.println("get");
+        System.out.println("get Case Id");
         //System.out.println(id);
         //id = 15238;
 
@@ -52,8 +52,9 @@ public class DefaultServiceCasesApi implements ServiceCasesApi {
                 .header("x-api-key", this.credentials.getApiKey())
                 .routeParam("caseId", String.valueOf(id))
                 .asString();
-
+        //System.out.println(response);
         if (response.isSuccess()) {
+            //System.out.println(Optional.of(parse(response, ExistingServiceCaseDto.class)));
             return Optional.of(parse(response, ExistingServiceCaseDto.class));
         } else if (response.getStatus() == HttpStatus.NOT_FOUND.value()) {
             return Optional.empty();
@@ -63,30 +64,32 @@ public class DefaultServiceCasesApi implements ServiceCasesApi {
 
     }
 
-    public Optional<ExistingServiceCaseDto> getByOdooId(long id) throws ServiceApiException {
-        System.out.println("get");
-        //System.out.println(id);
-        //id = 15238;
 
-        HttpResponse<String> response = Unirest.get(endpoint().concat("/{caseId}"))
+    @Override
+    public List<ExistingServiceCaseDto> getByOdooIdTest(String odooId) throws ServiceApiException {
+        System.out.println("get Odoo " + odooId);
+        //id = "a064u00001nqPxOAAU";
+
+        HttpResponse<String> response = Unirest.get(endpoint())
                 .header("x-api-key", this.credentials.getApiKey())
-                .routeParam("caseId", String.valueOf(id))
+                //.queryString("externalId", odooId)
+                .queryString("odooId", odooId)
                 .asString();
 
+        //System.out.println(getExistingServiceCasesDto(response));
+
         if (response.isSuccess()) {
-            return Optional.of(parse(response, ExistingServiceCaseDto.class));
-        } else if (response.getStatus() == HttpStatus.NOT_FOUND.value()) {
-            return Optional.empty();
-        } else {
-            throw new ServiceApiException(parse(response, ErrorDto.class).getMessage(), HttpStatus.valueOf(response.getStatus()));
+            return getExistingServiceCasesDto(response);
         }
 
+        throw new ServiceApiException(parse(response, ErrorDto.class).getMessage(), HttpStatus.valueOf(response.getStatus()));
+
     }
+
 
     @Override
     public List<ExistingServiceCaseDto> getByExternalId(String externalId) throws ServiceApiException {
-        System.out.println("get by external id");
-        System.out.println(externalId);
+        System.out.println("get by external id " + externalId);
         //test
         //externalId = "a064u00001nqPxOAAU";
         //test
@@ -94,7 +97,8 @@ public class DefaultServiceCasesApi implements ServiceCasesApi {
                 .header("x-api-key", this.credentials.getApiKey())
                 .queryString("externalId", externalId)
                 .asString();
-
+        //System.out.println("externalId response " + response);
+        //System.out.println("externalId response " + getExistingServiceCasesDto(response));
         if (response.isSuccess()) {
             return getExistingServiceCasesDto(response);
         }
