@@ -61,7 +61,6 @@ public class OdooHelpdeskData {
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.US);
                     LocalDateTime localDate = LocalDateTime.parse(testing, formatter);
                     localDate = localDate.minusHours(8);
-                    //System.out.println(DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a").format(localDate));
 
                     this.scheduledDateTime.add(DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a").format(localDate));
                     //this.scheduledDateTime.add(dtf.parseDateTime(odooConnection.findObjects(objectType, Arrays.asList("x_studio_scheduled_date_time"),
@@ -133,7 +132,6 @@ public class OdooHelpdeskData {
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.US);
                         LocalDateTime localDate = LocalDateTime.parse(testing, formatter);
                         localDate = localDate.minusHours(8);
-                        //System.out.println(DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a").format(localDate));
 
                         this.scheduledDateTime.add(DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a").format(localDate));
                         //this.scheduledDateTime.add(dtf.parseDateTime(odooConnection.findObjects(objectType, Arrays.asList("x_studio_scheduled_date_time"),
@@ -205,7 +203,6 @@ public class OdooHelpdeskData {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.US);
                 LocalDateTime localDate = LocalDateTime.parse(testing, formatter);
                 localDate = localDate.minusHours(8);
-                //System.out.println(DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a").format(localDate));
 
                 this.scheduledDateTime.add(DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a").format(localDate));
                 //this.scheduledDateTime.add(dtf.parseDateTime(odooConnection.findObjects(objectType, Arrays.asList("x_studio_scheduled_date_time"),

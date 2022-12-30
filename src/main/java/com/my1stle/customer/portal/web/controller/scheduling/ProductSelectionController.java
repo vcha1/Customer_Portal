@@ -70,8 +70,6 @@ public class ProductSelectionController {
                 id = installations.getId().get(i).toString();
             }
         }
-        //System.out.println(installationsdad);
-        //System.out.println(installationsdad.getPanelCountFromItems());
         model.addAttribute("products", products);
         //model.addAttribute("selected_installation", installation);
         model.addAttribute("address", address);

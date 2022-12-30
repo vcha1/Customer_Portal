@@ -22,7 +22,6 @@ public class HomeController {
     @GetMapping("/home")
     public String homeAction() {
         List<Installation> installations = this.installationService.getInstallations();
-        //System.out.println(installations);
         String url = String.format("/installation/%s/details", installations.get(0).getId());
 
         return "redirect:" + url;
@@ -33,8 +32,6 @@ public class HomeController {
     @GetMapping("/home")
     public String homeAction() {
         DefaultInstallationServiceOdoo installations = new DefaultInstallationServiceOdoo();
-        //System.out.println(installations);
-        //System.out.println(installations.getId());
         String url = String.format("/installation/%s/details", installations.getId().get(0));
         //url = "/create-payment-intent";
         return "redirect:" + url;
@@ -53,7 +50,6 @@ public class HomeController {
     @GetMapping("/home")
     public String homeAction() {
         List<Installation> installations = this.installationService.getInstallations();
-        //System.out.println(installations);
         DefaultInstallationServiceOdoo installationsOdoo = new DefaultInstallationServiceOdoo();
         String url = String.format("/installation/%s/details", installationsOdoo.getId().get(0));
 

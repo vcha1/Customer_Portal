@@ -26,11 +26,7 @@ public class DefaultInstallationServiceOdoo {
         List<String> fields = Arrays.asList("name",  "x_studio_contract_type_3", "x_studio_site_street");
         List<Object> criteria = Arrays.asList(Arrays.asList("x_studio_email_3", "=",userEmail));
 
-
         List<Map<String, ?>> results = odooConnection.findObjects(objectType, fields, criteria);
-
-        //System.out.println(results);
-        //System.out.println(results.size());
 
         for (int ids = 0; ids < results.size(); ids++) {
             Object integer = results.get(ids).get("id");

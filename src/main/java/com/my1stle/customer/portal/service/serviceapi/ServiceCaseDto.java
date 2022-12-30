@@ -197,7 +197,6 @@ public class ServiceCaseDto {
 
         public Builder externalId(String externalId) {
             this.externalId = externalId;
-            //System.out.println(this.externalId);
             return this;
         }
 

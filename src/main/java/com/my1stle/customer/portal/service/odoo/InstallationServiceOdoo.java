@@ -12,9 +12,6 @@ public class InstallationServiceOdoo {
 
         DefaultInstallationServiceOdoo odooData = new DefaultInstallationServiceOdoo();
 
-        //System.out.println(odooData);
-        //System.out.println(odooData.getId());
-        //System.out.println(odooData.getAddress());
         return odooData;
     }
 

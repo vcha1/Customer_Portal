@@ -342,9 +342,9 @@ public class OdooInstallationData {
         String objectType = "project.task";
         List<String> fields = Arrays.asList("name");
         List<Object> criteria = Arrays.asList(Arrays.asList("id", "=", id));
-        //System.out.println(id);
+
         List<Map<String, ?>> results = odooConnection.findObjects(objectType, fields, criteria);
-        //System.out.println(results);
+
         try {
             this.id = results.get(0).get("id");
             this.name = odooConnection.findObjects(objectType, Arrays.asList("name"),

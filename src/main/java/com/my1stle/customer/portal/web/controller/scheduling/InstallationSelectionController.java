@@ -50,8 +50,6 @@ public class InstallationSelectionController {
             return "redirect:/schedule/product-selection";
         }
 
-        //System.out.println(installations.getId().size());
-
         model.addAttribute("installations", installations);
 
         return "scheduling/installation-selection";

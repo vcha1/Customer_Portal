@@ -60,7 +60,6 @@ public class StripeController {
     /*
     @PostMapping("/create-payment-intent")
     public String StripeTest(HttpServletRequest request, HttpServletResponse response) throws StripeException {
-        System.out.println("Stripe Controller Begins");
         Gson gson = new Gson();
         response.setContentType("application/json");
         Stripe.apiKey = "sk_test_51MEH73FUBi5jGHMWDKDFJCQjFUV7Kyf3WI23O5eORb9ZUrxQbuO14JtCkh4zCdUgeZUvGC09xkUHZz29kSYwlpQ100oT7lZRlC";
@@ -99,7 +98,6 @@ public class StripeController {
     /*
     @PostMapping("/create-payment-intent")
     public CreatePaymentResponse createPaymentIntent(@RequestBody @Valid CreatePayment createPayment)throws StripeException {
-        System.out.println("Second");
         long x = 10000;
         PaymentIntentCreateParams createParams = new
                 PaymentIntentCreateParams.Builder()
@@ -124,7 +122,6 @@ public class StripeController {
     @PostMapping(value = "/service-request/checkout/payment/stripe")
     public String createPaymentIntent(Model model) throws StripeException {
         Stripe.apiKey = "sk_test_51MEH73FUBi5jGHMWDKDFJCQjFUV7Kyf3WI23O5eORb9ZUrxQbuO14JtCkh4zCdUgeZUvGC09xkUHZz29kSYwlpQ100oT7lZRlC";
-        //System.out.println("Second");
         //response.setContentType("application/json");
         //CreatePayment postBody = gson.fromJson(request.body(), CreatePayment.class);
         long x = 25000;
@@ -144,12 +141,8 @@ public class StripeController {
         PaymentIntent intent = PaymentIntent.create(createParams);
         CreatePaymentResponse paymentResponse = new CreatePaymentResponse(intent.getClientSecret());
 
-
         String test = gson.toJson(paymentResponse);
         stripeClass.setStripeInfo(test);
-
-        //System.out.println(paymentResponse);
-        System.out.println(gson.toJson(paymentResponse));
 
 //        return gson.toJson(paymentResponse);
         return "redirect:/service-request/checkout/payment/stripe";
@@ -158,8 +151,6 @@ public class StripeController {
     //@RequestMapping(value = "/create-payment-intent", method = RequestMethod.GET)
     @GetMapping(value = "/service-request/checkout/payment/stripe")
     public String getTest(Model model) {
-        //System.out.println("Get Second");
-        //System.out.println(stripeClass.getStripeInfo());
         model.addAttribute("stripeClass", stripeClass);
         return "serviceRequest/checkout/stripetest2.html";
     }

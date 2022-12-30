@@ -81,8 +81,6 @@ public class CaseController {
     public String caseHub(@AuthenticationPrincipal User user, Model model) {
         OdooInstallationData odooData = new OdooInstallationData(user.getEmail());
         OdooHelpdeskData odooTicketData = new OdooHelpdeskData(odooData.getNameList());
-        //OdooHelpdeskData odooTicketData = new OdooHelpdeskData("ESS #8055 Manteca - S Main St");
-        //OdooHelpdeskData odooTicketData = new OdooHelpdeskData("ESS #1538 Lawrence Station Rd - 002807");
 
         model.addAttribute("odooTicketData", odooTicketData);
         model.addAttribute("installations", this.installationService.getInstallations());
@@ -109,8 +107,7 @@ public class CaseController {
             RedirectAttributes redirectAttributes,
             HttpServletRequest httpServletRequest
     ) {
-        //System.out.println(request);
-        //System.out.println(request.getAddressChoiceId());
+
         CaseSubmitResult result = this.caseService.submit(request);
 
         if (result.isSuccess()) {

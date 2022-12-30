@@ -62,9 +62,6 @@ public class DateTimeSelectionController {
             @RequestParam(name = "render_events", required = false) Boolean renderEvents,
             RedirectAttributes redirectAttributes,
             Model model) throws JsonProcessingException {
-        //System.out.println(installationId);
-
-        //This is where it is failing
         //Installation installation = installationService.getInstallationById(installationId);
 
         /*
@@ -116,9 +113,6 @@ public class DateTimeSelectionController {
 
         //getting odoo installation
         OdooInstallationData odooInstallationData =  new OdooInstallationData(installationId, "project.task");
-        //System.out.println(odooInstallationData);
-        //System.out.println(odooInstallationData.getName());
-
         //Installation installation = installationService.getInstallationById(installationId);
 
         if (null == odooInstallationData) {
@@ -137,8 +131,7 @@ public class DateTimeSelectionController {
 
         BigDecimal price = product.getPricingType().calculation().apply(product, odooInstallationData);
         int compareTo = price.compareTo(BigDecimal.ZERO);
-        //System.out.println("compareTo");
-        //System.out.println(compareTo);
+
         if (compareTo <= 0) {
             redirectAttributes.addAttribute("installation_id", odooInstallationData.getId());
             return String.format("redirect:/product/%s/quote", product.getId());
@@ -149,8 +142,7 @@ public class DateTimeSelectionController {
             redirectAttributes.addAttribute("product_id", product.getId());
             return "redirect:/subscription";
         }
-        //System.out.println("product.getIsSchedulable()");
-        //System.out.println(product.getIsSchedulable());
+
         if (product.getIsSchedulable()) {
 
             List<Calendar> assignees = this.dateTimeSelectionService.getAvailableCalendars(odooInstallationData.getId().toString(), product.getId());

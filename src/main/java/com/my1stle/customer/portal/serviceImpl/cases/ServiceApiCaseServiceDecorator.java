@@ -126,11 +126,9 @@ public class ServiceApiCaseServiceDecorator implements CaseService {
     public Optional<ServiceCase> get(String id) {
         if (StringUtils.isNumeric(id)) {
             //System.out.println("getServiceCase(id)" + id);
-            //System.out.println(getServiceCase(id));
             return getServiceCase(id);
         }
         //System.out.println("this.decoratedCaseService.get(id)");
-        //System.out.println(this.decoratedCaseService.get(id));
         return this.decoratedCaseService.get(id);
     }
 
@@ -185,8 +183,6 @@ public class ServiceApiCaseServiceDecorator implements CaseService {
 
         //System.out.println(odooCaseDTO.getId());
         String odooId = odooCaseDTO.getId().toString();
-
-        //System.out.println(odooId);
 
         ServiceCaseDto serviceCaseDto2 = new ServiceCaseDto.Builder(serviceApiUserId, issueTypeId, summary, serviceDescription, ServiceCaseStatus.NEW)
                 .subIssueType(subIssueTypeId)

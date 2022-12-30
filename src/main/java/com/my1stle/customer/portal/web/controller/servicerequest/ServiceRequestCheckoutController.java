@@ -171,7 +171,6 @@ public class ServiceRequestCheckoutController {
     @PostMapping(value = "/payment/stripe")
     public String createPaymentIntent(Model model) throws StripeException {
         Stripe.apiKey = "sk_test_51MEH73FUBi5jGHMWDKDFJCQjFUV7Kyf3WI23O5eORb9ZUrxQbuO14JtCkh4zCdUgeZUvGC09xkUHZz29kSYwlpQ100oT7lZRlC";
-        //System.out.println("Second");
         //response.setContentType("application/json");
         //CreatePayment postBody = gson.fromJson(request.body(), CreatePayment.class);
 
@@ -206,9 +205,8 @@ public class ServiceRequestCheckoutController {
     @GetMapping(value = "/payment/stripe/{serviceRequestIds}")
     public String getPaymentHtml(Model model,
                           @PathVariable Long serviceRequestIds) {
-        //System.out.println("Get Second");
-        model.addAttribute("stripeClass", stripeClass);
 
+        model.addAttribute("stripeClass", stripeClass);
 
         ServiceRequest request = serviceRequestService.getById(serviceRequestIds);
         this.serviceId = serviceRequestIds;

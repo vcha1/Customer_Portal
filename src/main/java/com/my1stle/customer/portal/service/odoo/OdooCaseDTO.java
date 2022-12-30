@@ -46,9 +46,7 @@ public class OdooCaseDTO {
             map.clear();
             map.put("x_studio_service_description_2", serviceCaseDto.getDescription());
             map.put("x_studio_installation", odooData.getId());
-            //System.out.println("Here1");
-            //System.out.println(results);
-            //System.out.println(results.get(0));
+
             long issueType = serviceCaseDto.getIssueType();
             long subIssueType = serviceCaseDto.getSubIssueType();
 

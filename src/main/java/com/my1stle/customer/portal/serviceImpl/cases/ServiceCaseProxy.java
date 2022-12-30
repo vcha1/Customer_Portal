@@ -58,7 +58,6 @@ class ServiceCaseProxy implements ServiceCase, Consumer<Visitor<ServiceCaseProxy
     }
 
     static ServiceCaseProxy from(ExistingServiceCaseDto existingServiceCaseDto) {
-        //System.out.println(existingServiceCaseDto);
         ServiceCaseProxy proxy = new ServiceCaseProxy();
         proxy.id = String.valueOf(existingServiceCaseDto.getId());
         proxy.externalId = existingServiceCaseDto.getExternalId();

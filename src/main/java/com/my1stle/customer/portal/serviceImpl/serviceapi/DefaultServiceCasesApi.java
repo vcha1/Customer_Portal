@@ -45,16 +45,12 @@ public class DefaultServiceCasesApi implements ServiceCasesApi {
     @Override
     public Optional<ExistingServiceCaseDto> get(long id) throws ServiceApiException {
         System.out.println("get Case Id");
-        //System.out.println(id);
-        //id = 15238;
 
         HttpResponse<String> response = Unirest.get(endpoint().concat("/{caseId}"))
                 .header("x-api-key", this.credentials.getApiKey())
                 .routeParam("caseId", String.valueOf(id))
                 .asString();
-        //System.out.println(response);
         if (response.isSuccess()) {
-            //System.out.println(Optional.of(parse(response, ExistingServiceCaseDto.class)));
             return Optional.of(parse(response, ExistingServiceCaseDto.class));
         } else if (response.getStatus() == HttpStatus.NOT_FOUND.value()) {
             return Optional.empty();
@@ -68,15 +64,12 @@ public class DefaultServiceCasesApi implements ServiceCasesApi {
     @Override
     public List<ExistingServiceCaseDto> getByOdooIdTest(String odooId) throws ServiceApiException {
         System.out.println("get Odoo " + odooId);
-        //id = "a064u00001nqPxOAAU";
 
         HttpResponse<String> response = Unirest.get(endpoint())
                 .header("x-api-key", this.credentials.getApiKey())
                 //.queryString("externalId", odooId)
                 .queryString("odooId", odooId)
                 .asString();
-
-        //System.out.println(getExistingServiceCasesDto(response));
 
         if (response.isSuccess()) {
             return getExistingServiceCasesDto(response);
@@ -90,15 +83,12 @@ public class DefaultServiceCasesApi implements ServiceCasesApi {
     @Override
     public List<ExistingServiceCaseDto> getByExternalId(String externalId) throws ServiceApiException {
         System.out.println("get by external id " + externalId);
-        //test
-        //externalId = "a064u00001nqPxOAAU";
-        //test
+
         HttpResponse<String> response = Unirest.get(endpoint())
                 .header("x-api-key", this.credentials.getApiKey())
                 .queryString("externalId", externalId)
                 .asString();
-        //System.out.println("externalId response " + response);
-        //System.out.println("externalId response " + getExistingServiceCasesDto(response));
+
         if (response.isSuccess()) {
             return getExistingServiceCasesDto(response);
         }
@@ -125,13 +115,12 @@ public class DefaultServiceCasesApi implements ServiceCasesApi {
     @Override
     public ExistingServiceCaseDto create(ServiceCaseDto serviceCaseDto) throws ServiceApiException {
         System.out.println("create");
-        System.out.println(serviceCaseDto);
+
         HttpResponse<String> response = Unirest.post(endpoint())
                 .header("x-api-key", this.credentials.getApiKey())
                 .body(serviceCaseDto)
                 .asString();
-        //System.out.println(response);
-        //System.out.println(response.isSuccess());
+
         if (response.isSuccess()) {
             return parse(response, ExistingServiceCaseDto.class);
         }
