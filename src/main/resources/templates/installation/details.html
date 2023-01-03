@@ -332,6 +332,18 @@
                             </div>
                         </div>
                         -->
+                        <div class="row" th:with="contracts=${detail}">
+                            <div class="col-lg-6 text-right"><strong th:text="${contracts.size() == 1 ? 'Contract' : 'Contracts'}"></strong></div>
+                            <div class="col-lg-6" th:with="amount=${contracts.size()},isCombined=${amount == 1 and 'contract'.equals(contracts[0].label)}">
+                                <span th:if="${amount == 0}">None</span>
+                                <a th:if="${isCombined}" th:href="${contracts[0].link}" th:text="'download'"></a>
+                                <span th:unless="${isCombined || amount == 0}">download</span>
+                                <th:block th:unless="${isCombined}" th:each="contract,iterInfo:${contracts}">
+                                    <span th:unless="${iterInfo.first}" th:text="', '" th:remove="tag"></span>
+                                    <a th:href="${contract.link}" th:text="${contract.label}"></a>
+                                </th:block>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -3,8 +3,10 @@ package com.my1stle.customer.portal.web.controller.installation;
 import com.my1stle.customer.portal.service.attachment.AttachmentData;
 import com.my1stle.customer.portal.service.installation.detail.InstallationTimelineService;
 import com.my1stle.customer.portal.service.installation.detail.InstallationDetailRetriever;
+import com.my1stle.customer.portal.service.installation.detail.model.ContractDetail;
 import com.my1stle.customer.portal.service.installation.detail.model.Timeline;
 import com.my1stle.customer.portal.service.odoo.OdooInstallationData;
+import com.my1stle.customer.portal.serviceImpl.adobesign.DefaultAdobeSign;
 import com.my1stle.customer.portal.web.exception.ResourceNotFoundException;
 import org.apache.tika.io.IOUtils;
 import org.baeldung.persistence.model.User;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 //import static com.my1stle.customer.portal.service.stripe.Server.test;
 
@@ -30,14 +33,19 @@ public class DetailsController {
 	private final InstallationDetailRetriever installationDetailRetriever;
 	private final InstallationTimelineService installationTimelineService;
 
+	//Testing Adobe
+	private final DefaultAdobeSign defaultAdobeSign;
+
 	@Autowired
 	public DetailsController(
 			InstallationDetailRetriever installationDetailRetriever,
-			InstallationTimelineService installationTimelineService
+			InstallationTimelineService installationTimelineService,
+			DefaultAdobeSign defaultAdobeSign
 
 	) {
 		this.installationDetailRetriever = installationDetailRetriever;
 		this.installationTimelineService = installationTimelineService;
+		this.defaultAdobeSign = defaultAdobeSign;
 
 	}
 
@@ -48,13 +56,14 @@ public class DetailsController {
 			@PathVariable("id") String installationId
 	) throws ResourceNotFoundException {
 		//InstallationDetail detail = installationDetailRetriever.retrieveAccessibleById(installationId);
+		//System.out.println(user.getEmail());
+		List<ContractDetail> adobeSign = defaultAdobeSign.getAgreementForInstallation(user.getEmail(), user.getFirstName(), user.getLastName());
+		//System.out.println(adobeSign.get(0).getLink());
+		model.addAttribute("detail", adobeSign);
+
 		Timeline timeline = installationTimelineService.getTimeline();
-
 		OdooInstallationData odooData = new OdooInstallationData(user.getEmail(), installationId, "detail");
-
 		model.addAttribute("odooData", odooData);
-
-		//model.addAttribute("detail", detail);
 		model.addAttribute("timeline", timeline);
 
 		//uncomment this after testing stripe

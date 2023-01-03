@@ -2,6 +2,8 @@ package com.my1stle.customer.portal.service.adobe.sign.client;
 
 import com.adobe.sign.api.AgreementsApi;
 import com.adobe.sign.model.agreements.DocumentUrl;
+import com.adobe.sign.model.agreements.UserAgreement;
+import com.adobe.sign.model.agreements.UserAgreements;
 import com.adobe.sign.utils.ApiException;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.MultivaluedMap;
+import java.util.List;
 
 @Service
 public class AgreementsClient {
@@ -20,6 +23,7 @@ public class AgreementsClient {
 	public AgreementsClient(
 			@Value("${adobe.sign.api.token}") String accessToken,
 			@Value("${adobe.sign.api.client.user}") String apiUser,
+			//@Value("email:WestCoastSales@1stlightenergy.com") String apiUser,
 			AgreementsApi agreementsApi
 	) {
 		this.accessToken = accessToken;
@@ -56,5 +60,30 @@ public class AgreementsClient {
 		standardHeaders.add("Access-Token", this.accessToken);
 		standardHeaders.add("x-api-user", this.apiUser);
 		return standardHeaders;
+	}
+
+
+	private MultivaluedMap<String, String> generateMultipleStandardHeaders(String echoSignEmail) {
+		MultivaluedMap<String, String> standardHeaders = new MultivaluedMapImpl();
+		standardHeaders.add("Access-Token", this.accessToken);
+		standardHeaders.add("x-api-user", echoSignEmail);
+		return standardHeaders;
+	}
+
+
+	public List<UserAgreement> getAgreement(String email, String echoSignEmail) {
+		try {
+
+			UserAgreements agreements = agreementsApi.getAgreements( generateMultipleStandardHeaders(echoSignEmail),
+					email,
+					null,
+					null,
+					null);
+
+			return agreements.getUserAgreementList();
+		}
+		catch (ApiException e) {
+			throw new RuntimeException("Failed to get URL for contract", e);
+		}
 	}
 }
