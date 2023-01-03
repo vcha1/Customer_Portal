@@ -15,11 +15,14 @@ import com.my1stle.customer.portal.web.controller.StripeController;
 import com.my1stle.customer.portal.web.exception.ResourceNotFoundException;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
+import com.stripe.model.Customer;
 import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
+import org.baeldung.persistence.model.User;
 import org.hibernate.ResourceClosedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +30,8 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 //import static com.my1stle.customer.portal.service.stripe.Server.calculateOrderAmount;
 //import static com.my1stle.customer.portal.service.stripe.Server.test;
@@ -169,7 +174,7 @@ public class ServiceRequestCheckoutController {
     }
 
     @PostMapping(value = "/payment/stripe")
-    public String createPaymentIntent(Model model) throws StripeException {
+    public String createPaymentIntent(Model model, @AuthenticationPrincipal User user) throws StripeException {
         Stripe.apiKey = "sk_test_51MEH73FUBi5jGHMWDKDFJCQjFUV7Kyf3WI23O5eORb9ZUrxQbuO14JtCkh4zCdUgeZUvGC09xkUHZz29kSYwlpQ100oT7lZRlC";
         //response.setContentType("application/json");
         //CreatePayment postBody = gson.fromJson(request.body(), CreatePayment.class);
@@ -177,10 +182,20 @@ public class ServiceRequestCheckoutController {
         Double y = Double.valueOf(this.totalPrice.toString()) * 100;
         long x = y.longValue();
 
+        // Create the customer ID to be used for stripe (Sending customer emails)
+        Map<String, Object> customerParams = new HashMap<String, Object>();
+        customerParams.put("name",
+                user.getFirstName() + " " + user.getLastName());
+        customerParams.put("email", user.getEmail());
+        Customer stripeCustomer = Customer.create(customerParams);
+        String customerId = stripeCustomer.getId();
+
+        //Create stripe payment intent
         PaymentIntentCreateParams createParams = new
                 PaymentIntentCreateParams.Builder()
                 .setAmount(x)
                 .setCurrency("usd")
+                .setCustomer(customerId)
                 .setAutomaticPaymentMethods(
                         PaymentIntentCreateParams.AutomaticPaymentMethods
                                 .builder()
