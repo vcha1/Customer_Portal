@@ -56,10 +56,10 @@ public class DetailsController {
 			@PathVariable("id") String installationId
 	) throws ResourceNotFoundException {
 		//InstallationDetail detail = installationDetailRetriever.retrieveAccessibleById(installationId);
-		//System.out.println(user.getEmail());
 		List<ContractDetail> adobeSign = defaultAdobeSign.getAgreementForInstallation(user.getEmail(), user.getFirstName(), user.getLastName());
-		//System.out.println(adobeSign.get(0).getLink());
 		model.addAttribute("detail", adobeSign);
+		List<String> signingUrls = defaultAdobeSign.getOpenAgreementForInstallation(user.getEmail(), user.getFirstName(), user.getLastName());
+		model.addAttribute("signingUrls", signingUrls);
 
 		Timeline timeline = installationTimelineService.getTimeline();
 		OdooInstallationData odooData = new OdooInstallationData(user.getEmail(), installationId, "detail");

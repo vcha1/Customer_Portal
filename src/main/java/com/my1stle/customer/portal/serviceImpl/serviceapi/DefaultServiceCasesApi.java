@@ -189,6 +189,7 @@ public class DefaultServiceCasesApi implements ServiceCasesApi {
     @Override
     public ExistingAttachmentDto addAttachment(long caseId, long ownerId, String name, Resource resource) throws ServiceApiException {
         System.out.println("add attachment");
+        System.out.println(resource);
 
         HttpResponse<String> response = Unirest.post(endpoint().concat("/{caseId}").concat("/attachments"))
                 .header("x-api-key", this.credentials.getApiKey())
@@ -258,6 +259,8 @@ public class DefaultServiceCasesApi implements ServiceCasesApi {
                 .header("x-api-key", this.credentials.getApiKey())
                 .routeParam(routeParams)
                 .asString();
+
+        System.out.println(getExistingAttachmentDtos(response));
 
         if (response.isSuccess()) {
             return getExistingAttachmentDtos(response);

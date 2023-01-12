@@ -141,6 +141,31 @@
                         </div>
                     </div>
                 </div>
+
+
+
+                <div class="card">
+                    <div class="card-header bg-1le-green">
+                        <h4 class="h6 card-title mb-0">Unsigned Contracts</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row" th:with="contracts=${signingUrls}">
+                            <div class="col-lg-6 text-right"><strong th:text="${contracts.size() == 1 ? 'Unsigned Contract' : 'Unsigned Contracts'}"></strong></div>
+                            <div class="col-lg-6" th:with="amount=${contracts.size()},isCombined=${amount == 1 and 'contract'.equals(contracts[0].label)}">
+                                <span th:if="${amount == 0}">None</span>
+
+                                <th:block th:each="url: ${signingUrls}">
+                                    <a th:href="${url}" th:text="${url}"></a>
+                                </th:block>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
                 <!--
                 <div class="card">
                     <div class="card-header bg-1le-green">

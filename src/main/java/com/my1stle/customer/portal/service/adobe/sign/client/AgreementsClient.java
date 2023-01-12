@@ -2,6 +2,7 @@ package com.my1stle.customer.portal.service.adobe.sign.client;
 
 import com.adobe.sign.api.AgreementsApi;
 import com.adobe.sign.model.agreements.DocumentUrl;
+import com.adobe.sign.model.agreements.SigningUrlResponse;
 import com.adobe.sign.model.agreements.UserAgreement;
 import com.adobe.sign.model.agreements.UserAgreements;
 import com.adobe.sign.utils.ApiException;
@@ -32,7 +33,7 @@ public class AgreementsClient {
 	}
 
 	/**
-	 * Gets a url to view the combined agreement document with the standard
+	 * Gets an url to view the combined agreement document with the standard
 	 * @param agreementId the e-sign id for the agreement
 	 * @return the url to the completed document
 	 * @throws RuntimeException when generating the link fails
@@ -70,7 +71,6 @@ public class AgreementsClient {
 		return standardHeaders;
 	}
 
-
 	public List<UserAgreement> getAgreement(String email, String echoSignEmail) {
 		try {
 
@@ -83,6 +83,20 @@ public class AgreementsClient {
 			return agreements.getUserAgreementList();
 		}
 		catch (ApiException e) {
+			throw new RuntimeException("Failed to get URL for contract", e);
+		}
+	}
+
+
+	public String getSigningUrls(String agreementId) {
+		try {
+			SigningUrlResponse signingUrl = agreementsApi.getSigningUrl(
+					generateStandardHeaders(),
+					agreementId
+			);
+
+			return signingUrl.getSigningUrlSetInfos().get(0).getSigningUrls().get(0).getEsignUrl();
+		} catch (ApiException e) {
 			throw new RuntimeException("Failed to get URL for contract", e);
 		}
 	}

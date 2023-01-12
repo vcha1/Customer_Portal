@@ -1,5 +1,6 @@
 package com.my1stle.customer.portal.serviceImpl.adobesign;
 
+import com.adobe.sign.model.agreements.SigningUrlResponse;
 import com.adobe.sign.model.agreements.UserAgreement;
 import com.my1stle.customer.portal.persistence.model.InstallationSalesforceObject;
 import com.my1stle.customer.portal.service.adobe.sign.client.AgreementsClient;
@@ -8,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class DefaultAdobeSign {
@@ -35,6 +33,7 @@ public class DefaultAdobeSign {
             //System.out.println(emailList[i]);
             //agreement = agreementsClient.getAgreement("solarwithme@gmail.com", emailList[i]);
             //agreement = agreementsClient.getAgreement("dkrause@tpensions.com", emailList[i]);
+            //agreement = agreementsClient.getAgreement("gsingh@1stle.com", "email:WestCoastSales@1stlightenergy.com");
             agreement = agreementsClient.getAgreement(email, emailList[i]);
             //System.out.println(agreement);
             if (agreement != null){
@@ -44,6 +43,9 @@ public class DefaultAdobeSign {
 
         //fullName = "crystal krause";
         //fullName = "Mark Curran";
+        //fullName = "test";
+        //System.out.println(agreement.get(0));
+
 
         for (int i = 0; i < agreement.size(); i++) {
             //System.out.println(agreement.get(i).getName());
@@ -52,26 +54,27 @@ public class DefaultAdobeSign {
             String firstLightSecond = "First Light";
             String utility = "utility";
             String financing = "financing";
-
-
-            if (agreement.get(i).getName().toLowerCase().contains(firstLight.toLowerCase())) {
-                //System.out.println(agreement.get(i).getAgreementId());
-                if (agreement.get(i).getName().toLowerCase().contains(fullName.toLowerCase())) {
-                    contractLabelToEsignIdMap.put("1st Light", agreement.get(i).getAgreementId());
+            //System.out.println(agreement.get(i).getStatus().toString());
+            if (!Objects.equals(agreement.get(i).getStatus().toString(), "OUT_FOR_SIGNATURE")) {
+                if (agreement.get(i).getName().toLowerCase().contains(firstLight.toLowerCase())) {
+                    //System.out.println(agreement.get(i).getAgreementId());
+                    if (agreement.get(i).getName().toLowerCase().contains(fullName.toLowerCase())) {
+                        contractLabelToEsignIdMap.put("1st Light", agreement.get(i).getAgreementId());
+                    }
+                } else if (agreement.get(i).getName().toLowerCase().contains(firstLightSecond.toLowerCase())) {
+                    if (agreement.get(i).getName().toLowerCase().contains(fullName.toLowerCase())) {
+                        contractLabelToEsignIdMap.put("1st Light", agreement.get(i).getAgreementId());
+                    }
                 }
-            }else if (agreement.get(i).getName().toLowerCase().contains(firstLightSecond.toLowerCase())){
-                if (agreement.get(i).getName().toLowerCase().contains(fullName.toLowerCase())) {
-                    contractLabelToEsignIdMap.put("1st Light", agreement.get(i).getAgreementId());
+                if (agreement.get(i).getName().toLowerCase().contains(utility.toLowerCase())) {
+                    if (agreement.get(i).getName().toLowerCase().contains(fullName.toLowerCase())) {
+                        contractLabelToEsignIdMap.put("utility", agreement.get(i).getAgreementId());
+                    }
                 }
-            }
-            if (agreement.get(i).getName().toLowerCase().contains(utility.toLowerCase())) {
-                if (agreement.get(i).getName().toLowerCase().contains(fullName.toLowerCase())) {
-                    contractLabelToEsignIdMap.put("utility", agreement.get(i).getAgreementId());
-                }
-            }
-            if (agreement.get(i).getName().toLowerCase().contains(financing.toLowerCase())){
-                if (agreement.get(i).getName().toLowerCase().contains(fullName.toLowerCase())) {
-                    contractLabelToEsignIdMap.put("financing", agreement.get(i).getAgreementId());
+                if (agreement.get(i).getName().toLowerCase().contains(financing.toLowerCase())) {
+                    if (agreement.get(i).getName().toLowerCase().contains(fullName.toLowerCase())) {
+                        contractLabelToEsignIdMap.put("financing", agreement.get(i).getAgreementId());
+                    }
                 }
             }
         }
@@ -81,18 +84,20 @@ public class DefaultAdobeSign {
                 //System.out.println(agreement.get(i).getName());
                 //System.out.println(agreement.get(i).getDisplayUserSetInfos().get(0).getDisplayUserSetMemberInfos().get(0).getFullName());
                 String proposalAgreement = "Proposal Agreement";
-                if (agreement.get(i).getName().toLowerCase().contains(proposalAgreement.toLowerCase())) {
-                    if (agreement.get(i).getName().toLowerCase().contains(fullName.toLowerCase())) {
+                if (!Objects.equals(agreement.get(i).getStatus().toString(), "OUT_FOR_SIGNATURE")) {
+                    if (agreement.get(i).getName().toLowerCase().contains(proposalAgreement.toLowerCase())) {
+                        if (agreement.get(i).getName().toLowerCase().contains(fullName.toLowerCase())) {
+                            contractLabelToEsignIdMap.put("1st Light", agreement.get(i).getAgreementId());
+                            contractLabelToEsignIdMap.put("utility", agreement.get(i).getAgreementId());
+                            contractLabelToEsignIdMap.put("financing", agreement.get(i).getAgreementId());
+                            break;
+                        }
+                    } else if (agreement.get(i).getName().toLowerCase().contains("Testing Doc Sending".toLowerCase())) {
                         contractLabelToEsignIdMap.put("1st Light", agreement.get(i).getAgreementId());
                         contractLabelToEsignIdMap.put("utility", agreement.get(i).getAgreementId());
                         contractLabelToEsignIdMap.put("financing", agreement.get(i).getAgreementId());
                         break;
                     }
-                } else if (agreement.get(i).getName().toLowerCase().contains("Testing Doc Sending".toLowerCase())){
-                    contractLabelToEsignIdMap.put("1st Light", agreement.get(i).getAgreementId());
-                    contractLabelToEsignIdMap.put("utility", agreement.get(i).getAgreementId());
-                    contractLabelToEsignIdMap.put("financing", agreement.get(i).getAgreementId());
-                    break;
                 }
             }
         }
@@ -122,4 +127,42 @@ public class DefaultAdobeSign {
 
         return contractDetailsTwo;
     }
+
+    public List<String> getOpenAgreementForInstallation(String email, String firstName, String lastName) {
+        String fullName = firstName + ' ' + lastName;
+        String[] emailList = new String[] {"email:itinfo@1stlightenergy.com","email:WestCoastSales@1stlightenergy.com", "email:EastCoastSales@1stlightenergy.com",
+                "email:recruiters@1stlightenergy.com", "email:CommercialSolar@1stlightenergy.com"};
+        List<UserAgreement> agreement = new ArrayList<>();
+        for (int i = 0; i<emailList.length; i++){
+            //agreement = agreementsClient.getAgreement("solarwithme@gmail.com", emailList[i]);
+            //agreement = agreementsClient.getAgreement("dkrause@tpensions.com", emailList[i]);
+            //agreement = agreementsClient.getAgreement("gsingh@1stle.com", "email:WestCoastSales@1stlightenergy.com");
+            agreement = agreementsClient.getAgreement(email, emailList[i]);
+            if (agreement != null){
+                break;
+            }
+        }
+
+        //fullName = "crystal krause";
+        //fullName = "Mark Curran";
+        //fullName = "test";
+
+        List<String> signingUrls = new ArrayList<>();
+        for (int i = 0; i < agreement.size(); i++) {
+            if (Objects.equals(agreement.get(i).getStatus().toString(), "OUT_FOR_SIGNATURE")) {
+                if (agreement.get(i).getName().toLowerCase().contains(fullName.toLowerCase())) {
+                    String agreeId = agreement.get(i).getAgreementId();
+                    String signingUrl = agreementsClient.getSigningUrls(agreeId);
+                    //System.out.println(signingUrl);
+                    signingUrls.add(signingUrl);
+                }
+            }
+        }
+
+
+        return signingUrls;
+
+    }
 }
+
+
