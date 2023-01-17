@@ -60,8 +60,6 @@ public class User {
     @Column(name = "service_api_user_id", nullable = true, unique = true)
     private Long serviceApiUserId;
 
-    @Column(name = "stripe_id", nullable = true, unique = true)
-    private String stripeId;
 
     public User() {
         super();
@@ -182,12 +180,6 @@ public class User {
         this.serviceApiUserId = serviceApiUserId;
     }
 
-    public String getStripeId(){
-        return stripeId;
-    }
-    public void setStripeId(String stripeId){
-        this.stripeId = stripeId;
-    }
 
     @Override
     public int hashCode() {

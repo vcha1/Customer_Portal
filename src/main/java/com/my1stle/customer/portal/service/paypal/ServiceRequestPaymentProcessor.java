@@ -10,8 +10,4 @@ public interface ServiceRequestPaymentProcessor {
 
     ServiceRequest processServiceRequestPayment(String orderId) throws IOException;
 
-
-    public ServiceRequest confirmOrderStripe(String paymentIntentId, ServiceRequest serviceRequest) throws IOException;
-    public ServiceRequest processServiceRequestPaymentStripe(String paymentIntentId, ServiceRequest serviceRequest) throws IOException;
-
 }

@@ -23,8 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.IOException;
 import java.io.InputStream;
 
-//import static com.my1stle.customer.portal.service.stripe.Server.test;
-
 @Controller
 public class DetailsController {
 	private final InstallationDetailRetriever installationDetailRetriever;
@@ -57,10 +55,8 @@ public class DetailsController {
 		//model.addAttribute("detail", detail);
 		model.addAttribute("timeline", timeline);
 
-		//uncomment this after testing stripe
 		return "installation/details";
 
-		//return "serviceRequest/checkout/stripeclient.html";
 
 	}
 
