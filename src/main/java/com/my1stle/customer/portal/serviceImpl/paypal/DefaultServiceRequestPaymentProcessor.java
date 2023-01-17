@@ -128,11 +128,8 @@ public class DefaultServiceRequestPaymentProcessor implements ServiceRequestPaym
             throw new RuntimeException(String.format("Invalid order status: %s", order.status()));
         }
 
-        //PaymentMethod paymentMethod = this.paymentMethodService.getByName(PaymentMethods.PAYPAL)
-        //        .orElseThrow(() -> new ResourceClosedException(String.format("%s payment method not found!", PaymentMethods.PAYPAL)));
-
-        PaymentMethod paymentMethod = this.paymentMethodService.getByName(PaymentMethods.STRIPE)
-                .orElseThrow(() -> new ResourceClosedException(String.format("%s payment method not found!", PaymentMethods.STRIPE)));
+        PaymentMethod paymentMethod = this.paymentMethodService.getByName(PaymentMethods.PAYPAL)
+                .orElseThrow(() -> new ResourceClosedException(String.format("%s payment method not found!", PaymentMethods.PAYPAL)));
 
         final BigDecimal requiredDepositAmount = serviceRequestPricingService.getRequiredDepositAmount(serviceRequest);
         final BigDecimal convenienceFee = serviceRequestPricingService.getConvenienceFee(serviceRequest, paymentMethod);
@@ -280,37 +277,5 @@ public class DefaultServiceRequestPaymentProcessor implements ServiceRequestPaym
                     .map(PaymentDetail::getTotal)
                     .orElse(BigDecimal.ZERO);
         }
-    }
-
-
-
-    @Override
-    public ServiceRequest confirmOrderStripe(String paymentIntentId, ServiceRequest serviceRequest) throws IOException {
-
-        PaymentMethod paymentMethod = this.paymentMethodService.getByName(PaymentMethods.STRIPE)
-                .orElseThrow(() -> new ResourceClosedException(String.format("%s payment method not found!", PaymentMethods.STRIPE)));
-
-        final BigDecimal requiredDepositAmount = serviceRequestPricingService.getRequiredDepositAmount(serviceRequest);
-        final BigDecimal convenienceFee = serviceRequestPricingService.getConvenienceFee(serviceRequest, paymentMethod);
-        final BigDecimal serviceRequestTotal = serviceRequestPricingService.getSubTotalAmount(serviceRequest);
-        final BigDecimal initialPaidAmount = requiredDepositAmount.compareTo(BigDecimal.ZERO) > 0 ? requiredDepositAmount : serviceRequestTotal;
-
-        PaymentDetail detail = this.paymentDetailService.save(initialPaidAmount, convenienceFee, paymentMethod, paymentIntentId);
-        this.serviceRequestService.setPaymentDetail(serviceRequest, detail);
-
-        return serviceRequest;
-    }
-
-    @Override
-    public ServiceRequest processServiceRequestPaymentStripe(String paymentIntentId, ServiceRequest serviceRequest) throws IOException {
-
-        LOGGER.info("Handling post-payment-processed actions for order {}", paymentIntentId);
-        this.handleSchedulingAndInformationCapture(serviceRequest, paymentIntentId);
-
-        LOGGER.info("Sending payment-processed notification for order {}: starting", paymentIntentId);
-        this.productSoldNotificationService.sendNotification(new NotificationInformation(serviceRequest));
-        LOGGER.info("Sending payment-processed notification for order {}: finished", paymentIntentId);
-
-        return serviceRequest;
     }
 }

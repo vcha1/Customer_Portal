@@ -143,9 +143,9 @@ public class ServiceApiCaseServiceDecorator implements CaseService {
 
     @Override
     public CaseSubmitResult submit(CaseDto dto) {
-
+        //System.out.println(dto.getInstallationId());
         Boolean isInstallOperational = dto.getIsInstallOperational();
-        String chosenInstallationId = isInstallOperational ? dto.getInstallationId() : dto.getAddressChoiceId();
+        //String chosenInstallationId = isInstallOperational ? dto.getInstallationId() : dto.getAddressChoiceId();
         String category = dto.getCategory();
         String preInstallIssue = dto.getPreInstallIssue();
         String preInstallDescription = dto.getPreInstallDescription();
@@ -154,14 +154,14 @@ public class ServiceApiCaseServiceDecorator implements CaseService {
         List<MultipartFile> attachments = dto.getAttachments();
         //System.out.println(dto.getAddressChoiceId());
         //test
-        chosenInstallationId = "a064u00001nqPxOAAU";
+        //chosenInstallationId = "a064u00001nqPxOAAU";
         //test
 
-        Installation installation = this.installationService.getInstallationById(chosenInstallationId);
+        //Installation installation = this.installationService.getInstallationById(chosenInstallationId);
 
-        if(installation == null) {
-            throw new ResourceNotFoundException("Installation Not Found!");
-        }
+        //if(installation == null) {
+        //    throw new ResourceNotFoundException("Installation Not Found!");
+        //}
 
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long serviceApiUserId = currentUser.getServiceApiUserId();
@@ -170,12 +170,13 @@ public class ServiceApiCaseServiceDecorator implements CaseService {
         long issueTypeId = serviceApiCategory.getParentId() != null ? serviceApiCategory.getParentId() : serviceApiCategory.getId();
         Long subIssueTypeId = serviceApiCategory.getParentId() != null ? serviceApiCategory.getId() : null;
         String summary = serviceApiCategory.getLabel();
-        Long groupId = determineGroupId(installation, issueTypeId);
+        //Long groupId = determineGroupId(installation, issueTypeId);
+        Long groupId = determineGroupId(issueTypeId);
 
 
         ServiceCaseDto serviceCaseDto = new ServiceCaseDto.Builder(serviceApiUserId, issueTypeId, summary, serviceDescription, ServiceCaseStatus.NEW)
                 .subIssueType(subIssueTypeId)
-                .externalId(chosenInstallationId)
+                //.externalId(chosenInstallationId)
                 .groupId(groupId)
                 .build();
 
@@ -187,7 +188,7 @@ public class ServiceApiCaseServiceDecorator implements CaseService {
         ServiceCaseDto serviceCaseDto2 = new ServiceCaseDto.Builder(serviceApiUserId, issueTypeId, summary, serviceDescription, ServiceCaseStatus.NEW)
                 .subIssueType(subIssueTypeId)
                 .odooId(odooId)
-                .externalId(chosenInstallationId)
+                //.externalId(chosenInstallationId)
                 .groupId(groupId)
                 .build();
 
@@ -326,7 +327,8 @@ public class ServiceApiCaseServiceDecorator implements CaseService {
         return errors;
     }
 
-    private Long determineGroupId(Installation installation, long issueTypeId) {
+    //private Long determineGroupId(Installation installation, long issueTypeId) {
+    private Long determineGroupId(long issueTypeId) {
         if(ServiceCaseDefaults.SERVICE_GROUP_ISSUE_TYPE.contains(issueTypeId)) {
             return ServiceApiGroup.SERVICE.getId();
         }
