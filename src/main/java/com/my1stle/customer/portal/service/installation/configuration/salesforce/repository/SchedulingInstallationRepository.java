@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
  * This repository is for installations in the namespace
  * of dev.1stle.scheduling
  */
+/*
 @Repository
 public class SchedulingInstallationRepository extends SalesforceObjectRepository<Installation> {
 
@@ -20,3 +21,5 @@ public class SchedulingInstallationRepository extends SalesforceObjectRepository
     }
 
 }
+
+ */
