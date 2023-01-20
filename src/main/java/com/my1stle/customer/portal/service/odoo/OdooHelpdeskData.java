@@ -3,6 +3,7 @@ package com.my1stle.customer.portal.service.odoo;
 import com.my1stle.customer.portal.service.serviceapi.ServiceApiCategory;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
+import org.jsoup.Jsoup;
 //import org.joda.time.format.DateTimeFormatter;
 
 import java.time.LocalDateTime;
@@ -39,8 +40,12 @@ public class OdooHelpdeskData {
                 this.id.add(results.get(i).get("id"));
                 this.name.add(odooConnection.findObjects(objectType, Arrays.asList("name"),
                         Arrays.asList(Arrays.asList("id", "=", this.id))).get(i).get("name").toString());
-                this.description.add(odooConnection.findObjects(objectType, Arrays.asList("x_studio_service_description_2"),
-                        Arrays.asList(Arrays.asList("id", "=", this.id))).get(i).get("x_studio_service_description_2").toString());
+                //this.description.add(odooConnection.findObjects(objectType, Arrays.asList("x_studio_service_description_2"),
+                //        Arrays.asList(Arrays.asList("id", "=", this.id))).get(i).get("x_studio_service_description_2").toString());
+
+                String descriptionPreUpdate = odooConnection.findObjects(objectType, Arrays.asList("description"),
+                        Arrays.asList(Arrays.asList("id", "=", this.id))).get(i).get("description").toString();
+                this.description.add(Jsoup.parse(descriptionPreUpdate).text());
                 this.issueType.add(odooConnection.findObjects(objectType, Arrays.asList("x_studio_issue_type"),
                         Arrays.asList(Arrays.asList("id", "=", this.id))).get(i).get("x_studio_issue_type").toString());
 
@@ -110,8 +115,11 @@ public class OdooHelpdeskData {
                     this.id.add(results.get(i).get("id"));
                     this.name.add(odooConnection.findObjects(objectType, Arrays.asList("name"),
                             Arrays.asList(Arrays.asList("id", "=", this.id))).get(i).get("name").toString());
-                    this.description.add(odooConnection.findObjects(objectType, Arrays.asList("x_studio_service_description_2"),
-                            Arrays.asList(Arrays.asList("id", "=", this.id))).get(i).get("x_studio_service_description_2").toString());
+                    //this.description.add(odooConnection.findObjects(objectType, Arrays.asList("x_studio_service_description_2"),
+                    //        Arrays.asList(Arrays.asList("id", "=", this.id))).get(i).get("x_studio_service_description_2").toString());
+                    String descriptionPreUpdate = odooConnection.findObjects(objectType, Arrays.asList("description"),
+                            Arrays.asList(Arrays.asList("id", "=", this.id))).get(i).get("description").toString();
+                    this.description.add(Jsoup.parse(descriptionPreUpdate).text());
                     this.issueType.add(odooConnection.findObjects(objectType, Arrays.asList("x_studio_issue_type"),
                             Arrays.asList(Arrays.asList("id", "=", this.id))).get(i).get("x_studio_issue_type").toString());
 
@@ -181,8 +189,11 @@ public class OdooHelpdeskData {
             this.id.add(caseId);
             this.name.add(odooConnection.findObjects(objectType, Arrays.asList("name"),
                     Arrays.asList(Arrays.asList("id", "=", caseId))).get(0).get("name").toString());
-            this.description.add(odooConnection.findObjects(objectType, Arrays.asList("x_studio_service_description_2"),
-                    Arrays.asList(Arrays.asList("id", "=", caseId))).get(0).get("x_studio_service_description_2").toString());
+            //this.description.add(odooConnection.findObjects(objectType, Arrays.asList("x_studio_service_description_2"),
+            //        Arrays.asList(Arrays.asList("id", "=", caseId))).get(0).get("x_studio_service_description_2").toString());
+            String descriptionPreUpdate = odooConnection.findObjects(objectType, Arrays.asList("description"),
+                    Arrays.asList(Arrays.asList("id", "=", this.id))).get(0).get("description").toString();
+            this.description.add(Jsoup.parse(descriptionPreUpdate).text());
             this.issueType.add(odooConnection.findObjects(objectType, Arrays.asList("x_studio_issue_type"),
                     Arrays.asList(Arrays.asList("id", "=", caseId))).get(0).get("x_studio_issue_type").toString());
 

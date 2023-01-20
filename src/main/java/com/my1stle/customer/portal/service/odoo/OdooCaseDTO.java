@@ -44,7 +44,7 @@ public class OdooCaseDTO {
             List<Integer> results = odooConnection.createObjects(objectType, createdName);
 
             map.clear();
-            map.put("x_studio_service_description_2", serviceCaseDto.getDescription());
+            map.put("description", serviceCaseDto.getDescription());
             map.put("x_studio_installation", odooData.getId());
             map.put("team_id", 2);
 
