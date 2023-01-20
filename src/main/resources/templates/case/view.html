@@ -4,6 +4,10 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:chrono="http://www.w3.org/1999/xhtml"
       layout:decorate="~{base.html}">
 <head>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="/css/case/view.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
 
@@ -20,6 +24,32 @@
                 <strong></strong>&nbsp;<span th:text="${error}"></span>
             </div>
         </div>
+
+        <!--
+        <nav aria-label="...">
+            <ul class="pager">
+                <li class="previous" id = "previousTicket" th:if= "${firstAndLastId.get(0)} != ${odooTicketData.getId().get(0)}"><a th:href="@{/case/{id}(id=${firstAndLastId.get(0)})}"><span aria-hidden="true">&larr;</span> Previous</a></li>
+                <li class="next" id = "nextTicket" th:if= "${firstAndLastId.get(1)} != ${odooTicketData.getId().get(0)}"><a th:href="@{/case/{id}(id=${firstAndLastId.get(1)})}">Next <span aria-hidden="true">&rarr;</span></a></li>
+            </ul>
+        </nav>
+        -->
+        <!--
+        <div class="container">
+            <ul class="pager">
+                <li th:if= "${firstAndLastId.get(0)} != ${odooTicketData.getId().get(0)}"><a th:href="@{/case/{id}(id=${firstAndLastId.get(0)})}">Previous</a></li>
+                <li th:if= "${firstAndLastId.get(1)} != ${odooTicketData.getId().get(0)}"><a th:href="@{/case/{id}(id=${firstAndLastId.get(1)})}">Next</a></li>
+            </ul>
+        </div>
+        -->
+
+        <div class="container">
+            <ul class="pager">
+                <li class="previous" id = "previousTicket" th:if= "${firstAndLastId.get(0)} != ${odooTicketData.getId().get(0)}"><a th:href="@{/case/{id}(id=${firstAndLastId.get(0)})}">Previous</a></li>
+                <li class="next" id = "nextTicket" th:if= "${firstAndLastId.get(1)} != ${odooTicketData.getId().get(0)}"><a th:href="@{/case/{id}(id=${firstAndLastId.get(1)})}">Next</a></li>
+            </ul>
+        </div>
+
+
         <div class="col-md-12">
             <!-- <p class="pg-header h1 mb-3" th:text="${'Ticket Number : ' + case.caseNumber}"></p> -->
             <p class="pg-header h1 mb-3" th:text="${'Ticket Number : ' + odooTicketData.getId().get(0)}"></p>

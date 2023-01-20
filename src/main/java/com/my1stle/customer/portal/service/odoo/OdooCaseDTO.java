@@ -21,7 +21,7 @@ public class OdooCaseDTO {
 
     public OdooCaseDTO (ServiceCaseDto serviceCaseDto, String addressId) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String userEmail = user.getEmail();
+        String userEmail = user.getEmail().toLowerCase();
         //OdooInstallationData odooData = new OdooInstallationData(userEmail);
         OdooInstallationData odooData = new OdooInstallationData(addressId, "project.task");
         String installationName = odooData.getName();

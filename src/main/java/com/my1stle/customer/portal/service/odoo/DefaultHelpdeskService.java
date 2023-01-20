@@ -14,7 +14,7 @@ public class DefaultHelpdeskService {
 
     public DefaultHelpdeskService(String odooTicketId) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String userEmail = user.getEmail();
+        String userEmail = user.getEmail().toLowerCase();
 
         XmlRpcAuthenticationInformation xmlRpcAuthInfo = OdooConnectionConfiguration.generateDefaultXmlRpcAuthenticationInformation();
         XmlRpcClientFactory xmlRpcClientFactory = OdooConnectionConfiguration.createDefaultXmlRpcClientFactory();

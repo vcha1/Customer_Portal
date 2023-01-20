@@ -48,7 +48,9 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping(value = "/case")
@@ -65,6 +67,8 @@ public class CaseController {
 
     private String currentCaseId;
 
+    private OdooHelpdeskData odooTicketDataAll;
+
     @Autowired
     public CaseController(
             InstallationService installationService,
@@ -79,8 +83,9 @@ public class CaseController {
 
     @GetMapping(value = "")
     public String caseHub(@AuthenticationPrincipal User user, Model model) {
-        OdooInstallationData odooData = new OdooInstallationData(user.getEmail());
+        OdooInstallationData odooData = new OdooInstallationData(user.getEmail().toLowerCase());
         OdooHelpdeskData odooTicketData = new OdooHelpdeskData(odooData.getNameList());
+        this.odooTicketDataAll = odooTicketData;
 
         model.addAttribute("odooTicketData", odooTicketData);
         model.addAttribute("installations", this.installationService.getInstallations());
@@ -90,7 +95,7 @@ public class CaseController {
 
     @GetMapping(value = CREATE_CASE)
     public String createCase(@AuthenticationPrincipal User user, Model model) {
-        OdooInstallationData odooData = new OdooInstallationData(user.getEmail());
+        OdooInstallationData odooData = new OdooInstallationData(user.getEmail().toLowerCase());
 
         //model.addAttribute("installations", this.installationService.getInstallations());
         model.addAttribute("installations", odooData);
@@ -137,6 +142,33 @@ public class CaseController {
 
         OdooHelpdeskData odooTicketData = new OdooHelpdeskData("Installation", caseId);
 
+        List<String> firstAndLastId = new ArrayList<>();
+        //Set the IDs to navigate to
+        for (int i = 0; i<this.odooTicketDataAll.getId().size(); i++){
+            if (this.odooTicketDataAll.getId().size() > 1) {
+                if (Objects.equals(this.odooTicketDataAll.getId().get(i).toString(), caseId)) {
+                    if (i == 0) {
+                        firstAndLastId.add(this.odooTicketDataAll.getId().get(i).toString());
+                        firstAndLastId.add(this.odooTicketDataAll.getId().get(i + 1).toString());
+
+                    } else if (i == (this.odooTicketDataAll.getId().size() - 1)) {
+                        firstAndLastId.add(this.odooTicketDataAll.getId().get(i - 1).toString());
+                        firstAndLastId.add(this.odooTicketDataAll.getId().get(i).toString());
+                    } else {
+                        firstAndLastId.add(this.odooTicketDataAll.getId().get(i - 1).toString());
+                        firstAndLastId.add(this.odooTicketDataAll.getId().get(i + 1).toString());
+                    }
+                }
+            }else if (this.odooTicketDataAll.getId().size() == 1){
+                if (i == 0) {
+                    firstAndLastId.add(this.odooTicketDataAll.getId().get(i).toString());
+                    firstAndLastId.add(this.odooTicketDataAll.getId().get(i).toString());
+                }
+            }
+        }
+
+        model.addAttribute("odooTicketDataAll", this.odooTicketDataAll);
+        model.addAttribute("firstAndLastId", firstAndLastId);
         model.addAttribute("odooTicketData", odooTicketData);
         model.addAttribute("case", serviceCase);
         //model.addAttribute("isLegacyCase", serviceCase instanceof SalesforceServiceCase);

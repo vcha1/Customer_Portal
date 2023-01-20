@@ -48,7 +48,7 @@ public class DetailsController {
 		//InstallationDetail detail = installationDetailRetriever.retrieveAccessibleById(installationId);
 		Timeline timeline = installationTimelineService.getTimeline();
 
-		OdooInstallationData odooData = new OdooInstallationData(user.getEmail(), installationId, "detail");
+		OdooInstallationData odooData = new OdooInstallationData(user.getEmail().toLowerCase(), installationId, "detail");
 
 		model.addAttribute("odooData", odooData);
 
