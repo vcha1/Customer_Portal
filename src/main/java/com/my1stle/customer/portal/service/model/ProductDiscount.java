@@ -17,7 +17,6 @@ public interface ProductDiscount {
 
     String getDescription();
 
-    //BigDecimal getTotalDiscountAmount(User user, Installation installation, int quantity);
     BigDecimal getTotalDiscountAmount(User user, OdooInstallationData odooInstallationData, int quantity);
 
 }

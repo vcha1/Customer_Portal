@@ -114,7 +114,7 @@ public class DefaultServiceCasesApi implements ServiceCasesApi {
 
     @Override
     public ExistingServiceCaseDto create(ServiceCaseDto serviceCaseDto) throws ServiceApiException {
-        System.out.println("create");
+        //System.out.println("create");
 
         HttpResponse<String> response = Unirest.post(endpoint())
                 .header("x-api-key", this.credentials.getApiKey())

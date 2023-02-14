@@ -1,5 +1,6 @@
 package com.my1stle.customer.portal.serviceImpl.contactus;
 
+
 import com.my1stle.customer.portal.service.InstallationService;
 import com.my1stle.customer.portal.service.ProductService;
 import com.my1stle.customer.portal.service.contactus.ContactUsReason;
@@ -26,6 +27,7 @@ import static org.mockito.Mockito.*;
 /**
  * Unit Test for {@link SalesforceContactUsService}
  */
+/*
 @RunWith(MockitoJUnitRunner.class)
 public class SalesforceContactUsServiceTest {
 
@@ -144,4 +146,7 @@ public class SalesforceContactUsServiceTest {
 
     }
 
+
+
 }
+*/

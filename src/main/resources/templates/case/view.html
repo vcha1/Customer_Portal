@@ -5,9 +5,11 @@
       layout:decorate="~{base.html}">
 <head>
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
-    <link rel="stylesheet" href="/css/case/view.css">
+    <link href="/dist/css/modern.css" rel="stylesheet"/>
+    <link href="/css/1le.css" rel="stylesheet"/>
+    <link href="/css/case/view.css" rel="stylesheet"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
 </head>
 <body>
 
@@ -26,26 +28,21 @@
         </div>
 
         <!--
-        <nav aria-label="...">
-            <ul class="pager">
-                <li class="previous" id = "previousTicket" th:if= "${firstAndLastId.get(0)} != ${odooTicketData.getId().get(0)}"><a th:href="@{/case/{id}(id=${firstAndLastId.get(0)})}"><span aria-hidden="true">&larr;</span> Previous</a></li>
-                <li class="next" id = "nextTicket" th:if= "${firstAndLastId.get(1)} != ${odooTicketData.getId().get(0)}"><a th:href="@{/case/{id}(id=${firstAndLastId.get(1)})}">Next <span aria-hidden="true">&rarr;</span></a></li>
-            </ul>
-        </nav>
-        -->
-        <!--
-        <div class="container">
-            <ul class="pager">
-                <li th:if= "${firstAndLastId.get(0)} != ${odooTicketData.getId().get(0)}"><a th:href="@{/case/{id}(id=${firstAndLastId.get(0)})}">Previous</a></li>
-                <li th:if= "${firstAndLastId.get(1)} != ${odooTicketData.getId().get(0)}"><a th:href="@{/case/{id}(id=${firstAndLastId.get(1)})}">Next</a></li>
-            </ul>
-        </div>
-        -->
-
         <div class="container">
             <ul class="pager">
                 <li class="previous" id = "previousTicket" th:if= "${firstAndLastId.get(0)} != ${odooTicketData.getId().get(0)}"><a th:href="@{/case/{id}(id=${firstAndLastId.get(0)})}">Previous</a></li>
                 <li class="next" id = "nextTicket" th:if= "${firstAndLastId.get(1)} != ${odooTicketData.getId().get(0)}"><a th:href="@{/case/{id}(id=${firstAndLastId.get(1)})}">Next</a></li>
+            </ul>
+        </div>
+        -->
+        <li class="align-middle" style="list-style-type: none"><a th:href="@{/case}">View All</a></li>
+
+        <div class="container">
+            <ul  class="pager">
+                <li class="previous" th:if= "${firstAndLastId.get(0)} != ${odooTicketData.getId().get(0)}">
+                    <a th:href="@{/case/{id}(id=${firstAndLastId.get(0)})}"><i class="align-middle" style= "width: 40px; height: 40px; stroke: black;" data-feather="arrow-left"></i></a></li>
+                <li class="next" th:if= "${firstAndLastId.get(1)} != ${odooTicketData.getId().get(0)}">
+                    <a th:href="@{/case/{id}(id=${firstAndLastId.get(1)})}"><i class="align-middle" style= "width: 40px; height: 40px; stroke: black;" data-feather="arrow-right"></i></a></li>
             </ul>
         </div>
 

@@ -19,8 +19,6 @@ public interface ServiceRequest {
 
     ZonedDateTime getStartTime();
 
-    //Installation getInstallation();
-
     OdooInstallationData getOdooInstallationData();
 
     PaymentDetail getPaymentDetail();

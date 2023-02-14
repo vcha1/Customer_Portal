@@ -11,8 +11,6 @@ import java.math.BigDecimal;
 
 public interface FeeCalculator {
 
-    //BigDecimal calculate(Product product, Installation installation, PaymentMethod paymentMethod);
-
     BigDecimal calculate(Product product, OdooInstallationData odooInstallationData, PaymentMethod paymentMethod);
 
     BigDecimal calculate(ServiceRequest serviceRequest, PaymentMethod paymentMethod);

@@ -84,24 +84,24 @@ public class CaseController {
     @GetMapping(value = "")
     public String caseHub(@AuthenticationPrincipal User user, Model model) {
         OdooInstallationData odooData = new OdooInstallationData(user.getEmail().toLowerCase());
+        //OdooInstallationData odooData = new OdooInstallationData("cavlcantim@aol.com");
         OdooHelpdeskData odooTicketData = new OdooHelpdeskData(odooData.getNameList());
         this.odooTicketDataAll = odooTicketData;
 
         model.addAttribute("odooTicketData", odooTicketData);
         model.addAttribute("installations", this.installationService.getInstallations());
-        //model.addAttribute("cases", this.caseService.getCases());
         return "case/hub";
     }
 
     @GetMapping(value = CREATE_CASE)
     public String createCase(@AuthenticationPrincipal User user, Model model) {
-        OdooInstallationData odooData = new OdooInstallationData(user.getEmail().toLowerCase());
+        OdooInstallationData odooData = new OdooInstallationData(user.getEmail().toLowerCase());;
 
-        //model.addAttribute("installations", this.installationService.getInstallations());
         model.addAttribute("installations", odooData);
         model.addAttribute("request", new CaseDto());
         model.addAttribute("caseIssueCategories", ServiceApiCategory.getSystemOperationalCategories());
         model.addAttribute("casePreInstallIssueCategories", ServiceApiCategory.getPreInstallationCategories());
+
         return "case/create";
     }
 
@@ -112,9 +112,7 @@ public class CaseController {
             RedirectAttributes redirectAttributes,
             HttpServletRequest httpServletRequest
     ) {
-
         CaseSubmitResult result = this.caseService.submit(request);
-
         if (result.isSuccess()) {
             redirectAttributes.addFlashAttribute("success", StringUtils.isBlank(result.getMessage()) ? "Your issue has been submitted!" : result.getMessage());
         } else {
@@ -131,7 +129,6 @@ public class CaseController {
             Model model,
             @PathVariable("caseId") String caseId
     ) throws ServiceApiException {
-        //System.out.println(caseId);
         currentCaseId = caseId;
         List<ExistingServiceCaseDto> serviceCaseOdoo = this.caseService.getByOdooIdTest(caseId);
 
@@ -149,11 +146,13 @@ public class CaseController {
                 if (Objects.equals(this.odooTicketDataAll.getId().get(i).toString(), caseId)) {
                     if (i == 0) {
                         firstAndLastId.add(this.odooTicketDataAll.getId().get(i).toString());
+                        //firstAndLastId.add(this.odooTicketDataAll.getId().get(this.odooTicketDataAll.getId().size()-1).toString());
                         firstAndLastId.add(this.odooTicketDataAll.getId().get(i + 1).toString());
 
                     } else if (i == (this.odooTicketDataAll.getId().size() - 1)) {
                         firstAndLastId.add(this.odooTicketDataAll.getId().get(i - 1).toString());
                         firstAndLastId.add(this.odooTicketDataAll.getId().get(i).toString());
+                        //firstAndLastId.add(this.odooTicketDataAll.getId().get(0).toString());
                     } else {
                         firstAndLastId.add(this.odooTicketDataAll.getId().get(i - 1).toString());
                         firstAndLastId.add(this.odooTicketDataAll.getId().get(i + 1).toString());
@@ -171,37 +170,36 @@ public class CaseController {
         model.addAttribute("firstAndLastId", firstAndLastId);
         model.addAttribute("odooTicketData", odooTicketData);
         model.addAttribute("case", serviceCase);
-        //model.addAttribute("isLegacyCase", serviceCase instanceof SalesforceServiceCase);
         return "case/view";
     }
 
     @PostMapping(value = "/{id}/comment")
     public String addComment(@PathVariable(name = "id") String caseId, @ModelAttribute NewServiceCaseComment comment, RedirectAttributes redirectAttributes) {
         try {
-            //ServiceCase serviceCase = this.caseCommentService.addComment(caseId, comment);
             this.caseCommentService.addComment(caseId, comment);
-            //return String.format("redirect:/case/%s", serviceCase.getId());
             return String.format("redirect:/case/%s", currentCaseId);
         } catch (CaseServiceException e) {
             LOGGER.error(e.getMessage(), e);
             redirectAttributes.addFlashAttribute("error", "Sorry, something went wrong. Please try again");
-            //return String.format("redirect:/case/%s", caseId);
             return String.format("redirect:/case/%s", currentCaseId);
+        } catch (ServiceApiException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @PostMapping(value = "/{id}/attachment")
     public String addAttachment(@PathVariable(name = "id") String caseId, @ModelAttribute NewServiceCaseAttachment attachment, RedirectAttributes redirectAttributes) {
         try {
-            //ServiceCase serviceCase = this.caseAttachmentService.addAttachment(caseId, attachment);
             this.caseAttachmentService.addAttachment(caseId, attachment);
-            //return String.format("redirect:/case/%s", serviceCase.getId());
             return String.format("redirect:/case/%s", currentCaseId);
         } catch (CaseServiceException e) {
             LOGGER.error(e.getMessage(), e);
             redirectAttributes.addFlashAttribute("error", "Sorry, something went wrong. Please try again");
-            //return String.format("redirect:/case/%s", caseId);
             return String.format("redirect:/case/%s", currentCaseId);
+        } catch (ServiceApiException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

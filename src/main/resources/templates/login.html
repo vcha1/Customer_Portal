@@ -60,7 +60,7 @@
                 </p>
             </div>
             <div class="m-sm-4">
-                <form th:action="@{/login}" method="post">
+                <form th:action="@{/login}" method="post" onsubmit="doSomething()">
                     <div class="form-group">
                         <label>Email</label>
                         <input class="form-control form-control-lg" type='text' name='username'
@@ -85,7 +85,8 @@
                         </label>
                     </div>
                     <div class="text-center mt-3">
-                        <button class="btn btn-primary" name="submit" type="submit">Sign In
+                        <button class="btn btn-primary" name="submit" type="submit" id="loginButton"
+                                >Sign In
                         </button>
                         <br/>
                     </div>
@@ -95,6 +96,16 @@
     </div>
 </section>
 <section layout:fragment="end_of_body">
+
+    <script>
+        function doSomething () {
+
+            document.getElementById("loginButton").disabled = true;
+        }
+    </script>
 </section>
+
+
+
 </body>
 </html>

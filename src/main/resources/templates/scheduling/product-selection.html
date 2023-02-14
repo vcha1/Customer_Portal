@@ -64,6 +64,10 @@
                                                 th:text="${'$' + #numbers.formatDecimal(product.pricePerUnit, 0, 'COMMA', 2, 'POINT') + (' ' + product.pricingType.label())}">
                                         </strong>
                                         </p>
+
+                                        <p class="font-weight-bold" id = "nonRefundable">***Site visit fee's non-refundable after <br>24 hours of payment, except for <br>Workmanship related Issue's***
+                                        </p>
+
                                         <p class="text-muted" id = "askAQuestion">Got a question about this product <br>or service?
                                             <a th:href="@{/product/{product_id}/enquire(product_id=${product.id}, installation_id=${param.id[0]})}">Ask
                                                 Us</a>

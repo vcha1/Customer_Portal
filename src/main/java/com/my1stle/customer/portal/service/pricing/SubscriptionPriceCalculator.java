@@ -1,6 +1,5 @@
 package com.my1stle.customer.portal.service.pricing;
 
-import com.my1stle.customer.portal.service.model.Installation;
 import com.my1stle.customer.portal.service.model.PaymentMethod;
 import com.my1stle.customer.portal.service.model.Product;
 import com.my1stle.customer.portal.service.model.Subscription;
@@ -20,19 +19,6 @@ public class SubscriptionPriceCalculator implements BiFunction<Subscription, Pay
         this.feeCalculator = feeCalculator;
     }
 
-    /*
-    @Override
-    public BigDecimal apply(Subscription subscription, PaymentMethod paymentMethod) {
-
-        Product product = subscription.getProduct();
-        Installation installation = subscription.getInstallation();
-
-
-        return subscription.getPrice()
-                .add(feeCalculator.calculate(product, installation, paymentMethod))
-                .setScale(2, RoundingMode.DOWN);
-    }
-    */
     @Override
     public BigDecimal apply(Subscription subscription, PaymentMethod paymentMethod) {
 

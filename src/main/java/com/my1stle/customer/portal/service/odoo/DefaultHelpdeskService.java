@@ -22,7 +22,6 @@ public class DefaultHelpdeskService {
 
         String objectType = "helpdesk.ticket";
         List<String> fields = Arrays.asList("x_studio_installation");
-        //List<Object> criteria = Arrays.asList(Arrays.asList("id", "=", odooTicketId));
 
         Object[] installationNames = (Object[]) odooConnection.findObjects(objectType, fields,
                 Arrays.asList(Arrays.asList("id", "=", odooTicketId))).get(0).get("x_studio_installation");

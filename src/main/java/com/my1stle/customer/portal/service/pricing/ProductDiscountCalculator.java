@@ -9,8 +9,6 @@ import java.math.BigDecimal;
 
 public interface ProductDiscountCalculator {
 
-    //BigDecimal getTotalDiscountAmount(User user, Installation installation, Product product, int productQuantity);
-
     BigDecimal getTotalDiscountAmount(User user, OdooInstallationData odooInstallationData, Product product, int productQuantity);
 
 }

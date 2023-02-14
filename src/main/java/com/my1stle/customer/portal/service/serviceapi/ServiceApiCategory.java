@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 public enum ServiceApiCategory {
 
-    NOT_SURE(1, null, "Not Sure"),
+    NOT_SURE(1, null, "Other"),
     ELECTRICAL_ISSUE(2, null, "Electrical Issue"),
     INVERTER_ISSUE(3, null, "Inverter Issue"),
     METER_ISSUE(4, null, "Meter Issue"),

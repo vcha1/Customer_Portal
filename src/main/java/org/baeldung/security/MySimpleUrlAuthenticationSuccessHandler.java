@@ -31,6 +31,7 @@ public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSu
 
     @Override
     public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws IOException {
+        System.out.println("onAuthenticationSuccess");
         handle(request, response, authentication);
         final HttpSession session = request.getSession(false);
         if (session != null) {

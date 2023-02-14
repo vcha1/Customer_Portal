@@ -45,14 +45,12 @@ public class DetailsController {
 			Model model,
 			@PathVariable("id") String installationId
 	) throws ResourceNotFoundException {
-		//InstallationDetail detail = installationDetailRetriever.retrieveAccessibleById(installationId);
 		Timeline timeline = installationTimelineService.getTimeline();
 
 		OdooInstallationData odooData = new OdooInstallationData(user.getEmail().toLowerCase(), installationId, "detail");
 
 		model.addAttribute("odooData", odooData);
 
-		//model.addAttribute("detail", detail);
 		model.addAttribute("timeline", timeline);
 
 		return "installation/details";

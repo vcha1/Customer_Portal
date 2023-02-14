@@ -80,7 +80,6 @@ public class RegistrationController {
     @RequestMapping(value = "/user/registration", method = RequestMethod.POST)
     @ResponseBody
     public GenericResponse registerUserAccount(@Valid final UserDto accountDto, final HttpServletRequest request) {
-
         final String response = request.getParameter("g-recaptcha-response");
         captchaService.processResponse(response);
 

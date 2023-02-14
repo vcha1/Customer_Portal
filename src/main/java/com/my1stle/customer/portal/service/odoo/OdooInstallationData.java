@@ -231,7 +231,6 @@ public class OdooInstallationData {
         XmlRpcClientFactory xmlRpcClientFactory = OdooConnectionConfiguration.createDefaultXmlRpcClientFactory();
         OdooObjectConnection odooConnection = new DefaultOdooObjectConnection(xmlRpcAuthInfo, xmlRpcClientFactory);
 
-        //String objectType = "project.task";
         List<String> fields = Arrays.asList("name");
         List<Object> criteria = Arrays.asList(Arrays.asList("id", "=", id));
 
@@ -608,12 +607,10 @@ public class OdooInstallationData {
 
     public String getFirstLightAgreementId() {
         return firstLightAgreementId;
-        //return "3AAABLblqZhC6aMPOz6bzGkpei9m-jpdXojzj7JlWOILvRxY8XFtBds4xMr92Bb-t0ic8tle7fNvrFas_cJ-CqI15XHGLRXvQ";
     }
 
     public String getFirstLightAgreementStatus() {
         return firstLightAgreementStatus;
-        //return "SIGNED";
     }
 
     public String getUtilityAgreementId() {

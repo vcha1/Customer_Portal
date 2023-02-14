@@ -8,8 +8,6 @@ import java.math.BigDecimal;
 
 public interface SubtotalCalculator {
 
-    //BigDecimal getSubtotal(Installation installation, Product product, int quantity);
-
     BigDecimal getSubtotal(OdooInstallationData odooInstallationData, Product product, int quantity);
 
 }

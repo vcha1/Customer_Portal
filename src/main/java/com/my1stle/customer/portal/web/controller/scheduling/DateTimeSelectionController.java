@@ -62,58 +62,8 @@ public class DateTimeSelectionController {
             @RequestParam(name = "render_events", required = false) Boolean renderEvents,
             RedirectAttributes redirectAttributes,
             Model model) throws JsonProcessingException {
-        //Installation installation = installationService.getInstallationById(installationId);
 
-        /*
-        if (null == installation) {
-            throw new ResourceNotFoundException("Installation not found!");
-        }
-
-        model.addAttribute("installation", installation);
-
-        Product product = productService.getById(productId);
-
-        if (null == product) {
-            throw new ResourceNotFoundException("Product not found!");
-        }
-
-        model.addAttribute("product", product);
-
-        BigDecimal price = product.getPricingType().calculation().apply(product, installation);
-        int compareTo = price.compareTo(BigDecimal.ZERO);
-        if (compareTo <= 0) {
-            redirectAttributes.addAttribute("installation_id", installation.getId());
-            return String.format("redirect:/product/%s/quote", product.getId());
-        }
-
-        if (product.getIsSubscriptionBased()) {
-            redirectAttributes.addAttribute("installation_id", installation.getId());
-            redirectAttributes.addAttribute("product_id", product.getId());
-            return "redirect:/subscription";
-        }
-
-        if (product.getIsSchedulable()) {
-
-            List<Calendar> assignees = this.dateTimeSelectionService.getAvailableCalendars(installation.getId(), product.getId());
-
-            if (assignees.isEmpty()) {
-                return "scheduling/product-unavailable";
-            }
-
-            Appointment appointment = this.dateTimeSelectionService.createAppointment(installationId, productId);
-
-            model.addAttribute("request", new DateTimeSelectionDto());
-            model.addAttribute("appointment", objectMapper.writeValueAsString(appointment));
-            model.addAttribute("resources", objectMapper.writeValueAsString(assignees));
-            model.addAttribute("render_events", renderEvents == null ? false : renderEvents);
-
-            return "scheduling/date-time-selection";
-
-         */
-
-        //getting odoo installation
         OdooInstallationData odooInstallationData =  new OdooInstallationData(installationId, "project.task");
-        //Installation installation = installationService.getInstallationById(installationId);
 
         if (null == odooInstallationData) {
             throw new ResourceNotFoundException("Installation not found!");

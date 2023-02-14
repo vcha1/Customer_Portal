@@ -11,50 +11,14 @@ import java.util.List;
 
 @Controller
 public class HomeController {
-    /*
-    private InstallationService installationService;
-
-    @Autowired
-    public HomeController(InstallationService installationService) {
-        this.installationService = installationService;
-    }
-
-    @GetMapping("/home")
-    public String homeAction() {
-        List<Installation> installations = this.installationService.getInstallations();
-        String url = String.format("/installation/%s/details", installations.get(0).getId());
-
-        return "redirect:" + url;
-    }
-    */
-
 
     @GetMapping("/home")
     public String homeAction() {
         DefaultInstallationServiceOdoo installations = new DefaultInstallationServiceOdoo();
+        System.out.println(installations.getName());
+        System.out.println(installations.getAddress());
         String url = String.format("/installation/%s/details", installations.getId().get(0));
-        //url = "/create-payment-intent";
         return "redirect:" + url;
     }
 
-
-
-    /*
-    private InstallationService installationService;
-
-    @Autowired
-    public HomeController(InstallationService installationService) {
-        this.installationService = installationService;
-    }
-
-    @GetMapping("/home")
-    public String homeAction() {
-        List<Installation> installations = this.installationService.getInstallations();
-        DefaultInstallationServiceOdoo installationsOdoo = new DefaultInstallationServiceOdoo();
-        String url = String.format("/installation/%s/details", installationsOdoo.getId().get(0));
-
-        return "redirect:" + url;
-    }
-
-     */
 }
