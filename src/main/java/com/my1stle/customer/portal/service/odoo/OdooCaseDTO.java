@@ -36,6 +36,7 @@ public class OdooCaseDTO {
         List<Map<String, Object>> createdName = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("name", installationName);
+        map.put("partner_email", userEmail);
         createdName.add(map);
 
         try {
@@ -118,6 +119,7 @@ public class OdooCaseDTO {
         List<Map<String, Object>> createdName = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("name", installationName);
+        map.put("partner_email", userEmail);
         createdName.add(map);
 
         try {
@@ -182,6 +184,8 @@ public class OdooCaseDTO {
     public OdooCaseDTO (String installationId, String description) {
         OdooInstallationData odooData = new OdooInstallationData(installationId, "project.task");
         String installationName = odooData.getName();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userEmail = user.getEmail().toLowerCase();
 
         XmlRpcAuthenticationInformation xmlRpcAuthInfo = OdooConnectionConfiguration.generateDefaultXmlRpcAuthenticationInformation();
         XmlRpcClientFactory xmlRpcClientFactory = OdooConnectionConfiguration.createDefaultXmlRpcClientFactory();
@@ -192,6 +196,7 @@ public class OdooCaseDTO {
         List<Map<String, Object>> createdName = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("name", installationName);
+        map.put("partner_email", userEmail);
         createdName.add(map);
 
         try {

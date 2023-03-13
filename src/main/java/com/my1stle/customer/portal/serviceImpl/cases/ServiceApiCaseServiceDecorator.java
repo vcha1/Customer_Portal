@@ -151,6 +151,10 @@ public class ServiceApiCaseServiceDecorator implements CaseService {
                 .build();
 
         if (dto.getAddressChoiceId() != null) {
+            //add user as follower of the odoo ticket
+            String userEmail = currentUser.getEmail();
+            String fullName = currentUser.getFirstName() + " " + currentUser.getLastName();
+
             OdooCaseDTO odooCaseDTO = new OdooCaseDTO(serviceCaseDto, dto.getAddressChoiceId());
 
             String odooId = odooCaseDTO.getId().toString();
@@ -162,15 +166,16 @@ public class ServiceApiCaseServiceDecorator implements CaseService {
                     .groupId(groupId)
                     .build();
 
-            //add user as follower of the odoo ticket
-            String userEmail = currentUser.getEmail();
-            String fullName = currentUser.getFirstName() + " " + currentUser.getLastName();
             //Adds the customer as a follower of the ticket in helpdesk
             createMainFollowerAndFollower(userEmail, fullName, odooId);
 
 
             return submit(serviceApiUserId, serviceCaseDto2, interiorDamage ,attachments);
         }else if (dto.getAddressChoiceId() == null) {
+            //add user as follower of the odoo ticket
+            String userEmail = currentUser.getEmail();
+            String fullName = currentUser.getFirstName() + " " + currentUser.getLastName();
+
             OdooCaseDTO odooCaseDTO = new OdooCaseDTO(serviceCaseDto, dto.getInstallationId(), "installationId");
 
             String odooId = odooCaseDTO.getId().toString();
@@ -181,10 +186,7 @@ public class ServiceApiCaseServiceDecorator implements CaseService {
                     //.externalId(chosenInstallationId)
                     .groupId(groupId)
                     .build();
-
-            //add user as follower of the odoo ticket
-            String userEmail = currentUser.getEmail();
-            String fullName = currentUser.getFirstName() + " " + currentUser.getLastName();
+            
             //Adds the customer as a follower of the ticket in helpdesk
             createMainFollowerAndFollower(userEmail, fullName, odooId);
 
