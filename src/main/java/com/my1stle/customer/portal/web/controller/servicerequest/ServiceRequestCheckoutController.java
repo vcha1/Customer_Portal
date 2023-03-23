@@ -10,6 +10,7 @@ import com.my1stle.customer.portal.service.paypal.ServiceRequestPaymentProcessor
 import com.my1stle.customer.portal.service.pricing.ServiceRequestPricingService;
 import com.my1stle.customer.portal.service.servicerequest.ServiceRequestService;
 import com.my1stle.customer.portal.web.exception.ResourceNotFoundException;
+
 import org.baeldung.persistence.model.User;
 import org.hibernate.ResourceClosedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import java.math.BigDecimal;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+
 
 @RequestMapping(value = "/service-request/checkout")
 @Controller
