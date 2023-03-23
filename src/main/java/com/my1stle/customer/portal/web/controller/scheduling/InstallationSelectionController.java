@@ -16,16 +16,7 @@ import java.util.List;
 @Controller
 public class InstallationSelectionController {
 
-    //private InstallationService installationService;
-
     private InstallationServiceOdoo installationServiceOdoo;
-
-    /*
-    @Autowired
-    public InstallationSelectionController(InstallationService installationService) {
-        this.installationService = installationService;
-    }
-    */
 
     public InstallationSelectionController(InstallationServiceOdoo installationServiceOdoo) {
         this.installationServiceOdoo = installationServiceOdoo;
@@ -34,8 +25,6 @@ public class InstallationSelectionController {
     @GetMapping(value = "/schedule/installation-selection")
     public String selectInstallationAndProduct(Model model, RedirectAttributes redirectAttributes) {
 
-        //List<Installation> installations = this.installationService.getInstallations();
-
         DefaultInstallationServiceOdoo installations = this.installationServiceOdoo.getInstallationByEmail();
 
         if (installations.getId().isEmpty()) {
@@ -43,9 +32,7 @@ public class InstallationSelectionController {
         }
 
         if (installations.getId().size() == 1) {
-            //redirectAttributes.addAttribute("id", installations.get(0).getId());
-            redirectAttributes.addAttribute("id", installations.getId().toString());
-            //redirectAttributes.addAttribute("id", "a064u00001nqPxOAAU");
+            redirectAttributes.addAttribute("id", installations.getId().get(0).toString());
 
             return "redirect:/schedule/product-selection";
         }

@@ -19,7 +19,7 @@ public final class CaseSubject {
 
 
     public static enum CATEGORY{
-        OTHER("Other", "Not sure"),
+        OTHER("Other", "Other"),
         ELECTRICAL("Electrical Issue", "Electrical Issue"),
         INVERTER("Inverter Issue", "Inverter Issue"),
         METER("Meter Issue", "Meter Issue"),

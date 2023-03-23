@@ -91,7 +91,6 @@ public class ServiceCaseDto {
 
     public String getDescription() {
         return description;
-        //return "Hola";
     }
 
     public ServiceCaseStatus getStatus() {

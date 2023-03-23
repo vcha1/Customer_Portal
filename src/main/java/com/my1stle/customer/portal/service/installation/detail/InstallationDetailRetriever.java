@@ -19,8 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-//remove after test
 import com.my1stle.customer.portal.service.dropbox.DropboxImageService;
 
 @Service
@@ -34,7 +32,6 @@ public class InstallationDetailRetriever {
 	private final SystemTurnOnPackageRetriever systemTurnOnPackageRetriever;
 	private final WorkOrderComponentRetriever workOrderItemRetriever;
 
-	//remove after test
 	private final DropboxImageService dropboxImageServiceRetreiver;
 
 	@Autowired
@@ -46,7 +43,6 @@ public class InstallationDetailRetriever {
 			SystemTurnOnPackageRetriever systemTurnOnPackageRetriever,
 			WorkOrderComponentRetriever workOrderItemRetriever,
 
-			//remove after test
 			DropboxImageService dropboxImageServiceRetreiver
 	) {
 		this.agreementsClient = agreementsClient;
@@ -56,7 +52,6 @@ public class InstallationDetailRetriever {
 		this.systemTurnOnPackageRetriever = systemTurnOnPackageRetriever;
 		this.workOrderItemRetriever = workOrderItemRetriever;
 
-		//remove after test
 		this.dropboxImageServiceRetreiver = dropboxImageServiceRetreiver;
 	}
 
@@ -83,7 +78,6 @@ public class InstallationDetailRetriever {
 
 		List<ContractDetail> contractDetails = getContractDetailsForInstallation(info);
 
-		//remove after test
 		String dropboxImagePath = dropboxImageServiceRetreiver.getDropboxImage(info);
 
 		return new InstallationDetail(info, hasStopPackage, contractDetails, dropboxImagePath);
@@ -159,13 +153,6 @@ public class InstallationDetailRetriever {
 				contractDetails.add(new ContractDetail(agreementLabel, url));
 		}
 
-		//delete this after testing
-		//String agreementLabel = "1st Light";
-		//String agreementId = "3AAABLblqZhC6aMPOz6bzGkpei9m-jpdXojzj7JlWOILvRxY8XFtBds4xMr92Bb-t0ic8tle7fNvrFas_cJ-CqI15XHGLRXvQ";
-		//String url = agreementsClient.getAgreementUrl(agreementId);
-		//contractDetails.add(new ContractDetail(agreementLabel, url));
-
-
 		return contractDetails;
 	}
 
@@ -200,14 +187,6 @@ public class InstallationDetailRetriever {
 		if(hasSignedFinancing) {
 			contractLabelToEsignIdMap.put("financing", financingId);
 		}
-
-		//delete this after testing
-		//contractLabelToEsignIdMap.put("contract", "3AAABLblqZhC6aMPOz6bzGkpei9m-jpdXojzj7JlWOILvRxY8XFtBds4xMr92Bb-t0ic8tle7fNvrFas_cJ-CqI15XHGLRXvQ");
-		//contractLabelToEsignIdMap.put("1st Light", "3AAABLblqZhC6aMPOz6bzGkpei9m-jpdXojzj7JlWOILvRxY8XFtBds4xMr92Bb-t0ic8tle7fNvrFas_cJ-CqI15XHGLRXvQ");
-		//contractLabelToEsignIdMap.put("utility", "3AAABLblqZhC6aMPOz6bzGkpei9m-jpdXojzj7JlWOILvRxY8XFtBds4xMr92Bb-t0ic8tle7fNvrFas_cJ-CqI15XHGLRXvQ");
-		//contractLabelToEsignIdMap.put("financing", "3AAABLblqZhC6aMPOz6bzGkpei9m-jpdXojzj7JlWOILvRxY8XFtBds4xMr92Bb-t0ic8tle7fNvrFas_cJ-CqI15XHGLRXvQ");
-
-
 
 		return contractLabelToEsignIdMap;
 	}

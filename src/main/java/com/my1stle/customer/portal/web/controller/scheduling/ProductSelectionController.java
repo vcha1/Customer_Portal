@@ -29,14 +29,6 @@ public class ProductSelectionController {
     private ProductService productService;
     private SubscriptionService subscriptionService;
 
-    /*
-    @Autowired
-    public ProductSelectionController(InstallationService installationService, ProductService productService, SubscriptionService subscriptionService) {
-        this.installationService = installationService;
-        this.productService = productService;
-        this.subscriptionService = subscriptionService;
-    }
-    */
     @Autowired
     public ProductSelectionController(InstallationServiceOdoo installationServiceOdoo, ProductService productService,
                                       SubscriptionService subscriptionService, InstallationService installationService) {
@@ -54,10 +46,8 @@ public class ProductSelectionController {
             Model model) {
 
         List<Product> products = this.productService.getAll();
-        //List<Installation> installations = this.installationService.getInstallations();
-        //Installation installation = this.installationService.getInstallationById(selectedInstallation);
-        Installation installationsdad = this.installationService.getInstallationById("a064u00001nqPxOAAU");
 
+        //Installation installationsdad = this.installationService.getInstallationById("a064u00001nqPxOAAU");
         DefaultInstallationServiceOdoo installations = this.installationServiceOdoo.getInstallationByEmail();
         OdooInstallationData odooInstallationData = new OdooInstallationData(selectedInstallation, "project.task");
         String address = "";
@@ -71,13 +61,11 @@ public class ProductSelectionController {
             }
         }
         model.addAttribute("products", products);
-        //model.addAttribute("selected_installation", installation);
         model.addAttribute("address", address);
-        //model.addAttribute("selected_installation", installationsdad);
         model.addAttribute("selected_installation", odooInstallationData);
         model.addAttribute("installations", installations);
         model.addAttribute("subscription",
-                //this.subscriptionService.getOwnersActiveSubscriptions(currentUser.getId(), installation.getId())
+
                 this.subscriptionService.getOwnersActiveSubscriptions(currentUser.getId(), id)
                         .stream()
                         .collect(Collectors.toMap(Subscription::getProduct, Function.identity()))

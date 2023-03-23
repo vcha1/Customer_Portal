@@ -223,7 +223,8 @@ public class UserService implements IUserService {
     }
 
     private boolean installationExist(String email) {
-        return !this.installationSelector.selectByCustomerEmail(email).isEmpty();
+        //return !this.installationSelector.selectByCustomerEmail(email).isEmpty();
+        return !this.installationSelector.selectByCustomerEmailOdoo(email).isEmpty();
     }
 
     @Override

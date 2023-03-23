@@ -70,11 +70,9 @@ public class DropboxImageService{
 
     //public Resource getDropboxImage() {
     public String getDropboxImage(InstallationSalesforceObject install){
-        //System.out.println("Here4");
         //return "https://dl.dropbox.com/s/7r8hk9hax7wrnii/web_first_images_release.png";
 
         //try {
-            //System.out.println("Here1");
             //DbxDownloader<FileMetadata> download = this.client.files().download("https://www.dropbox.com/s/7r8hk9hax7wrnii/web_first_images_release.png?dl=0");
             //DbxDownloader<FileMetadata> download = this.client.files().download("/Test/InProgress/Karyn Warren - 1001956/Opportunity/web_first_images_release.png");
             //return new InputStreamResource(download.getInputStream());
@@ -102,7 +100,6 @@ public class DropboxImageService{
                 }
             }
 
-            System.out.println("Here2");
 
 
             ListSharedLinksResult sh = client.sharing().listSharedLinksBuilder()

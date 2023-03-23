@@ -19,14 +19,17 @@
                 $("#attachments-installation-issue").prop('required', false);
                 $(".help-block").html('');
                 if(this.value > 0){
-                    $(".pto-question").show();
+                    //$(".pto-question").show();
+                    //$(".question-2-yes").hide();
                     $(".question-2-yes").show();
+
                     $(".question-2-no").hide();
+                    $('#system-operational-yes').prop('checked', true)
+
                     $("#installation-choice").prop('required',true);
                     $("#caseDescription").prop('required', true);
                     $("#address-choice").prop('required',false);
                     $("#preInstallDescription").prop('required', false);
-                    $('#system-operational-yes').prop('checked', true)
                 } else{
                     $(".pto-question").hide();
                     $(".question-2-no").show();
@@ -35,7 +38,7 @@
                     $("#caseDescription").prop('required', false);
                     $("#address-choice").prop('required',true);
                     $("#preInstallDescription").prop('required', true);
-                    $('#system-operational-no').prop('checked', true)
+                    $('#system-operational-no').prop('checked', true);
                 }
             });
 
@@ -44,9 +47,18 @@
                 if(this.value > 0){
                     $(".question-2-yes").show();
                     $(".question-2-no").hide();
+                    $("#installation-choice").prop('required',true);
+                    $("#caseDescription").prop('required', true);
+                    $("#address-choice").prop('required',false);
+                    $("#preInstallDescription").prop('required', false);
                 }else{
                     $(".question-2-no").show();
                     $(".question-2-yes").hide();
+                    $("#installation-choice").prop('required',false);
+                    $("#caseDescription").prop('required', false);
+                    $("#address-choice").prop('required',true);
+                    $("#preInstallDescription").prop('required', true);
+                    $('#system-operational-no').prop('checked', true);
                 }
 
             });
@@ -189,9 +201,13 @@
                             <select id ="installation-choice" class = "form-control" name = "installationId">
                                 <option disabled selected value> -- Select an Installation -- </option>
                                 <option
-                                        th:each = "installation : ${installations}"
-                                        th:value = "${installation.getId()}"
-                                        th:text = "${installation.getAddress()}">
+                                        th:each = "installation: ${#numbers.sequence(0, installations.getIdList().size() - 1)}"
+                                        th:value = "${installations.getIdList().get(installation)}"
+                                        th:text = "${installations.getAddressList().get(installation)}">
+
+                                    <!--th:each = "installation : ${installations}"
+                                        th:value = "${installation.getIdList()}"
+                                        th:text = "${installation.getAddressList()}"> -->
                                 </option>
                             </select>
                         </div>

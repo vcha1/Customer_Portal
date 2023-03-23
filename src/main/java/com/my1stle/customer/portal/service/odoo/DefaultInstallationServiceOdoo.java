@@ -17,6 +17,7 @@ public class DefaultInstallationServiceOdoo {
     public DefaultInstallationServiceOdoo() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userEmail = user.getEmail();
+        userEmail = userEmail.toLowerCase();
 
         XmlRpcAuthenticationInformation xmlRpcAuthInfo = OdooConnectionConfiguration.generateDefaultXmlRpcAuthenticationInformation();
         XmlRpcClientFactory xmlRpcClientFactory = OdooConnectionConfiguration.createDefaultXmlRpcClientFactory();

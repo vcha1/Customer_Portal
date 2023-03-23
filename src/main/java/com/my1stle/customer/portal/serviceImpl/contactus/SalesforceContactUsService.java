@@ -6,6 +6,8 @@ import com.my1stle.customer.portal.service.contactus.ContactUsResult;
 import com.my1stle.customer.portal.service.contactus.ContactUsService;
 import com.my1stle.customer.portal.service.model.Installation;
 import com.my1stle.customer.portal.service.model.Product;
+import com.my1stle.customer.portal.service.odoo.OdooCaseDTO;
+import com.my1stle.customer.portal.service.odoo.OdooInstallationData;
 import com.my1stle.customer.portal.service.task.TaskService;
 import com.my1stle.customer.portal.service.task.TaskServiceException;
 import com.my1stle.customer.portal.serviceImpl.task.SalesforceTask;
@@ -51,26 +53,34 @@ public class SalesforceContactUsService implements ContactUsService {
 
     @Override
     public ContactUsResult submit(ContactUsDto request) {
-
         Product product = this.productService.getById(request.getProductId());
-        Installation installation = this.installationService.getInstallationById(request.getInstallationId());
-
+        //Installation installation = this.installationService.getInstallationById(request.getInstallationId());
+        OdooInstallationData odooInstallationData = new OdooInstallationData(request.getInstallationId(), "project.task");
         if (null == product) {
             throw new ResourceNotFoundException("Product Not Found!");
         }
 
-        if (null == installation) {
+        /*if (null == installation) {
+            throw new ResourceNotFoundException("Installation Not Found!");
+        }*/
+
+        if (null == odooInstallationData) {
             throw new ResourceNotFoundException("Installation Not Found!");
         }
 
         String subject = String.format("%s for %s", request.getReason().getLabel(), product.getName());
-        String relatedTo = installation.getId();
+        String relatedTo = odooInstallationData.getId().toString();
         String message = request.getMessage();
+        String description = subject + ".\n " + message;
 
+        OdooCaseDTO odooCaseDTO = new OdooCaseDTO(relatedTo, description);
+
+        /*
         SalesforceTaskSpecification specification = new SalesforceTaskSpecification.Builder(DEFAULT_OWNER, subject, DEFAULT_STATUS, relatedTo)
                 .priority(DEFAULT_PRIORITY)
                 .description(StringUtils.append(message, String.format("\n\nContact Info\nPhone : %s\nEmail : %s", request.getPhone(), request.getEmail())))
                 .build();
+
 
         try {
             SalesforceTask salesforceTask = this.taskService.add(specification);
@@ -78,7 +88,8 @@ public class SalesforceContactUsService implements ContactUsService {
             LOGGER.error(e.getMessage(), e);
             return new SalesforceContactUsResult(false, e.getMessage());
         }
-
+        return new SalesforceContactUsResult(true, null);
+        */
         return new SalesforceContactUsResult(true, null);
 
     }

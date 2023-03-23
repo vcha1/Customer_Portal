@@ -9,7 +9,6 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-//remove after test
 import com.my1stle.customer.portal.service.dropbox.DropboxImageService;
 
 public class InstallationDetail {
@@ -17,7 +16,6 @@ public class InstallationDetail {
 	private boolean systemTurnOnPackagePresent;
 	private List<ContractDetail> contractDetails;
 
-	//remove after test
 	private String dropboxImageService;
 
 	public InstallationDetail(
@@ -25,19 +23,15 @@ public class InstallationDetail {
 			boolean systemTurnOnPackagePresent,
 			List<ContractDetail> contractDetails,
 
-			//remove after test
 			String dropboxImageService
 	) {
 		this.information = information;
 		this.systemTurnOnPackagePresent = systemTurnOnPackagePresent;
 		this.contractDetails = contractDetails;
 
-		//remove after test
 		this.dropboxImageService = dropboxImageService;
 	}
 
-
-	//remove after test
 	public String getDropboxImageService(){
 		return this.dropboxImageService;
 	}

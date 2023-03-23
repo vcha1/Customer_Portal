@@ -5,10 +5,7 @@ import com.my1stle.customer.portal.service.cases.CaseService;
 import com.my1stle.customer.portal.service.cases.CaseSubmitResult;
 import com.my1stle.customer.portal.service.model.Installation;
 import com.my1stle.customer.portal.service.model.ServiceCase;
-import com.my1stle.customer.portal.service.odoo.DefaultHelpdeskService;
-import com.my1stle.customer.portal.service.odoo.HelpdeskServiceOdoo;
-import com.my1stle.customer.portal.service.odoo.InstallationServiceOdoo;
-import com.my1stle.customer.portal.service.odoo.OdooCaseDTO;
+import com.my1stle.customer.portal.service.odoo.*;
 import com.my1stle.customer.portal.service.serviceapi.ExistingAttachmentDto;
 import com.my1stle.customer.portal.service.serviceapi.ExistingServiceCaseDto;
 import com.my1stle.customer.portal.service.serviceapi.ServiceApiCategory;
@@ -34,10 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,6 +44,9 @@ public class ServiceApiCaseServiceDecorator implements CaseService {
     private final Visitor<ServiceCaseProxy> serviceCaseProxyVisitor;
     private final InstallationServiceOdoo installationServiceOdoo;
     private final HelpdeskServiceOdoo helpdeskServiceOdoo;
+    private final OdooHelpdeskMessageApi odooHelpdeskMessageApi;
+
+    private final OdooObjectConnection odooObjectConnection;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceApiCaseServiceDecorator.class);
 
@@ -60,7 +57,9 @@ public class ServiceApiCaseServiceDecorator implements CaseService {
             InstallationService installationService,
             Visitor<ServiceCaseProxy> serviceCaseProxyVisitor,
             InstallationServiceOdoo installationServiceOdoo,
-            HelpdeskServiceOdoo helpdeskServiceOdoo) {
+            HelpdeskServiceOdoo helpdeskServiceOdoo,
+            OdooHelpdeskMessageApi odooHelpdeskMessageApi,
+            OdooObjectConnection odooObjectConnection) {
 
         this.decoratedCaseService = decoratedCaseService;
         this.serviceCasesApi = serviceCasesApi;
@@ -68,6 +67,8 @@ public class ServiceApiCaseServiceDecorator implements CaseService {
         this.serviceCaseProxyVisitor = serviceCaseProxyVisitor;
         this.installationServiceOdoo = installationServiceOdoo;
         this.helpdeskServiceOdoo = helpdeskServiceOdoo;
+        this.odooHelpdeskMessageApi = odooHelpdeskMessageApi;
+        this.odooObjectConnection = odooObjectConnection;
     }
 
     @Override
@@ -91,24 +92,6 @@ public class ServiceApiCaseServiceDecorator implements CaseService {
                 .filter(ServiceApiCaseServiceDecorator::isNotInternalTicket)
                 .collect(Collectors.toList());
 
-        //System.out.println(proxies);
-
-        /*
-        List<ServiceCaseProxy> proxies = this.installationService.getInstallations()
-                .parallelStream()
-                .map(Installation::getId)
-                .map(externalId -> {
-                    try {
-                        return serviceCasesApi.getByExternalId("a064u00001nqPxOAAU");
-                    } catch (ServiceApiException e) {
-                        throw new RuntimeException(e.getMessage(), e);
-                    }
-                })
-                .flatMap(List::stream)
-                .map(ServiceCaseProxy::from)
-                .filter(ServiceApiCaseServiceDecorator::isNotInternalTicket)
-                .collect(Collectors.toList());
-        */
 
         for (ServiceCaseProxy proxy : proxies) {
             proxy.accept(serviceCaseProxyVisitor);
@@ -125,10 +108,8 @@ public class ServiceApiCaseServiceDecorator implements CaseService {
     @Override
     public Optional<ServiceCase> get(String id) {
         if (StringUtils.isNumeric(id)) {
-            //System.out.println("getServiceCase(id)" + id);
             return getServiceCase(id);
         }
-        //System.out.println("this.decoratedCaseService.get(id)");
         return this.decoratedCaseService.get(id);
     }
 
@@ -145,85 +126,90 @@ public class ServiceApiCaseServiceDecorator implements CaseService {
     public CaseSubmitResult submit(CaseDto dto) {
 
         Boolean isInstallOperational = dto.getIsInstallOperational();
-        String chosenInstallationId = isInstallOperational ? dto.getInstallationId() : dto.getAddressChoiceId();
         String category = dto.getCategory();
         String preInstallIssue = dto.getPreInstallIssue();
         String preInstallDescription = dto.getPreInstallDescription();
         String description = getDescription(dto);
         Boolean interiorDamage = dto.getInteriorDamage() == null ? false : dto.getInteriorDamage();
         List<MultipartFile> attachments = dto.getAttachments();
-        //System.out.println(dto.getAddressChoiceId());
-        //test
-        chosenInstallationId = "a064u00001nqPxOAAU";
-        //test
-
-        Installation installation = this.installationService.getInstallationById(chosenInstallationId);
-
-        if(installation == null) {
-            throw new ResourceNotFoundException("Installation Not Found!");
-        }
 
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long serviceApiUserId = currentUser.getServiceApiUserId();
+
         ServiceApiCategory serviceApiCategory = isInstallOperational ? ServiceApiCategory.valueOf(Long.valueOf(category)) : ServiceApiCategory.valueOf(Long.valueOf(preInstallIssue));
         String serviceDescription = isInstallOperational ? description : preInstallDescription;
         long issueTypeId = serviceApiCategory.getParentId() != null ? serviceApiCategory.getParentId() : serviceApiCategory.getId();
+
         Long subIssueTypeId = serviceApiCategory.getParentId() != null ? serviceApiCategory.getId() : null;
         String summary = serviceApiCategory.getLabel();
-        Long groupId = determineGroupId(installation, issueTypeId);
-
+        Long groupId = determineGroupId(issueTypeId);
 
         ServiceCaseDto serviceCaseDto = new ServiceCaseDto.Builder(serviceApiUserId, issueTypeId, summary, serviceDescription, ServiceCaseStatus.NEW)
                 .subIssueType(subIssueTypeId)
-                .externalId(chosenInstallationId)
+                //.externalId(chosenInstallationId)
                 .groupId(groupId)
                 .build();
 
-        OdooCaseDTO odooCaseDTO = new OdooCaseDTO(serviceCaseDto, dto.getAddressChoiceId());
+        if (dto.getAddressChoiceId() != null) {
+            //add user as follower of the odoo ticket
+            String userEmail = currentUser.getEmail();
+            String fullName = currentUser.getFirstName() + " " + currentUser.getLastName();
 
-        //System.out.println(odooCaseDTO.getId());
-        String odooId = odooCaseDTO.getId().toString();
+            OdooCaseDTO odooCaseDTO = new OdooCaseDTO(serviceCaseDto, dto.getAddressChoiceId());
 
-        ServiceCaseDto serviceCaseDto2 = new ServiceCaseDto.Builder(serviceApiUserId, issueTypeId, summary, serviceDescription, ServiceCaseStatus.NEW)
-                .subIssueType(subIssueTypeId)
-                .odooId(odooId)
-                .externalId(chosenInstallationId)
-                .groupId(groupId)
-                .build();
+            String odooId = odooCaseDTO.getId().toString();
 
-        return submit(serviceApiUserId, serviceCaseDto2, interiorDamage ,attachments);
+            ServiceCaseDto serviceCaseDto2 = new ServiceCaseDto.Builder(serviceApiUserId, issueTypeId, summary, serviceDescription, ServiceCaseStatus.NEW)
+                    .subIssueType(subIssueTypeId)
+                    .odooId(odooId)
+                    //.externalId(chosenInstallationId)
+                    .groupId(groupId)
+                    .build();
+
+            //Adds the customer as a follower of the ticket in helpdesk
+            createMainFollowerAndFollower(userEmail, fullName, odooId);
+
+
+            return submit(serviceApiUserId, serviceCaseDto2, interiorDamage ,attachments);
+        }else if (dto.getAddressChoiceId() == null) {
+            //add user as follower of the odoo ticket
+            String userEmail = currentUser.getEmail();
+            String fullName = currentUser.getFirstName() + " " + currentUser.getLastName();
+
+            OdooCaseDTO odooCaseDTO = new OdooCaseDTO(serviceCaseDto, dto.getInstallationId(), "installationId");
+
+            String odooId = odooCaseDTO.getId().toString();
+
+            ServiceCaseDto serviceCaseDto2 = new ServiceCaseDto.Builder(serviceApiUserId, issueTypeId, summary, serviceDescription, ServiceCaseStatus.NEW)
+                    .subIssueType(subIssueTypeId)
+                    .odooId(odooId)
+                    //.externalId(chosenInstallationId)
+                    .groupId(groupId)
+                    .build();
+            
+            //Adds the customer as a follower of the ticket in helpdesk
+            createMainFollowerAndFollower(userEmail, fullName, odooId);
+
+            return submit(serviceApiUserId, serviceCaseDto2, interiorDamage ,attachments);
+        }
+
+        return null;
 
     }
 
 
     private Optional<ServiceCase> getServiceCase(String id) {
 
-        /*
-        Set<String> installationIds = this.installationService.getInstallations()
-                .stream()
-                .map(Installation::getId)
-                .collect(Collectors.toSet());
-        */
-
         Optional<ServiceCaseProxy> serviceCase = getServiceCaseProxy(id);
 
-        //Optional<ServiceCaseProxy> serviceCase = getServiceCaseProxyOdoo(id);
-        //System.out.println("getServiceCase " + id);
         //Try to add Odoo ID to list
         List<String> installationOdooNames = this.installationServiceOdoo.getInstallationByEmail().getName();
 
         if (serviceCase.isPresent()) {
 
             ServiceCaseProxy proxy = serviceCase.get();
-            //System.out.println("proxy " + proxy);
             DefaultHelpdeskService helpdeskTicketInstallation = this.helpdeskServiceOdoo.getHelpdeskByTicketId(proxy.getOdooId());
-            //Installation need to be switched to odoo ID, make sure Odoo contains the Odoo External ID
-            //For this to work
-            /*
-            if (installationIds.contains(proxy.getExternalId()) && isNotInternalTicket(proxy)) {
-                proxy.accept(this.serviceCaseProxyVisitor);
-                return Optional.of(proxy);
-            */
+
             if (installationOdooNames.contains(helpdeskTicketInstallation.getInstallationName()) && isNotInternalTicket(proxy)) {
                 proxy.accept(this.serviceCaseProxyVisitor);
                 return Optional.of(proxy);
@@ -326,22 +312,49 @@ public class ServiceApiCaseServiceDecorator implements CaseService {
         return errors;
     }
 
-    private Long determineGroupId(Installation installation, long issueTypeId) {
+    //private Long determineGroupId(Installation installation, long issueTypeId) {
+    private Long determineGroupId(long issueTypeId) {
         if(ServiceCaseDefaults.SERVICE_GROUP_ISSUE_TYPE.contains(issueTypeId)) {
             return ServiceApiGroup.SERVICE.getId();
         }
-        /*if(ServiceCaseDefaults.DIVISION_GROUP_ISSUE_TYPE.contains(issueTypeId)) {
-            return determineDivisionGroupId(installation);
-        }*/
         return null;
     }
 
-  /*  private Long determineDivisionGroupId(Installation installation) {
-        return ServiceCaseDefaults.getGroupIdByRootstockDivisionMasterId(installation.getRootstockProjectMasterDivisionMasterId());
-    }*/
 
     private static boolean isNotInternalTicket(ServiceCaseProxy proxy) {
         return proxy.getIssueTypeId() != ServiceApiCategory.INTERNAL.getId();
+    }
+
+
+
+    //This function create all the necessary main follower and sub follower for the provided poster emails.
+    private void createMainFollowerAndFollower(String userEmail, String name, String odooId){
+
+        //Check to see if the Main Follower of the sub follower exists in Odoo
+        List<Map<String, ?>> mainFollower = this.odooHelpdeskMessageApi.getMainEmailFollower(this.odooObjectConnection, userEmail.toLowerCase());
+
+        //If they do not exist, create a main follower account, then after that, we can get the main follower ID
+        String mainFollowerId;
+        if (mainFollower.isEmpty()){
+            List<Integer> newMainFollowerId = this.odooHelpdeskMessageApi.createMainFollower(this.odooObjectConnection, name, userEmail.toLowerCase());
+            mainFollowerId = newMainFollowerId.get(0).toString();
+        }else {
+            mainFollowerId = mainFollower.get(0).get("id").toString();
+        }
+
+
+        Integer odooIdInt = Integer.valueOf(odooId);
+        //Check if the one that post the comment is a follower of the ticket
+        List<Map<String, ?>> followersFound = this.odooHelpdeskMessageApi.getFollower(this.odooObjectConnection, odooIdInt, mainFollowerId);
+
+        //If the person that post the comment cannot be found as a follower, create them as a follower in the ticket
+        if (followersFound.isEmpty()){
+            String resModel = "helpdesk.ticket";
+            String subtype = "1";
+            List<Integer> newFollowerId = this.odooHelpdeskMessageApi.createFollower(this.odooObjectConnection, resModel, odooIdInt, subtype, mainFollowerId);
+            followersFound = this.odooHelpdeskMessageApi.getFollower(this.odooObjectConnection, odooIdInt, mainFollowerId);
+        }
+
     }
 
 }

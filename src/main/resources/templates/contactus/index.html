@@ -84,10 +84,19 @@
                                         <select class="form-control" required="required" id="installation"
                                                 name="installationId">
                                             <option value="">Choose your solar panel system</option>
+                                            <!--
                                             <th:block th:each="installation : ${installations}">
                                                 <option th:selected="${param.installation_id == null? false : param.installation_id[0] == installation.id}"
                                                         th:value="${installation.id}"
                                                         th:text="${installation.address + ' ' + installation.city + ', ' + installation.state + ' ' + installation.zipCode}"></option>
+                                            </th:block>
+                                            -->
+                                            <th:block th:each="installation: ${#numbers.sequence(0, odooInstallations.getIdList().size() - 1)}">
+                                                <option
+                                                        th:value = "${odooInstallations.getIdList().get(installation)}"
+                                                        th:text="${odooInstallations.getAddressList().get(installation) + ' ' + odooInstallations.getCityList().get(installation) + ', ' +
+                                                            odooInstallations.getStateList().get(installation) + ' ' + odooInstallations.getZipCodeList().get(installation)}"
+                                                ></option>
                                             </th:block>
                                         </select>
                                     </div>

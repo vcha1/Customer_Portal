@@ -5,6 +5,7 @@ import com.dev1stle.repository.specification.salesforce.WhereClause;
 import com.my1stle.customer.portal.persistence.model.InstallationSalesforceObject;
 import com.my1stle.customer.portal.service.installation.InstallationSelector;
 import com.my1stle.customer.portal.service.model.Installation;
+import com.my1stle.customer.portal.service.odoo.OdooInstallationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +49,20 @@ public class SalesforceInstallationSelector implements InstallationSelector {
         ));
 
         return new ArrayList<>(results);
+
+    }
+
+    @Override
+    public
+    List<Object> selectByCustomerEmailOdoo(String email) {
+
+        //List<InstallationSalesforceObject> results = this.installationSalesforceObjectRepository.query(new WhereClause(
+        //        String.format("Email_Address__c = '%s'", email)
+        //));
+
+        OdooInstallationData results = new OdooInstallationData(email);
+
+        return results.getIdList();
 
     }
 

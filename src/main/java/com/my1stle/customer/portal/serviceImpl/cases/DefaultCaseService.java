@@ -67,8 +67,6 @@ public class DefaultCaseService implements CaseService {
                 );
         if(cases.isEmpty())
             return Optional.empty();
-        //System.out.println("DefaultCaseService Get");
-        //System.out.println(cases);
         return Optional.of(cases.get(0));
 
     }

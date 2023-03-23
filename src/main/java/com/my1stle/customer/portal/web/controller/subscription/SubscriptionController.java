@@ -67,55 +67,6 @@ public class SubscriptionController {
         this.productService = productService;
         this.feeCalculator = feeCalculator;
     }
-    /*
-    @GetMapping(value = "")
-    public String viewSubscriptionAgreement(
-            @AuthenticationPrincipal User currentUser,
-            @RequestParam(name = "installation_id") String installationId,
-            @RequestParam(name = "product_id") Long productId,
-            Model model) {
-
-        Installation installation = installationService.getInstallationById(installationId);
-
-        if (null == installation) {
-            throw new ResourceNotFoundException("Installation Not Found!");
-        }
-
-        Product product = productService.getById(productId);
-
-        if (null == product) {
-            throw new ResourceNotFoundException("Product Not Found!");
-        }
-
-        if (product.getPaymentSchedule().equals(PaymentSchedule.SINGLE_PAYMENT)) {
-            throw new BadRequestException("Expected Subscription Based Product");
-        }
-
-        if (!product.getProductAgreementDocument().isPresent()) {
-            throw new BadRequestException("Product does have an agreement document!");
-        }
-
-        Optional<Subscription> existingSubscription = this.subscriptionService.getByOwnerProductAndInstallationId(
-                currentUser.getId(), product.getId(), installation.getId()
-        );
-
-        if (existingSubscription.isPresent()) {
-            return String.format("redirect:/subscription/%s/sign_agreement", existingSubscription.get().getId());
-        }
-
-        SubscriptionAgreementDto subscriptionAgreementDto = new SubscriptionAgreementDto();
-        subscriptionAgreementDto.setInstallationId(installation.getId());
-        subscriptionAgreementDto.setProductId(product.getId());
-
-        model.addAttribute("request", subscriptionAgreementDto);
-        model.addAttribute("installation", installation);
-        model.addAttribute("product", product);
-        model.addAttribute("total_price", product.getPricingType().calculation().apply(product, installation));
-
-        return "subscription/agreement";
-
-    }
-    */
     //Update code with odoo below
     @GetMapping(value = "")
     public String viewSubscriptionAgreement(
@@ -236,7 +187,6 @@ public class SubscriptionController {
         }
 
         Product product = subscription.getProduct();
-        //Installation installation = subscription.getInstallation();
         OdooInstallationData odooInstallationData = subscription.getOdooInstallationData();
 
         PaymentMethod paymentMethod = this.paymentMethodService.getByName(PaymentMethods.PAYPAL)
@@ -314,7 +264,6 @@ public class SubscriptionController {
         try {
             subscription = this.subscriptionService.activateSubscription(currentUser.getId(), subscription.getId(), orderId);
         } catch (SubscriptionException e) {
-            //redirectAttributes.addAttribute("id", subscription.getInstallation().getId());
             redirectAttributes.addAttribute("id", subscription.getOdooInstallationData().getId());
             redirectAttributes.addAttribute("error", e.getMessage());
             return "redirect:/schedule/product-selection";

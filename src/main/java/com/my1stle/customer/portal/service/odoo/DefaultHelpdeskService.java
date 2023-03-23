@@ -14,7 +14,7 @@ public class DefaultHelpdeskService {
 
     public DefaultHelpdeskService(String odooTicketId) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String userEmail = user.getEmail();
+        String userEmail = user.getEmail().toLowerCase();
 
         XmlRpcAuthenticationInformation xmlRpcAuthInfo = OdooConnectionConfiguration.generateDefaultXmlRpcAuthenticationInformation();
         XmlRpcClientFactory xmlRpcClientFactory = OdooConnectionConfiguration.createDefaultXmlRpcClientFactory();
@@ -22,7 +22,6 @@ public class DefaultHelpdeskService {
 
         String objectType = "helpdesk.ticket";
         List<String> fields = Arrays.asList("x_studio_installation");
-        //List<Object> criteria = Arrays.asList(Arrays.asList("id", "=", odooTicketId));
 
         Object[] installationNames = (Object[]) odooConnection.findObjects(objectType, fields,
                 Arrays.asList(Arrays.asList("id", "=", odooTicketId))).get(0).get("x_studio_installation");

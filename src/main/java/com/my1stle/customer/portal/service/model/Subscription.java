@@ -22,8 +22,6 @@ public interface Subscription {
 
     Product getProduct();
 
-    //Installation getInstallation();
-
     OdooInstallationData getOdooInstallationData();
 
     ZonedDateTime getStartingDate();
